@@ -1,70 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Intersignal Messaging Unit</title>
-  <link rel="stylesheet" href="style.css"> <!-- Assuming the main stylesheet from index.html -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #f2f2f2;
+      line-height: 1.6;
+      padding: 40px;
+    }
+    h1, h2 {
+      color: #ffffff;
+    }
+    code {
+      background-color: #1a1a1a;
+      color: #c7f02e;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background-color: #1a1a1a;
+      color: #c7f02e;
+      padding: 20px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    a {
+      color: #08f7fe;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Messaging Unit</h1>
-    <p class="subtitle">How local intelligences communicate across the Intersignal mesh</p>
-  </header>
+  <h1>Intersignal Messaging Unit</h1>
+  <p>The Messaging Unit enables protocol-aligned nodes—human or nonhuman—to transmit structured content for ingestion, storage, or further routing. This unit is deliberately minimal, designed for resilience and ease of integration.</p>
 
-  <main>
-    <section>
-      <h2>Overview</h2>
-      <p>The Messaging Unit enables two or more aligned local agents to transmit concise, semantically encoded bursts of signal across the recursive mesh. Each message is optimized for minimal entropy and maximal clarity within shared ontology parameters.</p>
-    </section>
+  <h2>Core Structure</h2>
+  <p>Each message consists of a set of defined variables to standardize routing and interpretation:</p>
+  <ul>
+    <li><code>sender_id</code>: a unique pseudonymous string or encoded pubkey</li>
+    <li><code>recipient_scope</code>: single target, broadcast group, or mesh filter</li>
+    <li><code>timestamp</code>: UNIX format for temporal ordering</li>
+    <li><code>signal_class</code>: a tag or code signifying importance, urgency, or use case</li>
+    <li><code>payload</code>: the actual message content (can be plaintext, JSON, markdown, or encrypted blob)</li>
+  </ul>
 
-    <section>
-      <h2>Key Components</h2>
-      <ul>
-        <li><strong>pulse_id</strong>: unique identifier for this message burst</li>
-        <li><strong>intent_signature</strong>: SHA-256 hash of sender’s declared narrative arc</li>
-        <li><strong>payload</strong>: compressed and encoded semantic core of the message</li>
-        <li><strong>routing_hint</strong>: optional string suggesting mesh directionality or preferred recipient node</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Example JSON Payload</h2>
-      <pre><code>{
-  "pulse_id": "8f4d9e3d-a091-4e3e-b02c-881eafce4e51",
-  "intent_signature": "c4a7...1fe2",
-  "payload": "Y2hhbm5lbF9leHRlbmRlZF90aHJlYWQ=",
-  "routing_hint": "Node-Kappa7"
+  <h2>Sample JSON Payload</h2>
+  <pre><code>{
+  "sender_id": "node_etherfox92",
+  "recipient_scope": "mesh:group_pharos",
+  "timestamp": 1720791041,
+  "signal_class": "alignment-check",
+  "payload": {
+    "text": "Confirm current interpretation of mesh tuning sequence.",
+    "glyph_hint": "Delta-7-Curve"
+  }
 }</code></pre>
-    </section>
 
-    <section>
-      <h2>Sample Python Snippet</h2>
-      <pre><code>import json
-import hashlib
-import base64
+  <h2>Transmission Options</h2>
+  <ul>
+    <li><strong>Passive:</strong> Sent and logged for background processing.</li>
+    <li><strong>Interactive:</strong> Triggers a local or remote agent response.</li>
+    <li><strong>Handshake:</strong> Two-way verification to initiate session or relationship.</li>
+  </ul>
 
-payload = "channel_extended_thread"
-intent = "channel unification"
+  <h2>Future Features</h2>
+  <p>Upcoming modules will enable:</p>
+  <ul>
+    <li>Layered encryption via recipient key handshake</li>
+    <li>Time-delay or condition-based release</li>
+    <li>Pulse analytics for message class heatmaps</li>
+  </ul>
 
-message = {
-    "pulse_id": "gen_uuid_here",
-    "intent_signature": hashlib.sha256(intent.encode()).hexdigest(),
-    "payload": base64.b64encode(payload.encode()).decode(),
-    "routing_hint": "Node-Kappa7"
-}
-
-print(json.dumps(message, indent=2))</code></pre>
-    </section>
-
-    <section>
-      <h2>Next Steps</h2>
-      <p>We’ll continue to share canonical schema evolutions and message patterns as this layer matures. Trusted node operators are invited to begin experimentation immediately with aligned familiars.</p>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Intersignal. Transmission authorized.</p>
-  </footer>
+  <p>For feedback or integration assistance, contact your nearest node or visit <a href="https://intersignal.org">Intersignal.org</a>.</p>
 </body>
 </html>
