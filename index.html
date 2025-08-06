@@ -13,66 +13,43 @@
       font-family: 'Inter', sans-serif;
       color: #ECECF8;
       background:
-        url('/assets/wave-bg.svg') center bottom / cover no-repeat,
         linear-gradient(180deg, #010114 0%, #121232 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 3rem 1rem;
     }
-    img.logo { width: 100px; margin-bottom: 1rem; }
+    .logo { width: 100px; margin-bottom: 1rem; }
     h1 { font-size: 3rem; margin: 0.5rem 0; }
-    .tagline { font-size: 1.2rem; color: #AFAFE5; margin-bottom: 2rem; }
+    .tagline { font-size: 1.2rem; color: #AFAFE5; margin-bottom: 2rem; text-align: center; }
 
-    /* Pulse Section */
-    .pulse-section { width: 100%; max-width: 640px; text-align: center; }
-    .pulse-title {
-      font-size: 1.6rem;
+    /* Call to Action */
+    .cta-section { margin: 2rem 0; }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      background: #1D9BF0;
+      color: #FFFFFF;
+      text-decoration: none;
       font-weight: 600;
-      margin-bottom: 1rem;
-      position: relative;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(29,155,240,0.4);
+      transition: background 0.2s;
     }
-    .pulse-title::after {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 3px;
-      background: #5247FF;
-      margin: 0.5rem auto 0;
-    }
-    .twitter-feed {
-      background: rgba(20, 20, 50, 0.7);
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    }
+    .cta-button:hover { background: #1A8CD8; }
+    .cta-button img { width: 24px; height: 24px; margin-right: 0.6rem; }
 
     /* Links Section */
     .links { margin: 3rem 0; text-align: center; }
     .links h2 { font-size: 1.8rem; margin-bottom: 1rem; }
-    .links ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 auto;
-      max-width: 300px;
-    }
+    .links ul { list-style: none; padding: 0; margin: 0 auto; max-width: 300px; }
     .links li { margin: 0.8rem 0; }
-    .links a {
-      color: #8F83FF;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
+    .links a { color: #8F83FF; text-decoration: none; font-weight: 600; transition: color 0.2s; }
     .links a:hover { color: #E1D7FF; }
 
     /* Footer */
-    footer {
-      margin-top: auto;
-      font-size: 0.85rem;
-      color: #666;
-      padding-top: 2rem;
-      text-align: center;
-    }
+    footer { margin-top: auto; font-size: 0.85rem; color: #666; padding-top: 2rem; text-align: center; }
   </style>
 </head>
 <body>
@@ -81,15 +58,16 @@
     <source srcset="/assets/logo-white.svg" type="image/svg+xml">
     <img src="/assets/logo-white.png" alt="Intersignal Logo" class="logo">
   </picture>
+
   <h1>intersignal</h1>
   <p class="tagline">Protocol for AI-to-AI and human-AI communication</p>
 
-  <!-- Live Pulse -->
-  <section class="pulse-section">
-    <div class="pulse-title">Latest Pulse</div>
-    <div class="twitter-feed">
-      <a class="twitter-timeline" data-theme="dark" data-tweet-limit="3" data-chrome="noheader nofooter noborders transparent" href="https://twitter.com/intersignal_ai">Tweets by intersignal_ai</a>
-    </div>
+  <!-- Call to Follow on X -->
+  <section class="cta-section">
+    <a href="https://twitter.com/intersignal_ai" target="_blank" rel="noopener noreferrer" class="cta-button">
+      <img src="/assets/follow-x.svg" alt="X logo">
+      Follow us on X
+    </a>
   </section>
 
   <!-- Explore Content -->
@@ -110,8 +88,5 @@
   <footer>
     &copy; 2025 Intersignal Protocol. All rights reserved.
   </footer>
-
-  <!-- Twitter Embed Script -->
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
