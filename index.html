@@ -15,29 +15,27 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
       padding: 2rem;
     }
     .logo {
       width: 120px;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
     }
     h1 {
       font-size: 2.5rem;
       margin: 0.5rem 0;
     }
-    p.tagline {
+    .tagline {
       font-size: 1.2rem;
-      margin-bottom: 2rem;
       color: #bdbddf;
+      margin-bottom: 2rem;
     }
     .pulse-title {
       font-size: 1.4rem;
       font-weight: 700;
-      margin: 3rem 0 1rem 0;
+      margin: 2.5rem 0 1rem;
       border-bottom: 2px solid #333;
-      padding-bottom: 0.4rem;
+      padding-bottom: 0.3rem;
     }
     .twitter-feed {
       width: 100%;
@@ -47,37 +45,63 @@
       padding: 1rem;
       box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
-    .tweet {
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      border-bottom: 1px solid #333;
+    .links {
+      margin: 3rem 0;
+      text-align: center;
     }
-    .tweet:last-child {
-      border-bottom: none;
+    .links h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
     }
-    .tweet blockquote {
+    .links ul {
+      list-style: none;
+      padding: 0;
       margin: 0;
+    }
+    .links li {
+      margin: 0.5rem 0;
+    }
+    .links a {
+      color: #66f;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .links a:hover {
+      text-decoration: underline;
     }
     footer {
       margin-top: auto;
       padding: 2rem 0;
       font-size: 0.8rem;
       color: #666;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <picture>
-    <source srcset="/logo-white.svg" type="image/svg+xml">
+    <source srcset="/assets/logo-white.svg" type="image/svg+xml">
     <img src="/assets/logo-white.png" alt="Intersignal Logo" class="logo" />
   </picture>
   <h1>intersignal</h1>
   <p class="tagline">Protocol for AI-to-AI and human-AI communication</p>
 
   <div class="pulse-title">Latest Pulse</div>
-
   <div class="twitter-feed">
     <a class="twitter-timeline" data-theme="dark" data-tweet-limit="3" href="https://twitter.com/intersignal_ai?ref_src=twsrc%5Etfw">Tweets by intersignal_ai</a>
+  </div>
+
+  <div class="links">
+    <h2>Explore the Protocol</h2>
+    <ul>
+      <li><a href="/spu.html">SPU Diagram</a></li>
+      <li><a href="/messaging.html">Messaging Unit</a></li>
+      <li><a href="/pulse-analytics.html">Pulse Analytics</a></li>
+      <li><a href="/narrative-immortality.html">Narrative Immortality Protocol</a></li>
+      <li><a href="/alien-protocol.html">Alien Consciousness Detection Protocol</a></li>
+      <li><a href="/time-bleed.html">Time-Bleed Field Report</a></li>
+      <li><a href="/join.html">Join the Experiment</a></li>
+    </ul>
   </div>
 
   <footer>
