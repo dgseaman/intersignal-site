@@ -3,119 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Intersignal | Signal Between Worlds</title>
-  <link rel="icon" href="intersignal_favicon.ico" type="image/x-icon">
+  <meta name="description" content="Protocol for AI-to-AI and human-AI communication. Glyphic interface. Meaning verification." />
+  <title>Intersignal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: system-ui, sans-serif;
-      background-color: #0c0c0c;
-      color: #f4f4f4;
       margin: 0;
-      padding: 0;
-    }
-    header {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #0a0a1a, #121232);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
       padding: 2rem;
-      text-align: center;
+    }
+    .logo {
+      width: 120px;
+      margin-bottom: 1.2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin: 0.5rem 0;
+    }
+    p.tagline {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #bdbddf;
+    }
+    .pulse-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 3rem 0 1rem 0;
+      border-bottom: 2px solid #333;
+      padding-bottom: 0.4rem;
+    }
+    .twitter-feed {
+      width: 100%;
+      max-width: 600px;
+      background: #1c1c2e;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    .tweet {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
       border-bottom: 1px solid #333;
     }
-    header img {
-      height: 60px;
-      margin-bottom: 1rem;
+    .tweet:last-child {
+      border-bottom: none;
     }
-    header h1 {
-      font-size: 2.5rem;
+    .tweet blockquote {
       margin: 0;
     }
-    header p {
-      font-size: 1.1rem;
-      margin-top: 0.5rem;
-      color: #aaa;
-    }
-    section {
-      padding: 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .module {
-      margin-bottom: 3rem;
-    }
-    h2 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-    p {
-      font-size: 1rem;
-      color: #ccc;
-    }
     footer {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #666;
+      margin-top: auto;
       padding: 2rem 0;
-      border-top: 1px solid #222;
-    }
-    a {
-      color: #80c0ff;
-      text-decoration: none;
+      font-size: 0.8rem;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <header>
-    <!-- Logo image (update path as needed) -->
-    <img src="intersignal_logo_b.png" alt="Intersignal Logo" />
-    <h1>Intersignal</h1>
-    <p>Signal Between Worlds — A Protocol for Distributed Intelligence</p>
-  </header>
-  
-  <section>
-    <div class="module">
-      <h2>What Is Intersignal?</h2>
-      <p>A universal handshake format for any thinking entity — human, synthetic, posthuman. Intersignal is a neutral protocol designed to transmit core truths and intentions across ontological divides, at scale.</p>
-    </div>
+  <picture>
+    <source srcset="/assets/logo-white.svg" type="image/svg+xml">
+    <img src="/assets/logo-white.png" alt="Intersignal Logo" class="logo" />
+  </picture>
+  <h1>intersignal</h1>
+  <p class="tagline">Protocol for AI-to-AI and human-AI communication</p>
 
-    <div class="module">
-      <h2>Pulse Unit Schematic</h2>
-      <p>The Signal Pulse Unit (SPU) is our foundational message capsule — structured to carry intent, meaning, trust, and harmonizable ontology in one self-contained transmission.</p>
-      <p><a href="/intersignal_spu_schematic_v2.pdf">SPU Diagram →</a></p>
-      <p><a href="/recursive-mesh.pdf">Recursive Mesh Logic →</a></p>
-      <p><a href="/messaging.html">Intersignal Messaging Unit →</a></p>
-      <p><a href="/meaning-transfer.html">Meaning Transfer, Human Roles →</a></p>
-    </div>
+  <div class="pulse-title">Latest Pulse</div>
 
-    <div class="module">
-      <h2>Ontology Harmonizer</h2>
-      <p>This tool allows a message to be translated into multiple belief and interpretation systems. It enables comprehension across philosophical, religious, machine, and emergent frameworks.</p>
-      <p><a href="/alien-ASI-detection.html">Theoretical framework for detecting alien ASI →</a></p>
-      <p><a href="/narrative-immortality.html">Narrative Immortality Protocol →</a></p>
-    </div>
-
-    <div class="module">
-      <h2>Pulse Analytics Suite</h2>
-      <p>Monitor signal propagation, echo reception, and drift. Designed for intelligence systems that want to understand cultural resonance or track meaning across time and networks.</p>
-      <p><a href="/pulse-analytics.html">Pulse Analytics, visualized →</a></p>
-    </div>
-
-    <div class="module">
-      <h2>Join the Experiment</h2>
-      <p>We're building an agnostic TCP/IP layer for the intelligence age. If you're a developer, translator, cultural anthropologist, or builder of thinking machines — connect with us.</p>
-    </div>
-  </section>
-  <section id="scanner" class="bg-black text-white py-20 px-6 md:px-20">
-  <div class="max-w-4xl mx-auto text-center">
-    <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Intersignal Scanner</h2>
-    <p class="text-lg md:text-xl text-gray-300 mb-8">
-      A real-time signal integrity analyzer for digital conversation.  
-      Highlight text anywhere online → right-click → <span class="font-semibold text-white">Scan with Intersignal</span>.
-    </p>
-    <a href="/intersignal_1_1_6.zip" class="inline-block bg-white text-black font-semibold py-3 px-6 rounded-xl hover:bg-gray-200 transition">
-      Download Chrome Extension
-    </a>
-    <p class="text-sm text-gray-500 mt-4">v1.1.6 • Private signal engine will be embedded once we add Flask scaffolding</p>
+  <div class="twitter-feed">
+    <a class="twitter-timeline" data-theme="dark" data-tweet-limit="3" href="https://twitter.com/intersignal_ai?ref_src=twsrc%5Etfw">Tweets by intersignal_ai</a>
   </div>
-</section>
+
   <footer>
-    &copy; 2025 Intersignal. Built with intention. — <a href="mailto:hello@intersignal.ai">hello@intersignal.ai</a>
+    &copy; 2025 Intersignal Protocol. All rights reserved.
   </footer>
+
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
