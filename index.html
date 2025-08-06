@@ -53,6 +53,28 @@
   </style>
 </head>
 <body>
+  body {
+  position: relative;
+  min-height: 100vh;
+}
+.page-wrap {
+  position: relative;
+  z-index: 1;
+}
+body::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 200px;
+  background: url('/assets/wave-bg.svg') center bottom no-repeat;
+  background-size: contain;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+  <div class="page-wrap">
   <!-- Logo -->
   <picture>
     <source srcset="/assets/logo-white.svg" type="image/svg+xml">
@@ -86,5 +108,6 @@
   <footer>
     &copy; 2025 Intersignal Protocol. All rights reserved.
   </footer>
+  </div>
 </body>
 </html>
