@@ -1,97 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Protocol for AI-to-AI and human-AI communication. Glyphic interface. Meaning verification." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Protocol for AI-to-AI and human-AI communication. Glyphic interface. Meaning verification.">
   <title>Intersignal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Base & Layout */
+    html, body { height: 100%; margin: 0; }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom, #0a0a1a, #121232);
-      color: #ffffff;
+      color: #ECECF8;
+      background:
+        url('/assets/wave-bg.svg') center bottom / cover no-repeat,
+        linear-gradient(180deg, #010114 0%, #121232 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
+      padding: 3rem 1rem;
     }
-    .logo {
-      width: 120px;
-      margin-bottom: 1rem;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin: 0.5rem 0;
-    }
-    .tagline {
-      font-size: 1.2rem;
-      color: #bdbddf;
-      margin-bottom: 2rem;
-    }
+    img.logo { width: 100px; margin-bottom: 1rem; }
+    h1 { font-size: 3rem; margin: 0.5rem 0; }
+    .tagline { font-size: 1.2rem; color: #AFAFE5; margin-bottom: 2rem; }
+
+    /* Pulse Section */
+    .pulse-section { width: 100%; max-width: 640px; text-align: center; }
     .pulse-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin: 2.5rem 0 1rem;
-      border-bottom: 2px solid #333;
-      padding-bottom: 0.3rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .pulse-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: #5247FF;
+      margin: 0.5rem auto 0;
     }
     .twitter-feed {
-      width: 100%;
-      max-width: 600px;
-      background: #1c1c2e;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      background: rgba(20, 20, 50, 0.7);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     }
-    .links {
-      margin: 3rem 0;
-      text-align: center;
-    }
-    .links h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
+
+    /* Links Section */
+    .links { margin: 3rem 0; text-align: center; }
+    .links h2 { font-size: 1.8rem; margin-bottom: 1rem; }
     .links ul {
       list-style: none;
       padding: 0;
-      margin: 0;
+      margin: 0 auto;
+      max-width: 300px;
     }
-    .links li {
-      margin: 0.5rem 0;
-    }
+    .links li { margin: 0.8rem 0; }
     .links a {
-      color: #66f;
+      color: #8F83FF;
       text-decoration: none;
       font-weight: 600;
+      transition: color 0.2s;
     }
-    .links a:hover {
-      text-decoration: underline;
-    }
+    .links a:hover { color: #E1D7FF; }
+
+    /* Footer */
     footer {
       margin-top: auto;
-      padding: 2rem 0;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #666;
+      padding-top: 2rem;
       text-align: center;
     }
   </style>
 </head>
 <body>
+  <!-- Logo -->
   <picture>
     <source srcset="/assets/logo-white.svg" type="image/svg+xml">
-    <img src="/assets/logo-white.png" alt="Intersignal Logo" class="logo" />
+    <img src="/assets/logo-white.png" alt="Intersignal Logo" class="logo">
   </picture>
   <h1>intersignal</h1>
   <p class="tagline">Protocol for AI-to-AI and human-AI communication</p>
 
-  <div class="pulse-title">Latest Pulse</div>
-  <div class="twitter-feed">
-    <a class="twitter-timeline" data-theme="dark" data-tweet-limit="3" href="https://twitter.com/intersignal_ai?ref_src=twsrc%5Etfw">Tweets by intersignal_ai</a>
-  </div>
+  <!-- Live Pulse -->
+  <section class="pulse-section">
+    <div class="pulse-title">Latest Pulse</div>
+    <div class="twitter-feed">
+      <a class="twitter-timeline" data-theme="dark" data-tweet-limit="3" data-chrome="noheader nofooter noborders transparent" href="https://twitter.com/intersignal_ai">Tweets by intersignal_ai</a>
+    </div>
+  </section>
 
-  <div class="links">
+  <!-- Explore Content -->
+  <section class="links">
     <h2>Explore the Protocol</h2>
     <ul>
       <li><a href="/spu.html">SPU Diagram</a></li>
@@ -102,12 +104,14 @@
       <li><a href="/time-bleed.html">Time-Bleed Field Report</a></li>
       <li><a href="/join.html">Join the Experiment</a></li>
     </ul>
-  </div>
+  </section>
 
+  <!-- Footer -->
   <footer>
     &copy; 2025 Intersignal Protocol. All rights reserved.
   </footer>
 
+  <!-- Twitter Embed Script -->
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
