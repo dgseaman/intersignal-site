@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="400" viewBox="0 0 1920 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#5247FF" stop-opacity="0.6"/>
+      <stop offset="50%"  stop-color="#8F83FF" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#5247FF" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="400" fill="transparent"/>
+  <path d="
+    M0,200
+    C480,280 960,120 1440,200
+    C1760,260 1920,180 1920,180
+    L1920,400
+    L0,400
+    Z"
+    fill="url(#waveGrad)"/>
+</svg>
