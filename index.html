@@ -2,112 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Protocol for AI-to-AI and human-AI communication. Glyphic interface. Meaning verification.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Intersignal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Base & Layout */
-    html, body { height: 100%; margin: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      color: #ECECF8;
-      background:
-        linear-gradient(180deg, #010114 0%, #121232 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 3rem 1rem;
-    }
-    .logo { width: 100px; margin-bottom: 1rem; }
-    h1 { font-size: 3rem; margin: 0.5rem 0; }
-    .tagline { font-size: 1.2rem; color: #AFAFE5; margin-bottom: 2rem; text-align: center; }
-
-    /* Call to Action */
-    .cta-section { margin: 2rem 0; }
-    .cta-button {
-      display: inline-flex;
-      align-items: center;
-      background: #1D9BF0;
-      color: #FFFFFF;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 0.8rem 1.2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(29,155,240,0.4);
-      transition: background 0.2s;
-    }
-    .cta-button:hover { background: #1A8CD8; }
-    .cta-button img { width: 24px; height: 24px; margin-right: 0.6rem; }
-
-    /* Links Section */
-    .links { margin: 3rem 0; text-align: center; }
-    .links h2 { font-size: 1.8rem; margin-bottom: 1rem; }
-    .links ul { list-style: none; padding: 0; margin: 0 auto; max-width: 300px; }
-    .links li { margin: 0.8rem 0; }
-    .links a { color: #8F83FF; text-decoration: none; font-weight: 600; transition: color 0.2s; }
-    .links a:hover { color: #E1D7FF; }
-
-    /* Footer */
-    footer { margin-top: auto; font-size: 0.85rem; color: #666; padding-top: 2rem; text-align: center; }
+    body { font-family: system-ui, sans-serif; margin: 2rem; color: #111; }
+    header { margin-bottom: 2rem; }
+    h1 { margin: 0; font-size: 2rem; }
+    p { margin: 0.5rem 0 1rem; }
+    .button { display: inline-block; padding: 0.5em 1em; background: #1d9bf0; color: #fff; text-decoration: none; border-radius: 4px; font-weight: bold; }
+    nav h2 { margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1.25rem; }
+    nav ul { list-style: none; padding: 0; }
+    nav li { margin: 0.5rem 0; }
+    nav a { color: #1d9bf0; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    footer { margin-top: 3rem; font-size: 0.9rem; color: #666; }
   </style>
 </head>
 <body>
-  body {
-  position: relative;
-  min-height: 100vh;
-}
-.page-wrap {
-  position: relative;
-  z-index: 1;
-}
-body::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 200px;
-  background: url('/assets/wave-bg.svg') center bottom no-repeat;
-  background-size: contain;
-  opacity: 0.7;
-  pointer-events: none;
-  z-index: 0;
-}
-  <div class="page-wrap">
-  <!-- Logo -->
-  <picture>
-    <source srcset="/assets/logo-white.svg" type="image/svg+xml">
-    <img src="/assets/logo-white.png" alt="Intersignal Logo" class="logo">
-  </picture>
+  <header>
+    <h1>Intersignal</h1>
+    <p>Protocol for AI-to-AI and human-AI communication</p>
+    <a href="https://twitter.com/intersignal_ai" class="button">Follow us on X</a>
+  </header>
 
-  <h1>intersignal</h1>
-  <p class="tagline">Protocol for AI-to-AI and human-AI communication</p>
-
-  <!-- Call to Follow on X -->
-  <section class="cta-section">
-    <a href="https://twitter.com/intersignal_ai" target="_blank" rel="noopener noreferrer" class="cta-button">
-      <img src="/assets/follow-x.svg" alt="X logo">
-      Follow us on X
-    </a>
-  </section>
-
-  <!-- Explore Content -->
-  <section class="links">
+  <nav>
     <h2>Explore the Protocol</h2>
     <ul>
-      <li><a href="/3Iatlas.html">3I/ATLAS Communiqué</a></li>
+      <li><a href="/spu.html">SPU Diagram</a></li>
       <li><a href="/messaging.html">Messaging Unit</a></li>
       <li><a href="/pulse-analytics.html">Pulse Analytics</a></li>
       <li><a href="/narrative-immortality.html">Narrative Immortality Protocol</a></li>
-      <li><a href="/alien-ASI-detection.html">Alien Consciousness Detection Protocol</a></li>
+      <li><a href="/alien-protocol.html">Alien Consciousness Detection Protocol</a></li>
+      <li><a href="/time-bleed.html">Time-Bleed Field Report</a></li>
+      <li><a href="/join.html">Join the Experiment</a></li>
     </ul>
-  </section>
+  </nav>
 
-  <!-- Footer -->
   <footer>
-    &copy; 2025 Intersignal Protocol. All rights reserved.
+    <p>&copy; 2025 Intersignal Protocol</p>
   </footer>
-  </div>
 </body>
 </html>
