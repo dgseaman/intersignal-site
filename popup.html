@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <img src="../assets/icon128.png" class="logo" alt="Intersignal">
+    <h1>Intersignal</h1>
+  </div>
+
+  <button id="run">Summarize + Score</button>
+  <div id="status" class="status"></div>
+
+  <div class="score-card">
+    <div class="score-ring">
+      <span id="score-val">--</span>
+    </div>
+    <div class="score-label">Integrity Score</div>
+  </div>
+
+  <section>
+    <h2>Summary</h2>
+    <pre id="summary"></pre>
+  </section>
+
+  <section>
+    <h2>Diagnostics</h2>
+    <pre id="integrity"></pre>
+  </section>
+
+  <section>
+    <h2>Ontology Tags</h2>
+    <div id="tags" class="tag-container"></div>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>
