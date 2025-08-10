@@ -1,81 +1,175 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Intersignal</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Intersignal — Cut through the fluff</title>
+  <meta name="description" content="Intersignal helps you cut through the fluff. Score narrative integrity, see key diagnostics, and get fast, local summaries — right inside your browser." />
+  <meta property="og:title" content="Intersignal — Cut through the fluff" />
+  <meta property="og:description" content="Integrity scoring, ontology tags, and on‑device summaries. Install the Chrome extension and see the web as it really is." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://intersignal.org/" />
+  <meta property="og:image" content="/images/og-intersignal.jpg" />
+  <link rel="icon" href="/images/favicon.ico" />
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      margin: 2rem;
-      color: #111;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    :root{
+      --bg:#0b0c10; --panel:#111217; --text:#e7e7ea; --muted:#a7a7b1; --gold:#d4a514; --accent:#4ea1ff; --good:#28a745; --warn:#ffcc33; --bad:#ff4d4f;
+      --max:1160px; --radius:16px; --pad:18px; --shadow:0 10px 24px rgba(0,0,0,.35);
     }
-    header { margin-bottom: 2rem; }
-    h1 { margin: 0; font-size: 2rem; }
-    p { margin: 0.5rem 0 1rem; }
-    .button {
-      display: inline-block;
-      padding: 0.5em 1em;
-      background: #1d9bf0;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-    nav h2 {
-      margin-top: 2rem;
-      margin-bottom: 0.5rem;
-      font-size: 1.25rem;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    nav li { margin: 0.5rem 0; }
-    nav a {
-      color: #1d9bf0;
-      text-decoration: none;
-    }
-    nav a:hover { text-decoration: underline; }
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #666;
-    }
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
+    a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
+    header{position:sticky; top:0; backdrop-filter:saturate(1.2) blur(6px); background:rgba(11,12,16,.6); border-bottom:1px solid rgba(255,255,255,.06); z-index:40}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .brand-logo{width:28px; height:28px; display:grid; place-items:center; border-radius:50%; border:4px solid var(--gold)}
+    .brand-logo .i{width:8px; height:18px; background:#000}
+    .nav a{margin-left:18px; color:var(--text)}
+
+    .hero{padding:64px 0 36px}
+    .badge{display:inline-flex; align-items:center; gap:8px; background:#1a1b22; border:1px solid rgba(255,255,255,.12); color:#ff4242; font-weight:800; padding:6px 10px; border-radius:999px; box-shadow:var(--shadow)}
+    .badge .dot{width:8px; height:8px; background:#ff4242; border-radius:50%; box-shadow:0 0 8px #ff4242}
+    h1{font-size:40px; line-height:1.1; margin:14px 0 10px}
+    .lede{color:var(--muted); max-width:720px}
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .btn{display:inline-flex; align-items:center; gap:10px; background:#fff; color:#111; padding:12px 16px; border-radius:12px; font-weight:700; box-shadow:var(--shadow)}
+    .btn.secondary{background:#1a1b22; color:#e7e7ea; border:1px solid rgba(255,255,255,.1)}
+
+    .panels{display:grid; grid-template-columns:1fr; gap:16px; margin:28px 0}
+    @media(min-width:880px){ .panels{grid-template-columns:1.2fr .8fr} }
+    .card{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:var(--pad)}
+    .card h2{margin:0 0 8px; font-size:18px}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:14px; color:#d0d0d6}
+
+    .features{display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:12px; margin:8px 0 24px}
+    @media(min-width:720px){ .features{grid-template-columns:repeat(3,minmax(0,1fr))} }
+    .feature{background:#0f1117; border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:14px}
+    .feature h3{margin:0 0 6px; font-size:16px}
+    .pill{display:inline-block; padding:4px 8px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.2px}
+    .pill.good{background:rgba(40,167,69,.15); color:var(--good)}
+    .pill.warn{background:rgba(255,204,51,.15); color:var(--warn)}
+    .pill.neutral{background:rgba(255,255,255,.12); color:#dcdce3}
+
+    .two{display:grid; grid-template-columns:1fr; gap:16px}
+    @media(min-width:980px){ .two{grid-template-columns:1fr 1fr} }
+
+    footer{border-top:1px solid rgba(255,255,255,.08); margin-top:36px}
+    .foot{display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:18px 0; color:var(--muted)}
+    .small{font-size:12px; color:#9aa}
+    .muted{color:var(--muted)}
+    .kbd{font:12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background:#1b1d26; border:1px solid rgba(255,255,255,.14); padding:2px 6px; border-radius:6px}
   </style>
 </head>
 <body>
   <header>
-    <h1>Intersignal</h1>
-    <p>Protocol for AI-to-AI and human-AI communication</p>
-    <a href="https://twitter.com/intersignal_ai" class="button">Follow us on X</a>
+    <div class="wrap nav">
+      <div class="brand">
+        <div class="brand-logo"><div class="i"></div></div>
+        <span>INTERSIGNAL</span>
+      </div>
+      <nav>
+        <a href="#download">Download</a>
+        <a href="#how">How it works</a>
+        <a href="#podcast">Podcast</a>
+        <a href="#docs">Docs</a>
+      </nav>
+    </div>
   </header>
 
-  <nav>
-    <h2>Explore the Protocol</h2>
-    <ul>
-      <li><a href="/messaging.html">Messaging Unit</a></li>
-      <li><a href="/pulse-analytics.html">Pulse Analytics</a></li>
-      <li><a href="/narrative-immortality.html">Narrative Immortality Protocol</a></li>
-      <li><a href="/alien-ASI-detection.html">Alien Consciousness Detection Protocol</a></li>
-    </ul>
-  </nav>
-  <div style="background-color:#fff8e1; border:1px solid #f0c14b; padding:10px; margin:15px 0; font-family:sans-serif;">
-  <span style="color:red; font-weight:bold;">
-    NEW!
-  </span>
-  <strong>Intersignal Right Click + Popup v0.6.0</strong> Now Available: 
-  learn the <strong>authenticity</strong>, <strong>alignment</strong>, and <strong>contents</strong> of any article or page on the Internet with locally loaded AI. 
-  <br>
-  <em>For Google Chrome</em> — <a href="/Intersignal-chrome-r6_1.zip" style="color:#0057e7; font-weight:bold;">Download Now</a>
-</div>
-  <footer>
-    <p>&copy; 2025 Intersignal</p>
-  </footer>
+  <main class="wrap">
+    <section class="hero">
+      <span class="badge"><span class="dot"></span> NEW! Intersignal Right‑Click + Popup v0.6.1</span>
+      <h1>Cut through the fluff.</h1>
+      <p class="lede">Intersignal scores narrative integrity, surfaces ontology tags, and summarizes pages — locally. A free Chrome extension that respects your privacy and helps you see the web as it really is.</p>
+      <div class="cta-row" id="download">
+        <a class="btn" href="/downloads/Intersignal-chrome-r6_1.zip">⬇ Download the Chrome Extension</a>
+        <a class="btn secondary" href="#faq">Read the FAQ</a>
+      </div>
+    </section>
+
+    <section class="panels">
+      <div class="card">
+        <h2>What you get</h2>
+        <div class="features">
+          <div class="feature">
+            <h3>Integrity Score</h3>
+            <p class="muted">Quick signal on sourcing, alignment, and recency heuristics so you can decide if a page is worth your time.</p>
+            <span class="pill neutral">Local • Private</span>
+          </div>
+          <div class="feature">
+            <h3>Ontology Tags</h3>
+            <p class="muted">Instant topic and diagnostic tags — e.g., <em>Thin Sourcing</em>, <em>Some Hedging</em>, or <em>Strong Title Alignment</em>.</p>
+            <span class="pill good">Actionable</span>
+          </div>
+          <div class="feature">
+            <h3>On‑device Summaries</h3>
+            <p class="muted">Summaries run on your machine as browser support rolls out. UI works today; local model activation depends on Chrome’s timeline.</p>
+            <span class="pill warn">Activates as Chrome enables</span>
+          </div>
+        </div>
+        <div class="mono small">Tip: Right‑click a page → <strong>Intersignal: Summarize + Score This Page</strong>.</div>
+      </div>
+
+      <div class="card" id="how">
+        <h2>How it works</h2>
+        <p class="muted">Intersignal runs client‑side. We collect visible text, compute integrity diagnostics, and — when available — call the browser’s local summarizer. No logins. No tracking. No server round‑trips.</p>
+        <ul>
+          <li>Right‑click launcher + toolbar popup</li>
+          <li>Clean, readable UI with status and error banners</li>
+          <li>Privacy‑first: stays on your device</li>
+        </ul>
+        <p class="small mono">Current build: <strong>v0.6.1</strong>. Chrome’s built‑in summarizer is rolling out in waves; features auto‑enable when your browser exposes <code>window.ai</code>.</p>
+      </div>
+    </section>
+
+    <section class="two" id="podcast">
+      <div class="card">
+        <h2>Podcast</h2>
+        <p class="muted">Long‑form conversations on autonomy, local AI, and narrative integrity. New episode: <em>ASI Is Here — 3I Atlas & the Conservation of Friction</em>.</p>
+        <div class="cta-row">
+          <a class="btn" href="https://fulcrum.substack.com/">Listen on Substack</a>
+          <a class="btn secondary" href="https://youtube.com/">Watch on YouTube</a>
+        </div>
+      </div>
+      <div class="card" id="docs">
+        <h2>Docs & Downloads</h2>
+        <ul>
+          <li><a href="/downloads/Intersignal-chrome-r6_1.zip">Chrome Extension (v0.6.1)</a></li>
+          <li><a href="/docs/ontology.pdf">Ontology & Integrity Scoring (PDF)</a></li>
+          <li><a href="/docs/roadmap.html">Roadmap</a></li>
+          <li><a href="/docs/changelog.html">Changelog</a></li>
+        </ul>
+        <p class="small muted">Firefox and Safari builds are planned. A desktop dashboard for macOS/Windows is in development.</p>
+      </div>
+    </section>
+
+    <section class="card" id="faq">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Why isn’t the summary appearing yet?</summary>
+        <p class="muted">Chrome’s local summarizer (Gemini Nano) is being rolled out gradually. The extension UI works today; summaries automatically activate when your Chrome enables the <code>Summarization API</code>. Until then you’ll see a polite banner and full integrity diagnostics.</p>
+      </details>
+      <details>
+        <summary>Do you track pages I analyze?</summary>
+        <p class="muted">No. Intersignal runs locally and does not phone home.</p>
+      </details>
+      <details>
+        <summary>How do I launch it?</summary>
+        <p class="muted">Use the toolbar button or right‑click a page and choose <span class="kbd">Intersignal: Summarize + Score This Page</span>.</p>
+      </details>
+    </section>
+
+    <footer>
+      <div class="foot wrap">
+        <div class="brand"><div class="brand-logo"><div class="i"></div></div><span>INTERSIGNAL</span></div>
+        <div class="small">© <span id="y"></span> Intersignal. All rights reserved.</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
