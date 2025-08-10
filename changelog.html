@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Intersignal • Changelog</title>
+  <meta name="description" content="Version history for the Intersignal Chrome extension and ontology." />
+  <link rel="icon" href="/images/favicon.ico" />
+  <style>
+    :root{--bg:#0b0c10;--panel:#111217;--text:#e7e7ea;--muted:#a7a7b1;--gold:#d4a514;--accent:#4ea1ff;--radius:14px;--max:880px}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    a{color:var(--accent)}
+    .wrap{max-width:var(--max);margin:0 auto;padding:28px 18px 80px}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+    .logo{width:28px;height:28px;border:4px solid var(--gold);border-radius:50%;display:grid;place-items:center}
+    .logo span{width:8px;height:18px;background:#000;display:block}
+    h1{margin:0;font-size:28px}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px;margin:14px 0}
+    h2{margin:0 0 6px;font-size:18px}
+    .meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+    code,kbd{font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#1b1d26;border:1px solid rgba(255,255,255,.14);padding:2px 6px;border-radius:6px}
+    ul{margin:8px 0 0 18px}
+    .pill{display:inline-block;background:#1b1d26;border:1px solid rgba(255,255,255,.1);padding:3px 8px;border-radius:999px;font-size:12px;margin-right:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><span></span></div>
+      <div>
+        <h1>Intersignal Changelog</h1>
+        <div class="meta">Public history of releases and ontology updates.</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>v0.6.1 • UI polish, right‑click restore</h2>
+      <div class="meta">2025‑08‑10</div>
+      <ul>
+        <li>Restored context‑menu entry: <kbd>Intersignal: Summarize + Score This Page</kbd> (opens popup and runs analysis).</li>
+        <li>Status banner clarifies local model state: <em>downloading</em>, <em>unavailable</em>, or <em>ready</em>.</li>
+        <li>Improved ring + badges layout; reduced jank on heavy pages.</li>
+        <li>Ontology v1.0 published (<a href="/ontology.pdf">/ontology.pdf</a>).</li>
+        <li>Roadmap posted (<a href="/roadmap.html">/roadmap.html</a>).</li>
+      </ul>
+      <div class="meta"><span class="pill">MV3</span><span class="pill">No telemetry</span><span class="pill">Local‑first</span></div>
+    </section>
+
+    <section class="card">
+      <h2>v0.6.0 • Integrity + Tags refresh</h2>
+      <div class="meta">2025‑08‑10</div>
+      <ul>
+        <li>Revised Integrity Score blend: <strong>55%</strong> sourcing, <strong>35%</strong> title alignment, <strong>10%</strong> clarity (hedging balance).</li>
+        <li>Tag set tuned: <em>Thin Sourcing</em>, <em>Some Sources</em>, <em>Multi‑source</em>, <em>Strong Title Alignment</em>, <em>Possible Drift</em>, <em>AI/ML</em>, plus topical tags.</li>
+        <li>Diagnostics JSON expanded with <code>titleOverlapRatio</code>, <code>linksExternal</code>, <code>mediaEmbeds</code>.</li>
+        <li>Summary box now explains why it’s empty when <code>window.ai</code> is not yet exposed by Chrome.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>R5 • Popup hardening, banner states</h2>
+      <div class="meta">2025‑08‑10</div>
+      <ul>
+        <li>Non‑blocking failures for summarizer timeouts.</li>
+        <li>Explicit messages for per‑page missing API context.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>R4 • Diagnostics first pass</h2>
+      <div class="meta">2025‑08‑09</div>
+      <ul>
+        <li>Added host enumeration, quote/hedge counters, title/body overlap terms.</li>
+        <li>Initial badge set and score ring.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>R3 • Core popup + icon</h2>
+      <div class="meta">2025‑08‑09</div>
+      <ul>
+        <li>Toolbar popup shell with action button.</li>
+        <li>Brand icon + loading skeletons.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>R2 • Content extraction</h2>
+      <div class="meta">2025‑08‑09</div>
+      <ul>
+        <li>Heuristics for main‑content selection across standard news/blog templates.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>R1 • Bootstrap</h2>
+      <div class="meta">2025‑08‑09</div>
+      <ul>
+        <li>Manifest V3, basic scaffolding, privacy‑first stance: no remote calls, no tracking.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Upcoming (planned)</h2>
+      <div class="meta">Target: R7–R8</div>
+      <ul>
+        <li><strong>Hybrid fallback (optional)</strong>: if <code>window.ai.summarizer</code> is missing, guide power users to enable local models; summaries remain local‑only.</li>
+        <li>Improved content capture for SPA/paywalled layouts.</li>
+        <li>Export diagnostics to JSON/CSV from popup.</li>
+      </ul>
+    </section>
+
+    <p class="meta">Questions or regressions? Ping us via the links on the <a href="/index.html">homepage</a>.</p>
+  </div>
+</body>
+</html>

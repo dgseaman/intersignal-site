@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Intersignal • Product Roadmap</title>
+  <meta name="description" content="Where Intersignal is going next: browser extension milestones, desktop app, and integrity model improvements." />
+  <link rel="icon" href="/images/favicon.ico" />
+  <style>
+    :root{--bg:#0b0c10;--panel:#111217;--text:#e7e7ea;--muted:#a7a7b1;--gold:#d4a514;--accent:#4ea1ff;--radius:14px;--max:980px}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    a{color:var(--accent)}
+    .wrap{max-width:var(--max);margin:0 auto;padding:28px 18px 60px}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:22px}
+    .logo{width:28px;height:28px;border:4px solid var(--gold);border-radius:50%;display:grid;place-items:center}
+    .logo span{width:8px;height:18px;background:#000;display:block}
+    h1{margin:0;font-size:28px}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px;margin:12px 0}
+    h2{margin:0 0 8px;font-size:18px}
+    .small{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:820px){.grid{grid-template-columns:1fr 1fr}}
+    .kdb{font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#1b1d26;border:1px solid rgba(255,255,255,.14);padding:2px 6px;border-radius:6px}
+    .tag{display:inline-block;background:#1b1d26;border:1px solid rgba(255,255,255,.1);padding:3px 8px;border-radius:999px;font-size:12px;margin-right:6px}
+    footer{margin-top:22px;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><span></span></div>
+      <div>
+        <h1>Intersignal Roadmap</h1>
+        <div class="small">Last updated: 2025‑08‑10 • Current build: v0.6.1</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Vision</h2>
+      <p>Intersignal helps people <strong>cut through the fluff</strong>. Our stack runs locally when possible, computes narrative integrity diagnostics, and (as Chrome enables it) performs on‑device summaries. Privacy first, zero logins, minimal UI.</p>
+      <p class="small">Install the Chrome extension from the homepage. Summaries auto‑activate as Chrome exposes <span class="kdb">window.ai</span> on your device.</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Now (v0.6.x)</h2>
+        <ul>
+          <li>Right‑click action + toolbar popup</li>
+          <li>Integrity Score + Diagnostics + Ontology Tags</li>
+          <li>Status banners for local model availability</li>
+          <li>Clean UI polish and performance pass</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Next (R7‑R8)</h2>
+        <ul>
+          <li><strong>Hybrid summarization fallback</strong> (optional): detect missing <span class="kdb">window.ai</span> and offer local model hookup instructions for power users</li>
+          <li>Context capture improvements: smarter main‑content extraction for heavy SPA/pages</li>
+          <li>Tag tuning: better <em>Thin Sourcing</em>, <em>Strong Title Alignment</em>, hedges/quotes counting</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Q4 2025</h2>
+        <ul>
+          <li>Firefox port (MV3‑compatible)</li>
+          <li>Desktop Dashboard (macOS/Windows) for batch analysis</li>
+          <li>Export: JSON + CSV for research workflows</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>2026</h2>
+        <ul>
+          <li>Safari (App Extension) with on‑device summarization when available</li>
+          <li>Pluggable integrity heuristics (research mode)</li>
+          <li>Lightweight team spaces (local‑first, optional sync)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Technical Notes</h2>
+      <p><span class="tag">MV3</span><span class="tag">Client‑side</span><span class="tag">No tracking</span><span class="tag">Privacy‑first</span></p>
+      <ul>
+        <li>Extension remains functional UI‑wise even when the browser hasn’t enabled local summarization yet.</li>
+        <li>As Chrome rolls out the Summarization API, summaries appear without updating the extension.</li>
+        <li>All analysis runs on the user’s device; we don’t store or transmit page content.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>Questions or ideas? <a href="/index.html#podcast">Join the conversation</a> or <a href="/index.html#download">install the extension</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>
