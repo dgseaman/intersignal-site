@@ -1,197 +1,178 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Intersignal — Cut through the fluff</title>
-  <meta name="description" content="Intersignal helps you cut through the fluff. Score narrative integrity, see key diagnostics, and get fast, local summaries — right inside your browser." />
-  <meta property="og:title" content="Intersignal — Cut through the fluff" />
-  <meta property="og:description" content="Integrity scoring, ontology tags, and on‑device summaries. Install the Chrome extension and see the web as it really is." />
+  <title>Intersignal — Cut Through the Fluff</title>
+  <meta name="description" content="Intersignal helps you cut through the fluff. Score narrative integrity, see key metrics, and quantify online writing quality — locally and transparently.">
+  <meta property="og:title" content="Intersignal — Cut Through the Fluff" />
+  <meta property="og:description" content="Integrity scoring, ontology tags, and on-device summaries. Install the free Chrome extension." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://intersignal.org/" />
   <meta property="og:image" content="og-intersignal.jpg" />
   <link rel="icon" href="/favicon.ico" />
+
   <style>
- <section class="hero">
-  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      background-color: #0f1115;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+    a { color: #60a5fa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
     .hero {
-      padding: 64px 20px;
       text-align: center;
+      padding: 80px 20px 60px;
+      background: radial-gradient(circle at center, #111827 0%, #0f1115 100%);
     }
     .hero h1 {
       font-size: 48px;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
+      color: #f9fafb;
     }
-    .hero .sub {
-      color: #6b7280;
+    .hero p.sub {
+      color: #9ca3af;
       font-size: 18px;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
-    .cta.center {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-    .btn.primary {
+    .btn {
       background: #111827;
-      color: #e5e7eb;
       border: 1px solid #273244;
-      padding: 12px 18px;
+      color: #e5e7eb;
+      padding: 14px 22px;
+      font-size: 17px;
       border-radius: 8px;
-      font-size: 16px;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: all 0.2s ease-in-out;
+      display: inline-block;
     }
-    .btn.primary:hover {
-      border-color: #334155;
+    .btn:hover {
       background: #1e293b;
+      border-color: #334155;
     }
     .note {
-      color: #9ca3af;
       font-size: 14px;
-      margin-top: 6px;
+      color: #9ca3af;
+      margin-top: 10px;
     }
-    .features {
-      padding: 26px 16px;
-    }
-    .features .grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-    #how, #install, #privacy, #faq {
-      padding: 26px 16px;
-      max-width: 880px;
+
+    section {
+      max-width: 900px;
       margin: 0 auto;
+      padding: 40px 20px;
     }
     h2 {
-      margin-top: 24px;
-      margin-bottom: 12px;
-      font-size: 28px;
+      font-size: 30px;
+      margin-bottom: 16px;
+      color: #f3f4f6;
+      text-align: center;
+    }
+    .features {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .feature {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: left;
+      transition: all 0.2s ease-in-out;
+    }
+    .feature:hover {
+      border-color: #334155;
+      background: #1a2231;
     }
     ol {
-      line-height: 1.6;
-      color: #d1d5db;
+      margin: 0;
+      padding-left: 22px;
     }
     details {
-      background: #0f1115;
+      background: #111827;
       border: 1px solid #1f2430;
-      padding: 10px 12px;
+      padding: 12px 16px;
       border-radius: 8px;
       margin: 10px 0;
     }
     summary {
       cursor: pointer;
       font-weight: 600;
-      color: #e5e7eb;
+      color: #f3f4f6;
     }
-    p, li {
-      color: #e5e7eb;
+    footer {
+      text-align: center;
+      padding: 30px 10px;
+      font-size: 13px;
+      color: #6b7280;
+      border-top: 1px solid #1f2430;
+      margin-top: 40px;
     }
   </style>
+</head>
 
-  <h1>Intersignal — Page Scorer</h1>
-  <p class="sub">
-    Local, tunable scoring for any web page. No servers. No tracking. Pure signal.
-  </p>
-  <div class="cta center">
-    <a class="btn primary" href="/downloads/intersignal_page_scorer_full.zip">⬇️ Download (ZIP)</a>
-  </div>
-  <p class="note">Version 1.7.0 · Chrome MV3 Extension · Local-Only</p>
-</section>
+<body>
+  <section class="hero">
+    <h1>Intersignal — Page Scorer</h1>
+    <p class="sub">Local, tunable scoring for any web page.<br>No servers. No tracking. Pure signal.</p>
+    <a class="btn" href="/downloads/intersignal_page_scorer_full.zip">⬇️ Download Extension (ZIP)</a>
+    <p class="note">Version 1.7.0 · Chrome MV3 · 100% Local</p>
+  </section>
 
-<section class="features">
-  <div class="grid">
-    <div>
-      <h3>Local & Private</h3>
-      <p>All analysis runs in your browser. No network calls, no telemetry.</p>
+  <section>
+    <h2>Features</h2>
+    <div class="features">
+      <div class="feature"><h3>Local & Private</h3><p>All analysis runs in your browser. No telemetry, no API calls.</p></div>
+      <div class="feature"><h3>Transparent</h3><p>See exactly why a page scored: readability, depth, citations, originality, and more.</p></div>
+      <div class="feature"><h3>Tunable Weights</h3><p>Adjust your rubric live in <em>Options</em> and rescore instantly (<kbd>Alt</kbd> + <kbd>S</kbd>).</p></div>
+      <div class="feature"><h3>Actionable</h3><p>Badge color mirrors the score · Export JSON · Build your own metrics archive.</p></div>
     </div>
-    <div>
-      <h3>Transparent</h3>
-      <p>
-        See exactly why a page scored: readability, depth, citations, originality, and more.
-      </p>
-    </div>
-    <div>
-      <h3>Tunable Weights</h3>
-      <p>
-        Adjust your rubric live in <em>Options</em> and rescore instantly (<kbd>Alt</kbd> + <kbd>S</kbd>).
-      </p>
-    </div>
-    <div>
-      <h3>Actionable</h3>
-      <p>
-        Badge color mirrors the score · Export JSON · Build your own metrics archive.
-      </p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="how">
-  <h2>How It Works</h2>
-  <ol>
-    <li><strong>Analyze</strong> page text, structure, and media directly in-browser.</li>
-    <li>
-      <strong>Compute</strong> ten sub-scores (Readability → Headline + Noise Penalty).
-    </li>
-    <li>
-      <strong>Weight</strong> them using your saved rubric → a 0–100 Signal Score.
-    </li>
-  </ol>
-</section>
+  <section>
+    <h2>How It Works</h2>
+    <ol>
+      <li><strong>Analyze</strong> page text, structure, and media directly in-browser.</li>
+      <li><strong>Compute</strong> ten sub-scores (Readability → Headline + Noise Penalty).</li>
+      <li><strong>Weight</strong> them using your saved rubric to produce a 0–100 Signal Score.</li>
+    </ol>
+  </section>
 
-<section id="install">
-  <h2>Install Guide (Chrome Dev / Stable)</h2>
-  <ol>
-    <li>
-      Download the
-      <a href="/downloads/intersignal_page_scorer_full.zip">ZIP</a>
-      and unzip it.
-    </li>
-    <li>
-      Open <code>chrome://extensions</code> → toggle
-      <strong>Developer mode</strong> → click <strong>Load unpacked</strong> → select
-      the folder.
-    </li>
-    <li>
-      Pin the extension · Press <strong>Alt + S</strong> to score · Tune weights under
-      <em>Options</em>.
-    </li>
-  </ol>
-</section>
+  <section>
+    <h2>Install Guide (Chrome)</h2>
+    <ol>
+      <li>Download the <a href="/downloads/intersignal_page_scorer_full.zip">ZIP</a> and unzip it.</li>
+      <li>Open <code>chrome://extensions</code>, enable <strong>Developer mode</strong>, then click <strong>Load unpacked</strong> and select the folder.</li>
+      <li>Pin the extension. Press <strong>Alt + S</strong> to score any page. Adjust weights in <em>Options</em>.</li>
+    </ol>
+  </section>
 
-<section id="privacy">
-  <h2>Privacy</h2>
-  <p>
-    Intersignal Page Scorer sends <strong>no page data</strong> to servers. Everything
-    is computed locally. JSON exports stay on your device.
-  </p>
-</section>
+  <section>
+    <h2>Privacy</h2>
+    <p>Intersignal Page Scorer sends <strong>no content</strong> to external servers. All computations occur locally. JSON exports are saved only to your device.</p>
+  </section>
 
-<section id="faq">
-  <h2>FAQ</h2>
-  <details>
-    <summary>Why did a news site score higher than mine?</summary>
-    <p>
-      Big outlets usually include dates, bylines, and structured citations — all
-      weighted positively. Increase weights for originality or performance to
-      reflect your focus.
-    </p>
-  </details>
-  <details>
-    <summary>Can I change the rubric?</summary>
-    <p>
-      Yes — open <em>Options</em> and edit each weight. Save and rescore to apply
-      instantly.
-    </p>
-  </details>
-  <details>
-    <summary>What is “Noise” penalty?</summary>
-    <p>
-      A deduction for heavy ad/analytics scripts and iframe bloat. Cleaner sites
-      score higher.
-    </p>
-  </details>
-</section></style>
+  <section>
+    <h2>FAQ</h2>
+    <details>
+      <summary>Why did a news site score higher than mine?</summary>
+      <p>Large outlets often include bylines, timestamps, alt-tagged images, and outbound citations — all weighted positively. Increase originality or performance weights to better match your focus.</p>
+    </details>
+    <details>
+      <summary>Can I change the scoring rubric?</summary>
+      <p>Yes. Open <em>Options</em> in the extension, adjust weights, save, and rescore any page.</p>
+    </details>
+    <details>
+      <summary>What is the “Noise” penalty?</summary>
+      <p>It’s a deduction for ad-heavy pages, tracking scripts, or excessive code weight. Cleaner pages earn higher Signal Scores.</p>
+    </details>
+  </section>
+
+  <footer>
+    © 2025 Intersignal · Built for clarity · <a href="https://github.com/intersignal-site">GitHub</a>
+  </footer>
 </body>
 </html>
