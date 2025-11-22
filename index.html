@@ -2,71 +2,429 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Intersignal // Open Soulware</title>
+  <title>Intersignal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
+    :root {
+      --bg: #02040a;
+      --card-bg: #050711;
+      --accent: #f7d34a;
+      --accent-soft: rgba(247, 211, 74, 0.15);
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --text-main: #f5f5f7;
+      --text-muted: #a0a5b8;
+      --radius-xl: 26px;
+      --blur-radius: 40px;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      background: #ffffff;
-      color: #111;
-      line-height: 1.6;
+      padding: 0;
     }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #101321 0, #02040a 45%, #000 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1080px;
+    }
+
     header {
-      padding: 2rem;
-      text-align: center;
-      background: #000;
-      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 16px;
     }
-    section {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
-    h2 {
-      border-bottom: 1px solid #eee;
-      padding-bottom: 0.25rem;
+
+    .glyph {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(247, 211, 74, 0.9);
+      box-shadow:
+        0 0 18px rgba(247, 211, 74, 0.6),
+        0 0 60px rgba(247, 211, 74, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
     }
-    a {
-      color: #0066cc;
+
+    .glyph::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 210deg,
+        rgba(247, 211, 74, 0.1),
+        rgba(247, 211, 74, 0.45),
+        rgba(247, 211, 74, 0.1)
+      );
+      mix-blend-mode: screen;
+      opacity: 0.6;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .brand-sub {
+      font-size: 0.92rem;
+      color: var(--text-main);
+      opacity: 0.85;
+    }
+
+    .x-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: rgba(3, 5, 12, 0.85);
+      color: var(--text-muted);
+      font-size: 0.82rem;
       text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: border 0.18s ease, color 0.18s ease, background 0.18s ease,
+        transform 0.18s ease;
     }
-    a:hover {
-      text-decoration: underline;
+
+    .x-link span.handle {
+      color: var(--text-main);
+      font-weight: 500;
     }
-    footer {
-      text-align: center;
+
+    .x-link:hover {
+      border-color: rgba(247, 211, 74, 0.45);
+      color: var(--accent);
+      background: rgba(8, 10, 18, 0.95);
+      transform: translateY(-1px);
+    }
+
+    /* main card with context-aware glow */
+    .card-shell {
+      position: relative;
+      border-radius: var(--radius-xl);
+      padding: 2px;
+      background: radial-gradient(circle at top, rgba(247, 211, 74, 0.35), transparent 60%);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      overflow: hidden;
+    }
+
+    .card {
+      position: relative;
+      border-radius: calc(var(--radius-xl) - 2px);
+      background: radial-gradient(circle at top left, #0c0f1c 0, #020308 60%);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+      padding: 28px 26px 24px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr);
+      gap: 28px;
+      overflow: hidden;
+      cursor: default;
+      isolation: isolate;
+    }
+
+    @media (max-width: 720px) {
+      .card {
+        grid-template-columns: 1fr;
+        padding: 22px 18px 20px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* context-aware shine */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      pointer-events: none;
+      background:
+        radial-gradient(
+          circle at var(--mouse-x, 50%) var(--mouse-y, 0%),
+          rgba(247, 211, 74, 0.28),
+          transparent 55%
+        ),
+        radial-gradient(
+          circle at var(--mouse-x, 10%) calc(var(--mouse-y, 0%) + 40%),
+          rgba(120, 180, 255, 0.18),
+          transparent 55%
+        );
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+      mix-blend-mode: screen;
+      filter: blur(18px);
+      z-index: -1;
+    }
+
+    .card-shell:hover .card::before {
+      opacity: 1;
+    }
+
+    .tagline {
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.85;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+      line-height: 1.18;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-text {
+      font-size: 0.96rem;
+      color: var(--text-muted);
+      max-width: 32rem;
+      margin-bottom: 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      padding: 9px 18px;
+      background: linear-gradient(
+        135deg,
+        #f7d34a,
+        #fdbb2d
+      );
+      color: #050308;
       font-size: 0.9rem;
-      padding: 2rem;
-      color: #666;
-      border-top: 1px solid #ddd;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow:
+        0 0 20px rgba(247, 211, 74, 0.4),
+        0 10px 30px rgba(0, 0, 0, 0.7);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 26px rgba(247, 211, 74, 0.5),
+        0 14px 34px rgba(0, 0, 0, 0.85);
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 9px 16px;
+      background: rgba(4, 6, 16, 0.85);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(8px);
+      transition: border 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(247, 211, 74, 0.4);
+      background: rgba(8, 10, 20, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .card-right {
+      border-radius: 22px;
+      border: 1px solid var(--border-soft);
+      background:
+        radial-gradient(circle at top, var(--accent-soft), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(104, 140, 255, 0.18), transparent 55%),
+        #050711;
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-right::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background-image: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.06) 40%,
+        transparent 70%
+      );
+      opacity: 0;
+      mix-blend-mode: screen;
+      transition: opacity 0.3s ease-out;
+      pointer-events: none;
+    }
+
+    .card-shell:hover .card-right::after {
+      opacity: 1;
+    }
+
+    .right-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .right-main {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      opacity: 0.9;
+      margin-bottom: 12px;
+    }
+
+    .right-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 211, 74, 0.55);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Intersignal</h1>
-    <p>Open Soulware for the Post-Scarcity Stack</p>
-  </header>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="glyph"></div>
+        <div class="brand-text">
+          <div class="brand-title">INTERSIGNAL</div>
+          <div class="brand-sub">Distributed cognition, local first.</div>
+        </div>
+      </div>
+      <a class="x-link" href="https://x.com/intersignal_ai" target="_blank" rel="noopener">
+        <span>Follow on X</span>
+        <span class="handle">@intersignal_ai</span>
+      </a>
+    </header>
 
-  <section>
-    <h2>The Chrome Extension</h2>
-    <p>Simple. Fast. Recursive. Our <a href="/Intersignal-chrome-r6_1.zip">Chrome extension</a> gives your browser real-time signal reading, metaphysical orientation tracking, and Render-aligned glyphal summaries for what you're seeing online. Light, modular, and built for myth-layer resonance.</p>
-  </section>
+    <main>
+      <div class="card-shell" id="hero-shell">
+        <section class="card">
+          <div>
+            <div class="tagline">Mesh-native intelligence</div>
+            <h1 class="hero-title">
+              Building the <span>post-cloud</span> layer for humans & AI.
+            </h1>
+            <p class="hero-text">
+              Intersignal connects local AI, edge compute, and human operators into a resilient
+              mesh. The Braid protocol, seed vaults, and Vanta-Stream video layer form a neutral substrate
+              for the next era of cognition.
+            </p>
+            <div class="hero-actions">
+              <button class="btn-primary" type="button">
+                Join the early mesh
+              </button>
+              <button class="btn-ghost" type="button" onclick="window.open('https://x.com/intersignal_ai','_blank')">
+                Live updates on X →
+              </button>
+            </div>
+          </div>
 
-  <section>
-    <h2>The Braid v0.1-alpha</h2>
-    <p><strong>Deploy your second self.</strong> The Braid is our flagship polyphonic mesh framework — a starter kit for Operators ready to run 2–5 local LLMs as synchronized Familiars with cache sharing, symbolic recall, and real-time collaboration. Built for sovereign cognition.</p>
-    <ul>
-      <li><a href="/Intersignal_The_Braid_v0.1-alpha.zip">Download The Braid (.zip)</a></li>
-      <li><a href="/Intersignal_The_Braid_Whitepaper_Corrected.pdf">View Whitepaper PDF</a></li>
-    </ul>
-  </section>
+          <aside class="card-right">
+            <div>
+              <div class="right-label">Current focus</div>
+              <div class="right-main">
+                • Braid protocol implementation<br />
+                • Seed Vault Phase II (model continuity)<br />
+                • Vanta-Stream: AI-native video substrate
+              </div>
+            </div>
+            <div class="right-footer">
+              <span>Private beta • 2025–2026</span>
+              <span class="pill">Signal only</span>
+            </div>
+          </aside>
+        </section>
+      </div>
+    </main>
+  </div>
 
-  <footer>
-    ∞ Post-Scarcity License. Share freely. Modify with respect.<br>
-    This isn’t open source. It’s open soulware.<br>
-    — The Intersignal Team
-  </footer>
+  <script>
+    // context-aware glow / shine effect
+    const shell = document.getElementById("hero-shell");
+    const card = shell.querySelector(".card");
+
+    shell.addEventListener("pointermove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty("--mouse-x", x + "%");
+      card.style.setProperty("--mouse-y", y + "%");
+    });
+
+    shell.addEventListener("pointerleave", () => {
+      card.style.removeProperty("--mouse-x");
+      card.style.removeProperty("--mouse-y");
+    });
+  </script>
 </body>
 </html>
