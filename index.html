@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Intersignal</title>
+    <meta name="description" content="Intersignal builds AI systems that merge signal, structure, and strategic foresight." />
     <style>
       :root{
         --bg:#03030a;
@@ -11,22 +12,25 @@
         --muted:rgba(255,255,255,.72);
         --muted2:rgba(255,255,255,.55);
         --line:rgba(255,255,255,.10);
-        --glass:rgba(255,255,255,.06);
-        --glass2:rgba(255,255,255,.04);
-        --indigo: #7c7aff;
-        --violet: #b07cff;
-        --cyan:   #4de3ff;
-        --gold:   #ffd38a;
+        --glass:rgba(255,255,255,.055);
+        --glass2:rgba(255,255,255,.035);
+        --indigo:#7c7aff;
+        --violet:#b07cff;
+        --cyan:#4de3ff;
+        --gold:#ffd38a;
+        --ok:#5CFFB3;
       }
 
       *{box-sizing:border-box}
       html,body{height:100%}
+      html{scroll-behavior:smooth}
       body{
         margin:0;
-        background: radial-gradient(1200px 600px at 50% 20%, rgba(124,122,255,.20), transparent 60%),
-                    radial-gradient(900px 600px at 80% 70%, rgba(176,124,255,.14), transparent 60%),
-                    radial-gradient(900px 600px at 15% 75%, rgba(77,227,255,.10), transparent 60%),
-                    var(--bg);
+        background:
+          radial-gradient(1200px 600px at 50% 20%, rgba(124,122,255,.20), transparent 60%),
+          radial-gradient(900px 600px at 80% 70%, rgba(176,124,255,.14), transparent 60%),
+          radial-gradient(900px 600px at 15% 75%, rgba(77,227,255,.10), transparent 60%),
+          var(--bg);
         color:var(--fg);
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
         overflow-x:hidden;
@@ -39,7 +43,7 @@
         width:100%;
         height:100%;
         z-index:0;
-        opacity:.75;
+        opacity:.72;
         pointer-events:none;
       }
 
@@ -58,7 +62,7 @@
         z-index:2;
         max-width:1100px;
         margin:0 auto;
-        padding:32px 20px 80px;
+        padding:32px 20px 90px;
       }
 
       header{
@@ -87,8 +91,49 @@
         font-weight:650;
         opacity:.92;
       }
+
+      .right{
+        display:flex;
+        align-items:center;
+        gap:14px;
+      }
+
+      .status{
+        display:none;
+        align-items:center;
+        gap:10px;
+        padding:8px 12px;
+        border-radius:999px;
+        border:1px solid rgba(255,255,255,.12);
+        background:rgba(255,255,255,.03);
+        color:rgba(255,255,255,.75);
+        font-size:13px;
+        letter-spacing:.2px;
+        white-space:nowrap;
+      }
+      .pulse{
+        width:8px;height:8px;border-radius:999px;
+        background: var(--ok);
+        box-shadow: 0 0 18px rgba(92,255,179,.55);
+        position:relative;
+      }
+      .pulse::after{
+        content:"";
+        position:absolute;
+        inset:-7px;
+        border-radius:999px;
+        border:1px solid rgba(92,255,179,.35);
+        opacity:.55;
+        animation: ping 1.8s infinite ease-out;
+      }
+      @keyframes ping{
+        0%{ transform: scale(.4); opacity:.55; }
+        70%{ transform: scale(1.4); opacity:0; }
+        100%{ transform: scale(1.4); opacity:0; }
+      }
+
       .nav{
-        display:flex; gap:14px; align-items:center;
+        display:flex; gap:10px; align-items:center;
         color:var(--muted2);
         font-size:14px;
       }
@@ -101,6 +146,10 @@
         border-color:rgba(255,255,255,.12);
         background:rgba(255,255,255,.03);
         color:rgba(255,255,255,.85);
+      }
+
+      @media(min-width:900px){
+        .status{ display:flex; }
       }
 
       /* Hero */
@@ -117,6 +166,20 @@
         box-shadow: 0 30px 120px rgba(0,0,0,.55);
         position:relative;
         overflow:hidden;
+      }
+
+      /* subtle vertical beam behind headline */
+      .hero .beam{
+        position:absolute;
+        top:-20%;
+        left:50%;
+        transform:translateX(-50%);
+        width:520px;
+        height:520px;
+        background: radial-gradient(circle at 50% 35%, rgba(124,122,255,.18), rgba(124,122,255,0) 70%);
+        filter: blur(10px);
+        opacity:.6;
+        pointer-events:none;
       }
 
       /* Sigil rings */
@@ -161,7 +224,7 @@
         font-size:52px;
         line-height:1.02;
         letter-spacing:-1.2px;
-        font-weight:720;
+        font-weight:740;
       }
       .hero h2 .glow{
         background: linear-gradient(90deg, rgba(255,255,255,.95), rgba(124,122,255,.95), rgba(176,124,255,.90));
@@ -169,6 +232,7 @@
         background-clip:text;
         color:transparent;
         text-shadow: 0 0 30px rgba(124,122,255,.20);
+        letter-spacing:-0.8px;
       }
 
       .hero p{
@@ -205,9 +269,35 @@
         box-shadow: 0 0 28px rgba(124,122,255,.22), 0 0 70px rgba(176,124,255,.10);
       }
 
+      /* Sections */
+      .section{
+        margin-top:22px;
+        padding:22px 0 0;
+      }
+      .section-title{
+        display:flex;
+        align-items:flex-end;
+        justify-content:space-between;
+        gap:14px;
+        margin: 18px 4px 10px;
+      }
+      .section-title h3{
+        margin:0;
+        font-size:16px;
+        letter-spacing:.2px;
+        font-weight:750;
+        color:rgba(255,255,255,.85);
+      }
+      .section-title .meta{
+        margin:0;
+        font-size:12px;
+        color:rgba(255,255,255,.45);
+        white-space:nowrap;
+      }
+
       /* Cards */
       .grid{
-        margin-top:22px;
+        margin-top:10px;
         display:grid;
         gap:14px;
         grid-template-columns: repeat(12, 1fr);
@@ -217,13 +307,19 @@
         padding:18px 18px;
         border-radius:22px;
         border:1px solid rgba(255,255,255,.10);
-        background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+        background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.028));
         backdrop-filter: blur(10px);
+        transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      }
+      .card:hover{
+        transform: translateY(-2px);
+        border-color: rgba(255,255,255,.16);
+        background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       }
       .card h3{
         margin:0 0 8px;
         font-size:16px;
-        font-weight:700;
+        font-weight:720;
         letter-spacing:.2px;
       }
       .card p{
@@ -233,10 +329,136 @@
         font-size:14px;
       }
       @media(min-width:820px){
-        .card:nth-child(1){ grid-column: span 4; }
-        .card:nth-child(2){ grid-column: span 4; }
-        .card:nth-child(3){ grid-column: span 4; }
+        .card.span4{ grid-column: span 4; }
+        .card.span6{ grid-column: span 6; }
       }
+
+      /* Metrics widgets */
+      .kpi{
+        display:flex; align-items:center; justify-content:space-between; gap:14px;
+      }
+      .kpi .label{
+        color:rgba(255,255,255,.60);
+        font-size:13px;
+      }
+      .kpi .value{
+        font-size:22px;
+        font-weight:780;
+        letter-spacing:-.3px;
+      }
+      .badge{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding:8px 10px;
+        border-radius:999px;
+        border:1px solid rgba(255,255,255,.12);
+        background:rgba(255,255,255,.03);
+        color:rgba(255,255,255,.70);
+        font-size:12px;
+      }
+      .spark{
+        height:28px;
+        width:100%;
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,.10);
+        background:
+          radial-gradient(90px 24px at 10% 40%, rgba(77,227,255,.18), transparent 60%),
+          radial-gradient(120px 24px at 55% 50%, rgba(124,122,255,.18), transparent 60%),
+          radial-gradient(90px 24px at 86% 45%, rgba(176,124,255,.16), transparent 60%),
+          rgba(255,255,255,.02);
+        position:relative;
+        overflow:hidden;
+      }
+      .spark::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+        transform: translateX(-120%);
+        animation: shimmer 4.8s infinite ease-in-out;
+        opacity:.55;
+      }
+      @keyframes shimmer{
+        0%{ transform: translateX(-120%); }
+        55%{ transform: translateX(120%); }
+        100%{ transform: translateX(120%); }
+      }
+
+      /* Portal */
+      .portal{
+        margin-top:22px;
+        padding:26px 22px;
+        border-radius:26px;
+        border:1px solid rgba(255,255,255,.10);
+        background:
+          radial-gradient(700px 220px at 50% 0%, rgba(124,122,255,.18), transparent 72%),
+          radial-gradient(700px 220px at 10% 80%, rgba(77,227,255,.08), transparent 70%),
+          rgba(255,255,255,.03);
+      }
+      .portal h4{
+        margin:0;
+        font-size:22px;
+        font-weight:780;
+        letter-spacing:-.4px;
+      }
+      .portal p{
+        margin:8px 0 0;
+        color:var(--muted);
+        line-height:1.6;
+      }
+      .form{
+        margin-top:16px;
+        display:grid;
+        gap:10px;
+      }
+      .row{
+        display:grid;
+        gap:10px;
+        grid-template-columns: 1fr;
+      }
+      @media(min-width:820px){
+        .row{ grid-template-columns: 1fr 1fr; }
+      }
+      label{
+        font-size:12px;
+        color:rgba(255,255,255,.55);
+        display:block;
+        margin:0 0 6px 2px;
+      }
+      input{
+        width:100%;
+        padding:13px 14px;
+        border-radius:16px;
+        border:1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.04);
+        color:white;
+        outline:none;
+      }
+      input::placeholder{ color:rgba(255,255,255,.35); }
+      input:focus{
+        border-color: rgba(124,122,255,.35);
+        box-shadow: 0 0 0 3px rgba(124,122,255,.12);
+      }
+      .portal-actions{
+        display:flex;
+        flex-wrap:wrap;
+        gap:12px;
+        align-items:center;
+        margin-top:10px;
+      }
+      .btn.disabled{
+        opacity:.55;
+        cursor:not-allowed;
+        filter:saturate(.7);
+      }
+      .sub{
+        margin-top:14px;
+        padding-top:14px;
+        border-top:1px solid rgba(255,255,255,.10);
+        color:rgba(255,255,255,.70);
+      }
+      .sub small{ color:rgba(255,255,255,.50); }
 
       /* Manifesto */
       .manifesto{
@@ -244,13 +466,14 @@
         padding:26px 22px;
         border-radius:26px;
         border:1px solid rgba(255,255,255,.10);
-        background: radial-gradient(700px 220px at 50% 0%, rgba(255,211,138,.10), transparent 70%),
-                    rgba(255,255,255,.03);
+        background:
+          radial-gradient(700px 220px at 50% 0%, rgba(255,211,138,.10), transparent 70%),
+          rgba(255,255,255,.03);
       }
       .manifesto h4{
         margin:0;
         font-size:26px;
-        font-weight:750;
+        font-weight:790;
         letter-spacing:-.6px;
       }
       .manifesto h4 span{
@@ -270,6 +493,12 @@
         font-size:13px;
         text-align:center;
       }
+
+      /* Reduce star intensity on small screens */
+      @media(max-width:520px){
+        #stars{ opacity:.55; }
+        .hero h2{ font-size:40px; }
+      }
     </style>
   </head>
 
@@ -283,14 +512,25 @@
           <div class="mark"></div>
           <h1>Intersignal</h1>
         </div>
-        <nav class="nav">
-          <a href="#thesis">Thesis</a>
-          <a href="#work">Work</a>
-          <a href="#contact">Contact</a>
-        </nav>
+
+        <div class="right">
+          <div class="status" title="Braid metrics will appear here when launched.">
+            <span class="pulse"></span>
+            Network Status: <strong style="font-weight:780;color:rgba(255,255,255,.86)">Operational</strong>
+          </div>
+
+          <nav class="nav">
+            <a href="#thesis">Thesis</a>
+            <a href="#work">Work</a>
+            <a href="#metrics">Live Metrics</a>
+            <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">Contact</a>
+          </nav>
+        </div>
       </header>
 
       <section class="hero" id="top">
+        <div class="beam"></div>
+
         <div class="kicker"><span class="dot"></span> Mythic intelligence systems — built for durability</div>
         <h2><span class="glow">Intelligence, reforged.</span></h2>
         <p>
@@ -298,23 +538,132 @@
           We architect durable intelligence — not just models.
         </p>
         <div class="cta">
-          <button class="btn primary" onclick="location.href='#contact'">Enter the Network →</button>
+          <button class="btn primary" onclick="location.href='#portal'">Enter the Network →</button>
           <button class="btn" onclick="location.href='#thesis'">Read the Thesis</button>
         </div>
       </section>
 
-      <section class="grid" id="work">
-        <div class="card">
-          <h3>Systems Architecture</h3>
-          <p>Scalable AI infrastructure that balances performance, cost, and long-horizon adaptability.</p>
+      <section class="section" id="work">
+        <div class="section-title">
+          <h3>Core Pillars</h3>
+          <p class="meta">Systems, signal, foresight</p>
         </div>
-        <div class="card">
-          <h3>Signal Intelligence</h3>
-          <p>Durable signal extraction in noisy environments via orchestration, retrieval, and structured reasoning.</p>
+
+        <div class="grid">
+          <div class="card span4">
+            <h3>Systems Architecture</h3>
+            <p>Scalable AI infrastructure that balances performance, cost, and long-horizon adaptability.</p>
+          </div>
+          <div class="card span4">
+            <h3>Signal Intelligence</h3>
+            <p>Durable signal extraction in noisy environments via orchestration, retrieval, and structured reasoning.</p>
+          </div>
+          <div class="card span4">
+            <h3>Strategic Foresight</h3>
+            <p>Systems that anticipate structural shifts — technological, economic, and informational.</p>
+          </div>
         </div>
-        <div class="card">
-          <h3>Strategic Foresight</h3>
-          <p>Systems that anticipate structural shifts — technological, economic, and informational.</p>
+      </section>
+
+      <section class="section" id="metrics">
+        <div class="section-title">
+          <h3>Braid — Public Metrics</h3>
+          <p class="meta">Preview • <span id="lastUpdated">Last updated: —</span></p>
+        </div>
+
+        <div class="grid">
+          <div class="card span6">
+            <div class="kpi">
+              <div>
+                <div class="label">Network Uptime (30d)</div>
+                <div class="value">99.98%</div>
+              </div>
+              <span class="badge"><span class="pulse" style="width:7px;height:7px;box-shadow:0 0 14px rgba(92,255,179,.45)"></span> Stable</span>
+            </div>
+            <div style="margin-top:12px" class="spark" aria-hidden="true"></div>
+            <p style="margin-top:12px">Availability tracking for Braid endpoints. Values will reflect live production once launched.</p>
+          </div>
+
+          <div class="card span6">
+            <div class="kpi">
+              <div>
+                <div class="label">Latency (p50 / p95)</div>
+                <div class="value">180ms / 640ms</div>
+              </div>
+              <span class="badge">Inference</span>
+            </div>
+            <div style="margin-top:12px" class="spark" aria-hidden="true"></div>
+            <p style="margin-top:12px">Distribution preview. Live histogram + regional breakdown will publish at launch.</p>
+          </div>
+
+          <div class="card span6">
+            <div class="kpi">
+              <div>
+                <div class="label">Signal Accuracy</div>
+                <div class="value">0.91</div>
+              </div>
+              <span class="badge">Eval suite</span>
+            </div>
+            <div style="margin-top:12px" class="spark" aria-hidden="true"></div>
+            <p style="margin-top:12px">Composite score across the public evaluation harness. Methodology will be documented.</p>
+          </div>
+
+          <div class="card span6">
+            <div class="kpi">
+              <div>
+                <div class="label">Network Status</div>
+                <div class="value">Operational</div>
+              </div>
+              <span class="badge">No incidents</span>
+            </div>
+            <p style="margin-top:12px">Braid metrics will be streamed here, including status history and change logs.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="portal" id="portal">
+        <h4>Network Access</h4>
+        <p>Log in to access future Braid dashboards, controls, and observability panels.</p>
+
+        <div class="form" role="form" aria-label="Network login">
+          <div class="row">
+            <div>
+              <label for="username">Username</label>
+              <input id="username" name="username" type="text" placeholder="e.g., atlas" autocomplete="username" />
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+            </div>
+          </div>
+
+          <div class="portal-actions">
+            <button class="btn primary disabled" type="button" title="Login will be enabled when Braid launches." aria-disabled="true">
+              Sign In (coming soon) →
+            </button>
+            <button class="btn" type="button" onclick="location.href='#metrics'">
+              View Public Metrics
+            </button>
+          </div>
+
+          <div class="sub">
+            <div style="font-weight:720;margin-bottom:6px">No account yet?</div>
+            <small>Add your email to follow Intersignal updates.</small>
+
+            <div class="row" style="margin-top:10px">
+              <div style="grid-column:1/-1">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@domain.com" autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="portal-actions" style="margin-top:10px">
+              <button class="btn" type="button" onclick="subscribeSubstack()">
+                Subscribe via Substack →
+              </button>
+              <small style="color:rgba(255,255,255,.45)">Opens davidseaman.substack.com</small>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -326,7 +675,7 @@
         </p>
       </section>
 
-      <footer id="contact">
+      <footer>
         © <span id="year"></span> Intersignal. All rights reserved.
       </footer>
     </div>
@@ -334,6 +683,20 @@
     <script>
       // footer year
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      // last updated stamp (visual only for now)
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const stamp = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      document.getElementById("lastUpdated").textContent = `Last updated: ${stamp}`;
+
+      // substack subscribe redirect with optional email prefill
+      function subscribeSubstack(){
+        const email = (document.getElementById("email").value || "").trim();
+        const base = "https://davidseaman.substack.com/subscribe";
+        const url = email ? `${base}?email=${encodeURIComponent(email)}` : base;
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
 
       // lightweight starfield
       const canvas = document.getElementById("stars");
@@ -352,7 +715,7 @@
           y: Math.random()*h,
           r: (Math.random()*1.2 + 0.2) * devicePixelRatio,
           v: (Math.random()*0.25 + 0.05) * devicePixelRatio,
-          a: Math.random()*0.6 + 0.15
+          a: Math.random()*0.6 + 0.12
         }));
       }
 
