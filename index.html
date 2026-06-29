@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INTERSIGNAL // The Blender Era & Sovereign AI</title>
+  <title>INTERSIGNAL // The Blender Era &amp; Sovereign AI</title>
   <style>
     :root {
       --bg: #07080c;
@@ -156,13 +156,87 @@
     }
 
     .flow-label {
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--text-bright);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .flow-sub {
       font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-size: 20px;
+      font-family: monospace;
+      line-height: 1;
+    }
+
+    /* Section Naming (Architectural Modules) */
+    .section-title {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+
+    .module-num {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+
+    .narrative-block {
+      margin-bottom: 60px;
+      padding-top: 40px;
+    }
+
+    .narrative-p {
+      font-size: 15px;
+      margin-bottom: 24px;
+      text-align: justify;
+    }
+
+    .quote-box {
+      border-left: 2px solid var(--accent);
+      padding-left: 20px;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--text-bright);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Turnkey Proof */
+    .node-specs {
+      background-color: #0c0e14;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 32px;
+      margin-bottom: 60px;
+    }
+
+    .node-specs h3 {
+      font-size: 16px;
       font-weight: 800;
       color: var(--text-bright);
+      margin: 0 0 16px 0;
       text-transform: uppercase;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
+      letter-spacing: 0.5px;
     }
 
     .spec-grid {
@@ -269,7 +343,7 @@
     .footer-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      gap: 40px;    
       align-items: flex-start;
     }
 
@@ -467,14 +541,13 @@
       <h1>
         INTELLIGENCE<br>
         WITHOUT<br>
-        CENTRALIZATION
-      </h1>
+        CENTRALIZATION</h1>
       
       <p class="manifesto-p">
-        Centralized AI clouds are fragile, heavily metered, and insecure by design. We build localized cognitive infrastructure that completely bypasses third-party servers. All things can now go in our blender—and should.
-      </p>
+        Centralized AI clouds are fragile, heavily metered, and insecure by design. We build localized cognitive infrastructure that completely bypasses third-party servers. All things can now go in our blender—and should.</p>
       <div class="cta-row">
-        <a href="https://drive.google.com/file/d/1BzlsKU70abX3msKO6KSV_lfswTJWq0iC/view?usp=drivesdk" class="btn btn-solid">Download Braid v0.1 Node</a>
+
+        <a href="https://drive.google.com/file/d/1QF4L36a1WFSw3y41vklEWQsAUNB_q3PK/view?usp=drivesdk" class="btn btn-solid">Download Braid v0.1 Node</a>
         <a href="#consulting" class="btn btn-outline">Request Sovereign Audit</a>
       </div>
     </section>
@@ -502,11 +575,9 @@
       <div class="module-num">MODULE_01</div>
       <div class="section-title">COGNITIVE COMPILATION</div>
       <p class="narrative-p">
-        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
-      </p>
+        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.</p>
       <p class="narrative-p">
-        Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.
-      </p>
+        Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.</p>
       
       <div class="quote-box">
         "All things can now go in our blender—and should. Intelligence doesn't need to reside in commercial servers; it is compiled, compressed, and synchronized locally at the physical network layer on your own terms."<br>
@@ -514,8 +585,7 @@
       </div>
 
       <p class="narrative-p">
-        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are serialized using Bincode and synchronized across a private local UDP mesh without dependence on external cloud infrastructure.
-      </p>
+        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are serialized using Bincode and synchronized across a private local UDP mesh without dependence on external cloud infrastructure.</p>
     </section>
 
     <!-- MODULE 02 -->
@@ -523,28 +593,23 @@
       <div class="module-num">MODULE_02</div>
       <div class="section-title">SOVEREIGN MESH</div>
       <p class="narrative-p">
-        We have built the physical evidence of this thesis. Braid v0.1 is a fully functional Turnkey Local Node wrapped in a minimal, high-integrity GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
-      </p>
+        We have built the physical evidence of this thesis. Braid v0.1 is a fully functional Turnkey Local Node wrapped in a minimal, high-integrity GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.</p>
 
       <div class="node-specs">
         <h3>Sovereign Node Specifications</h3>
         <div class="spec-grid">
           <div class="spec-item">
             <span class="spec-label">Network Layer</span>
-            Tokio asynchronous UDP transport with adaptive peer discovery and local mesh synchronization.
-          </div>
+            Tokio asynchronous UDP transport with adaptive peer discovery and local mesh synchronization.</div>
           <div class="spec-item">
             <span class="spec-label">IPC Interface</span>
-            Tauri (v1.5) and React/TypeScript desktop wrapper with zero background OS blocking.
-          </div>
+            Tauri (v1.5) and React/TypeScript desktop wrapper with zero background OS blocking.</div>
           <div class="spec-item">
             <span class="spec-label">Payload Format</span>
-            High-efficiency binary serialization (Bincode protocol) compressing ID, timestamp, seq, and raw floats.
-          </div>
+            High-efficiency binary serialization (Bincode protocol) compressing ID, timestamp, seq, and raw floats.</div>
           <div class="spec-item">
             <span class="spec-label">Visual Mapping</span>
-            Real-time latent-space activation heatmap for local state visualization.
-          </div>
+            Real-time latent-space activation heatmap for local state visualization.</div>
         </div>
       </div>
     </section>
@@ -552,13 +617,11 @@
     <!-- CONSULTING AUDIT -->
     <section id="consulting" class="consulting-manifesto">
       <div class="consulting-card">
-        <h2 class="consulting-title">Sovereign AI Consulting & Architecture</h2>
+        <h2 class="consulting-title">Sovereign AI Consulting &amp; Architecture</h2>
         <p class="narrative-p" style="font-size: 14px; margin-bottom: 16px;">
-          For high-net-worth individuals, family offices, and high-security enterprise teams, we provide bespoke, completely cloud-free AI architecture, local hardware procurement specifications, and air-gapped model fine-tuning.
-        </p>
+          For high-net-worth individuals, family offices, and high-security enterprise teams, we provide bespoke, completely cloud-free AI architecture, local hardware procurement specifications, and air-gapped model fine-tuning.</p>
         <p class="narrative-p" style="font-size: 14px; margin-bottom: 24px; color: var(--text-muted);">
-          Our team executes custom on-device RAG pipelines and secure OpSec audits to eliminate external dependency entirely. We accept a strictly limited number of qualified engagements.
-        </p>
+          Our team executes custom on-device RAG pipelines and secure OpSec audits to eliminate external dependency entirely. We accept a strictly limited number of qualified engagements.</p>
         <div style="margin-bottom: 20px;">
           <a href="https://docs.google.com/forms/d/130dJScVlblWDw6JKtmeOCTOTNKfGNIFTQ7k7TXyDoH8/viewform" class="btn btn-solid">Submit Client Intake Form</a>
         </div>
@@ -579,16 +642,14 @@
         <div class="status-line"><span>DEPENDENCIES</span><span class="status-dots">..</span><span class="status-val">NONE</span></div>
         <div class="status-line"><span>CLOUD</span><span class="status-dots">.........</span><span class="status-val" style="color: var(--text-muted);">DISCONNECTED</span></div>
       </div>
-      <div class="" style="color: var(--text-muted);">DISCONNECTED</span></div>
-      </div>
       <div class="footer-right">
         <strong style="color: var(--text-bright); text-transform: uppercase; letter-spacing: 1.5px;">INTERSIGNAL</strong><br>
-        <span>Decentralized AI Protocol Research & Local Systems Engineering</span><br>
+        <span>Decentralized AI Protocol Research &amp; Local Systems Engineering</span><br>
         <span>Florida Base: Fort Lauderdale, FL. Self-funded. Independent.</span><br>
-        <span style="margin-top: 10px; display: inline-block;">Press & Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a></span>
+        <span style="margin-top: 10px; display: inline-block;">Press &amp; Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a></span>
       </div>
     </div>
-  </footer>
+  </header>
 
   <!-- ANIMATED LAYERS -->
   <div class="signal-field">
