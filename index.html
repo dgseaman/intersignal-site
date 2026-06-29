@@ -1,741 +1,383 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Intersignal</title>
-    <meta name="description" content="Intersignal builds AI systems that merge signal, structure, and strategic foresight." />
-    <style>
-      :root{
-        --bg:#03030a;
-        --fg:#ffffff;
-        --muted:rgba(255,255,255,.72);
-        --muted2:rgba(255,255,255,.55);
-        --line:rgba(255,255,255,.10);
-        --glass:rgba(255,255,255,.055);
-        --glass2:rgba(255,255,255,.035);
-        --indigo:#7c7aff;
-        --violet:#b07cff;
-        --cyan:#4de3ff;
-        --gold:#ffd38a;
-        --ok:#5CFFB3;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INTERSIGNAL // The Blender Era & Sovereign AI</title>
+  <style>
+    :root {
+      --bg: #07080c;
+      --accent: #39dbdb;
+      --text: #c5cbd3;
+      --text-bright: #ffffff;
+      --text-muted: #5c6475;
+      --border: #141722;
+    }
 
-      *{box-sizing:border-box}
-      html,body{height:100%}
-      html{scroll-behavior:smooth}
-      body{
-        margin:0;
-        background:
-          radial-gradient(1200px 600px at 50% 20%, rgba(124,122,255,.20), transparent 60%),
-          radial-gradient(900px 600px at 80% 70%, rgba(176,124,255,.14), transparent 60%),
-          radial-gradient(900px 600px at 15% 75%, rgba(77,227,255,.10), transparent 60%),
-          var(--bg);
-        color:var(--fg);
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-        overflow-x:hidden;
-      }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.72;
+      -webkit-font-smoothing: antialiased;
+    }
 
-      /* Star canvas */
-      #stars{
-        position:fixed;
-        inset:0;
-        width:100%;
-        height:100%;
-        z-index:0;
-        opacity:.72;
-        pointer-events:none;
-      }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+      box-sizing: border-box;
+    }
 
-      /* Soft grain */
-      .grain{
-        position:fixed; inset:-40%;
-        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-        opacity:.07;
-        z-index:1;
-        pointer-events:none;
-        transform: rotate(7deg);
-      }
+    /* Minimal Header */
+    header {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
 
-      .wrap{
-        position:relative;
-        z-index:2;
-        max-width:1100px;
-        margin:0 auto;
-        padding:32px 20px 90px;
-      }
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-      header{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap:16px;
-        padding:10px 2px;
-      }
-      .brand{
-        display:flex; align-items:center; gap:12px;
-        letter-spacing:.3px;
-      }
-      .mark{
-        width:34px;height:34px;border-radius:14px;
-        background:
-          radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 55%),
-          radial-gradient(circle at 70% 70%, rgba(77,227,255,.18), transparent 60%),
-          linear-gradient(135deg, rgba(124,122,255,.85), rgba(176,124,255,.75));
-        box-shadow: 0 0 25px rgba(124,122,255,.25), 0 0 55px rgba(176,124,255,.12);
-        border:1px solid rgba(255,255,255,.14);
-      }
-      .brand h1{
-        margin:0;
-        font-size:16px;
-        font-weight:650;
-        opacity:.92;
-      }
+    .logo {
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--text-bright);
+      text-decoration: none;
+    }
 
-      .right{
-        display:flex;
-        align-items:center;
-        gap:14px;
-      }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-left: 20px;
+      transition: color 0.15s;
+    }
 
-      .status{
-        display:none;
-        align-items:center;
-        gap:10px;
-        padding:8px 12px;
-        border-radius:999px;
-        border:1px solid rgba(255,255,255,.12);
-        background:rgba(255,255,255,.03);
-        color:rgba(255,255,255,.75);
-        font-size:13px;
-        letter-spacing:.2px;
-        white-space:nowrap;
-      }
-      .pulse{
-        width:8px;height:8px;border-radius:999px;
-        background: var(--ok);
-        box-shadow: 0 0 18px rgba(92,255,179,.55);
-        position:relative;
-      }
-      .pulse::after{
-        content:"";
-        position:absolute;
-        inset:-7px;
-        border-radius:999px;
-        border:1px solid rgba(92,255,179,.35);
-        opacity:.55;
-        animation: ping 1.8s infinite ease-out;
-      }
-      @keyframes ping{
-        0%{ transform: scale(.4); opacity:.55; }
-        70%{ transform: scale(1.4); opacity:0; }
-        100%{ transform: scale(1.4); opacity:0; }
-      }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
 
-      .nav{
-        display:flex; gap:10px; align-items:center;
-        color:var(--muted2);
-        font-size:14px;
-      }
-      .nav a{
-        color:inherit; text-decoration:none;
-        padding:10px 12px; border-radius:14px;
-        border:1px solid transparent;
-      }
-      .nav a:hover{
-        border-color:rgba(255,255,255,.12);
-        background:rgba(255,255,255,.03);
-        color:rgba(255,255,255,.85);
-      }
+    /* Manifesto Hero */
+    .manifesto-hero {
+      padding: 80px 0 60px 0;
+    }
 
-      @media(min-width:900px){
-        .status{ display:flex; }
-      }
+    .badge {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
 
-      /* Hero */
-      .hero{
-        margin-top:56px;
-        padding:54px 22px;
-        border-radius:28px;
-        border:1px solid rgba(255,255,255,.10);
-        background:
-          radial-gradient(700px 260px at 50% 0%, rgba(124,122,255,.24), transparent 70%),
-          radial-gradient(700px 260px at 80% 40%, rgba(77,227,255,.10), transparent 70%),
-          radial-gradient(700px 260px at 20% 70%, rgba(176,124,255,.14), transparent 70%),
-          rgba(255,255,255,.03);
-        box-shadow: 0 30px 120px rgba(0,0,0,.55);
-        position:relative;
-        overflow:hidden;
-      }
+    h1 {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin: 0 0 24px 0;
+    }
 
-      /* subtle vertical beam behind headline */
-      .hero .beam{
-        position:absolute;
-        top:-20%;
-        left:50%;
-        transform:translateX(-50%);
-        width:520px;
-        height:520px;
-        background: radial-gradient(circle at 50% 35%, rgba(124,122,255,.18), rgba(124,122,255,0) 70%);
-        filter: blur(10px);
-        opacity:.6;
-        pointer-events:none;
-      }
+    .manifesto-p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 40px;
+    }
 
-      /* Sigil rings */
-      .hero:before, .hero:after{
-        content:"";
-        position:absolute;
-        width:560px; height:560px;
-        border-radius:50%;
-        border:1px solid rgba(255,255,255,.10);
-        top:-360px; left:50%;
-        transform:translateX(-50%);
-        box-shadow: 0 0 0 1px rgba(124,122,255,.08) inset;
-        opacity:.55;
-        filter: blur(.2px);
-      }
-      .hero:after{
-        width:720px;height:720px; top:-440px;
-        border-color:rgba(255,255,255,.07);
-        opacity:.35;
-      }
+    /* The Blender Narrative Section */
+    .section-title {
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
 
-      .kicker{
-        display:inline-flex;
-        align-items:center;
-        gap:10px;
-        padding:10px 14px;
-        border-radius:999px;
-        border:1px solid rgba(255,255,255,.12);
-        background:rgba(255,255,255,.04);
-        color:rgba(255,255,255,.78);
-        font-size:13px;
-        letter-spacing:.2px;
-      }
-      .dot{
-        width:8px;height:8px;border-radius:99px;
-        background: linear-gradient(135deg, var(--cyan), var(--indigo));
-        box-shadow: 0 0 18px rgba(77,227,255,.55);
-      }
+    .narrative-block {
+      margin-bottom: 60px;
+    }
 
-      .hero h2{
-        margin:18px 0 0;
-        font-size:52px;
-        line-height:1.02;
-        letter-spacing:-1.2px;
-        font-weight:740;
-      }
-      .hero h2 .glow{
-        background: linear-gradient(90deg, rgba(255,255,255,.95), rgba(124,122,255,.95), rgba(176,124,255,.90));
-        -webkit-background-clip:text;
-        background-clip:text;
-        color:transparent;
-        text-shadow: 0 0 30px rgba(124,122,255,.20);
-        letter-spacing:-0.8px;
-      }
+    .narrative-p {
+      font-size: 15px;
+      margin-bottom: 24px;
+      text-align: justify;
+    }
 
-      .hero p{
-        margin:18px auto 0;
-        max-width:760px;
-        font-size:18px;
-        line-height:1.55;
-        color:var(--muted);
-      }
+    .quote-box {
+      border-left: 2px solid var(--accent);
+      padding-left: 20px;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--text-bright);
+      font-size: 16px;
+      line-height: 1.6;
+    }
 
-      .cta{
-        margin-top:26px;
-        display:flex;
-        justify-content:center;
-        gap:14px;
-        flex-wrap:wrap;
-      }
-      .btn{
-        cursor:pointer;
-        border-radius:18px;
-        padding:14px 18px;
-        font-size:15px;
-        font-weight:650;
-        letter-spacing:.2px;
-        border:1px solid rgba(255,255,255,.12);
-        background:rgba(255,255,255,.06);
-        color:white;
-        transition: transform .15s ease, background .15s ease, border-color .15s ease;
-      }
-      .btn:hover{ transform: translateY(-1px); border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.08); }
-      .btn.primary{
-        border-color:rgba(124,122,255,.35);
-        background: linear-gradient(135deg, rgba(124,122,255,.95), rgba(176,124,255,.82));
-        box-shadow: 0 0 28px rgba(124,122,255,.22), 0 0 70px rgba(176,124,255,.10);
-      }
+    /* Turnkey Proof */
+    .node-specs {
+      background-color: #0c0e14;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 32px;
+      margin-bottom: 60px;
+    }
 
-      /* Sections */
-      .section{
-        margin-top:22px;
-        padding:22px 0 0;
-      }
-      .section-title{
-        display:flex;
-        align-items:flex-end;
-        justify-content:space-between;
-        gap:14px;
-        margin: 18px 4px 10px;
-      }
-      .section-title h3{
-        margin:0;
-        font-size:16px;
-        letter-spacing:.2px;
-        font-weight:750;
-        color:rgba(255,255,255,.85);
-      }
-      .section-title .meta{
-        margin:0;
-        font-size:12px;
-        color:rgba(255,255,255,.45);
-        white-space:nowrap;
-      }
+    .node-specs h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-bright);
+      margin: 0 0 16px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-      /* Cards */
-      .grid{
-        margin-top:10px;
-        display:grid;
-        gap:14px;
-        grid-template-columns: repeat(12, 1fr);
-      }
-      .card{
-        grid-column: span 12;
-        padding:18px 18px;
-        border-radius:22px;
-        border:1px solid rgba(255,255,255,.10);
-        background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.028));
-        backdrop-filter: blur(10px);
-        transition: transform .18s ease, border-color .18s ease, background .18s ease;
-      }
-      .card:hover{
-        transform: translateY(-2px);
-        border-color: rgba(255,255,255,.16);
-        background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      }
-      .card h3{
-        margin:0 0 8px;
-        font-size:16px;
-        font-weight:720;
-        letter-spacing:.2px;
-      }
-      .card p{
-        margin:0;
-        color:var(--muted2);
-        line-height:1.55;
-        font-size:14px;
-      }
-      @media(min-width:820px){
-        .card.span4{ grid-column: span 4; }
-        .card.span6{ grid-column: span 6; }
-      }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
 
-      /* Metrics widgets */
-      .kpi{
-        display:flex; align-items:center; justify-content:space-between; gap:14px;
-      }
-      .kpi .label{
-        color:rgba(255,255,255,.60);
-        font-size:13px;
-      }
-      .kpi .value{
-        font-size:22px;
-        font-weight:780;
-        letter-spacing:-.3px;
-      }
-      .badge{
-        display:inline-flex;
-        align-items:center;
-        gap:8px;
-        padding:8px 10px;
-        border-radius:999px;
-        border:1px solid rgba(255,255,255,.12);
-        background:rgba(255,255,255,.03);
-        color:rgba(255,255,255,.70);
-        font-size:12px;
-      }
-      .spark{
-        height:28px;
-        width:100%;
-        border-radius:14px;
-        border:1px solid rgba(255,255,255,.10);
-        background:
-          radial-gradient(90px 24px at 10% 40%, rgba(77,227,255,.18), transparent 60%),
-          radial-gradient(120px 24px at 55% 50%, rgba(124,122,255,.18), transparent 60%),
-          radial-gradient(90px 24px at 86% 45%, rgba(176,124,255,.16), transparent 60%),
-          rgba(255,255,255,.02);
-        position:relative;
-        overflow:hidden;
-      }
-      .spark::after{
-        content:"";
-        position:absolute;
-        inset:0;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
-        transform: translateX(-120%);
-        animation: shimmer 4.8s infinite ease-in-out;
-        opacity:.55;
-      }
-      @keyframes shimmer{
-        0%{ transform: translateX(-120%); }
-        55%{ transform: translateX(120%); }
-        100%{ transform: translateX(120%); }
-      }
+    .spec-item {
+      font-size: 13px;
+    }
 
-      /* Portal */
-      .portal{
-        margin-top:22px;
-        padding:26px 22px;
-        border-radius:26px;
-        border:1px solid rgba(255,255,255,.10);
-        background:
-          radial-gradient(700px 220px at 50% 0%, rgba(124,122,255,.18), transparent 72%),
-          radial-gradient(700px 220px at 10% 80%, rgba(77,227,255,.08), transparent 70%),
-          rgba(255,255,255,.03);
-      }
-      .portal h4{
-        margin:0;
-        font-size:22px;
-        font-weight:780;
-        letter-spacing:-.4px;
-      }
-      .portal p{
-        margin:8px 0 0;
-        color:var(--muted);
-        line-height:1.6;
-      }
-      .form{
-        margin-top:16px;
-        display:grid;
-        gap:10px;
-      }
-      .row{
-        display:grid;
-        gap:10px;
-        grid-template-columns: 1fr;
-      }
-      @media(min-width:820px){
-        .row{ grid-template-columns: 1fr 1fr; }
-      }
-      label{
-        font-size:12px;
-        color:rgba(255,255,255,.55);
-        display:block;
-        margin:0 0 6px 2px;
-      }
-      input{
-        width:100%;
-        padding:13px 14px;
-        border-radius:16px;
-        border:1px solid rgba(255,255,255,.12);
-        background: rgba(255,255,255,.04);
-        color:white;
-        outline:none;
-      }
-      input::placeholder{ color:rgba(255,255,255,.35); }
-      input:focus{
-        border-color: rgba(124,122,255,.35);
-        box-shadow: 0 0 0 3px rgba(124,122,255,.12);
-      }
-      .portal-actions{
-        display:flex;
-        flex-wrap:wrap;
-        gap:12px;
-        align-items:center;
-        margin-top:10px;
-      }
-      .btn.disabled{
-        opacity:.55;
-        cursor:not-allowed;
-        filter:saturate(.7);
-      }
-      .sub{
-        margin-top:14px;
-        padding-top:14px;
-        border-top:1px solid rgba(255,255,255,.10);
-        color:rgba(255,255,255,.70);
-      }
-      .sub small{ color:rgba(255,255,255,.50); }
+    .spec-label {
+      font-weight: 700;
+      color: var(--accent);
+      font-family: monospace;
+      display: block;
+      margin-bottom: 4px;
+    }
 
-      /* Manifesto */
-      .manifesto{
-        margin-top:22px;
-        padding:26px 22px;
-        border-radius:26px;
-        border:1px solid rgba(255,255,255,.10);
-        background:
-          radial-gradient(700px 220px at 50% 0%, rgba(255,211,138,.10), transparent 70%),
-          rgba(255,255,255,.03);
-      }
-      .manifesto h4{
-        margin:0;
-        font-size:26px;
-        font-weight:790;
-        letter-spacing:-.6px;
-      }
-      .manifesto h4 span{
-        color: var(--indigo);
-        text-shadow: 0 0 28px rgba(124,122,255,.22);
-      }
-      .manifesto p{
-        margin:10px 0 0;
-        color:var(--muted);
-        line-height:1.6;
-      }
+    /* Buttons */
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 40px;
+    }
 
-      footer{
-        margin-top:22px;
-        padding:18px 6px 0;
-        color:rgba(255,255,255,.45);
-        font-size:13px;
-        text-align:center;
-      }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.15s, transform 0.1s;
+    }
 
-      /* Reduce star intensity on small screens */
-      @media(max-width:520px){
-        #stars{ opacity:.55; }
-        .hero h2{ font-size:40px; }
-      }
-    </style>
-  </head>
+    .btn-solid {
+      background-color: var(--accent);
+      color: #07080c;
+    }
 
-  <body>
-    <canvas id="stars"></canvas>
-    <div class="grain"></div>
+    .btn-solid:hover {
+      background-color: #2bc4b4;
+    }
 
-    <div class="wrap">
-      <header>
-        <div class="brand">
-          <div class="mark"></div>
-          <h1>Intersignal</h1>
-        </div>
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background-color: transparent;
+    }
 
-        <div class="right">
-          <div class="status" title="Braid metrics will appear here when launched.">
-            <span class="pulse"></span>
-            Network Status: <strong style="font-weight:780;color:rgba(255,255,255,.86)">Operational</strong>
-          </div>
+    .btn-outline:hover {
+      background-color: #0c0e14;
+      border-color: var(--text-muted);
+    }
 
-          <nav class="nav">
-            <a href="#thesis">Thesis</a>
-            <a href="#work">Work</a>
-            <a href="#metrics">Live Metrics</a>
-            <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">Contact</a>
-          </nav>
-        </div>
-      </header>
+    /* Sovereign AI Consulting Section */
+    .consulting-manifesto {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
 
-      <section class="hero" id="top">
-        <div class="beam"></div>
+    .consulting-card {
+      background-color: #0c0e14;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 32px;
+    }
 
-        <div class="kicker"><span class="dot"></span> Mythic intelligence systems — built for durability</div>
-        <h2><span class="glow">Intelligence, reforged.</span></h2>
-        <p>
-          Intersignal builds AI systems that merge signal, structure, and strategic foresight.
-          We architect durable intelligence — not just models.
-        </p>
-        <div class="cta">
-          <button class="btn primary" onclick="location.href='#portal'">Enter the Network →</button>
-          <button class="btn" onclick="location.href='#thesis'">Read the Thesis</button>
-        </div>
-      </section>
+    .consulting-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 12px 0;
+    }
 
-      <section class="section" id="work">
-        <div class="section-title">
-          <h3>Core Pillars</h3>
-          <p class="meta">Systems, signal, foresight</p>
-        </div>
+    .consulting-meta {
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-top: 12px;
+      display: flex;
+      gap: 16px;
+    }
 
-        <div class="grid">
-          <div class="card span4">
-            <h3>Systems Architecture</h3>
-            <p>Scalable AI infrastructure that balances performance, cost, and long-horizon adaptability.</p>
-          </div>
-          <div class="card span4">
-            <h3>Signal Intelligence</h3>
-            <p>Durable signal extraction in noisy environments via orchestration, retrieval, and structured reasoning.</p>
-          </div>
-          <div class="card span4">
-            <h3>Strategic Foresight</h3>
-            <p>Systems that anticipate structural shifts — technological, economic, and informational.</p>
-          </div>
-        </div>
-      </section>
+    /* Minimal Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+      margin-top: 80px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
 
-      <section class="section" id="metrics">
-        <div class="section-title">
-          <h3>Braid — Public Metrics</h3>
-          <p class="meta">Preview • <span id="lastUpdated">Last updated: —</span></p>
-        </div>
+    .footer-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        <div class="grid">
-          <div class="card span6">
-            <div class="kpi">
-              <div>
-                <div class="label">Network Uptime (30d)</div>
-                <div class="value">99.98%</div>
-              </div>
-              <span class="badge"><span class="pulse" style="width:7px;height:7px;box-shadow:0 0 14px rgba(92,255,179,.45)"></span> Stable</span>
-            </div>
-            <div style="margin-top:12px" class="spark" aria-hidden="true"></div>
-            <p style="margin-top:12px">Availability tracking for Braid endpoints. Values will reflect live production once launched.</p>
-          </div>
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-          <div class="card span6">
-            <div class="kpi">
-              <div>
-                <div class="label">Latency (p50 / p95)</div>
-                <div class="value">180ms / 640ms</div>
-              </div>
-              <span class="badge">Inference</span>
-            </div>
-            <div style="margin-top:12px" class="spark" aria-hidden="true"></div>
-            <p style="margin-top:12px">Distribution preview. Live histogram + regional breakdown will publish at launch.</p>
-          </div>
+    .footer-right {
+      text-align: right;
+    }
 
-          <div class="card span6">
-            <div class="kpi">
-              <div>
-                <div class="label">Signal Accuracy</div>
-                <div class="value">0.91</div>
-              </div>
-              <span class="badge">Eval suite</span>
-            </div>
-            <div style="margin-top:12px" class="spark" aria-hidden="true"></div>
-            <p style="margin-top:12px">Composite score across the public evaluation harness. Methodology will be documented.</p>
-          </div>
+    .footer-right a {
+      color: var(--text-muted);
+      text-decoration: underline;
+    }
 
-          <div class="card span6">
-            <div class="kpi">
-              <div>
-                <div class="label">Network Status</div>
-                <div class="value">Operational</div>
-              </div>
-              <span class="badge">No incidents</span>
-            </div>
-            <p style="margin-top:12px">Braid metrics will be streamed here, including status history and change logs.</p>
-          </div>
-        </div>
-      </section>
+    .footer-right a:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
 
-      <section class="portal" id="portal">
-        <h4>Network Access</h4>
-        <p>Log in to access future Braid dashboards, controls, and observability panels.</p>
-
-        <div class="form" role="form" aria-label="Network login">
-          <div class="row">
-            <div>
-              <label for="username">Username</label>
-              <input id="username" name="username" type="text" placeholder="e.g., atlas" autocomplete="username" />
-            </div>
-            <div>
-              <label for="password">Password</label>
-              <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" />
-            </div>
-          </div>
-
-          <div class="portal-actions">
-            <button class="btn primary disabled" type="button" title="Login will be enabled when Braid launches." aria-disabled="true">
-              Sign In (coming soon) →
-            </button>
-            <button class="btn" type="button" onclick="location.href='#metrics'">
-              View Public Metrics
-            </button>
-          </div>
-
-          <div class="sub">
-            <div style="font-weight:720;margin-bottom:6px">No account yet?</div>
-            <small>Add your email to follow Intersignal updates.</small>
-
-            <div class="row" style="margin-top:10px">
-              <div style="grid-column:1/-1">
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email" placeholder="you@domain.com" autocomplete="email" />
-              </div>
-            </div>
-
-            <div class="portal-actions" style="margin-top:10px">
-              <button class="btn" type="button" onclick="subscribeSubstack()">
-                Subscribe via Substack →
-              </button>
-              <small style="color:rgba(255,255,255,.45)">Opens davidseaman.substack.com</small>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="manifesto" id="thesis">
-        <h4>We do not chase trends. <span>We build primitives.</span></h4>
-        <p>
-          Intersignal exists to construct foundational AI systems capable of enduring beyond cycles.
-          Our focus is durability, leverage, and structural advantage.
-        </p>
-      </section>
-
-      <footer>
-        © <span id="year"></span> Intersignal. All rights reserved.
-      </footer>
+  <header>
+    <div class="container header-flex">
+      <a href="#" class="logo">INTERSIGNAL</a>
+      <div class="nav-links">
+        <a href="#blender">The Blender</a>
+        <a href="#node">Braid v0.1</a>
+        <a href="#consulting">Sovereign Audit</a>
+      </div>
     </div>
+  </header>
 
-    <script>
-      // footer year
-      document.getElementById("year").textContent = new Date().getFullYear();
+  <main class="container">
+    <section class="manifesto-hero">
+      <span class="badge">Architectural Release // Braid v0.1</span>
+      <h1>Your local intelligence must belong exclusively to you.</h1>
+      <p class="manifesto-p">
+        Centralized AI clouds are fragile, heavily metered, and insecure by design. We build localized cognitive infrastructure that completely bypasses third-party servers. All things can now go in our blender—and should.
+      </p>
+      <div class="cta-row">
+        <a href="https://drive.google.com/file/d/1BzlsKU70abX3msKO6KSV_lfswTJWq0iC/view?usp=drivesdk" class="btn btn-solid">Download Braid v0.1 Node</a>
+        <a href="#consulting" class="btn btn-outline">Request Sovereign Audit</a>
+      </div>
+    </section>
 
-      // last updated stamp (visual only for now)
-      const d = new Date();
-      const pad = (n) => String(n).padStart(2, "0");
-      const stamp = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      document.getElementById("lastUpdated").textContent = `Last updated: ${stamp}`;
+    <section id="blender" class="narrative-block">
+      <div class="section-title">The Blender Narrative</div>
+      <p class="narrative-p">
+        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
+      </p>
+      <p class="narrative-p">
+        Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.
+      </p>
+      
+      <div class="quote-box">
+        "All things can now go in our blender—and should. Intelligence doesn't need to reside in commercial servers; it is compiled, compressed, and synchronized locally at the physical network layer on your own terms."<br>
+        <span style="font-size: 13px; font-weight: bold; font-style: normal; color: var(--text-muted);">— David Seaman, Operator of Intersignal</span>
+      </div>
 
-      // substack subscribe redirect with optional email prefill
-      function subscribeSubstack(){
-        const email = (document.getElementById("email").value || "").trim();
-        const base = "https://davidseaman.substack.com/subscribe";
-        const url = email ? `${base}?email=${encodeURIComponent(email)}` : base;
-        window.open(url, "_blank", "noopener,noreferrer");
-      }
+      <p class="narrative-p">
+        Once blended, these multi-modal states are projected as raw, highly dense 384-dimension binary latent vectors. These mathematical coordinates are serialized using the Bincode protocol and broadcast over a private local UDP mesh—synchronizing state between independent nodes in milliseconds, offline, with zero server overhead.
+      </p>
+    </section>
 
-      // lightweight starfield
-      const canvas = document.getElementById("stars");
-      const ctx = canvas.getContext("2d");
-      let w, h, stars;
+    <section id="node" class="narrative-block">
+      <div class="section-title">The Turnkey Node (Braid v0.1)</div>
+      <p class="narrative-p">
+        We have built the physical evidence of this thesis. Braid v0.1 is a fully functional Turnkey Local Node wrapped in a minimal, high-integrity GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
+      </p>
 
-      function resize(){
-        w = canvas.width = window.innerWidth * devicePixelRatio;
-        h = canvas.height = window.innerHeight * devicePixelRatio;
-        canvas.style.width = window.innerWidth + "px";
-        canvas.style.height = window.innerHeight + "px";
+      <div class="node-specs">
+        <h3>Sovereign Node Specifications</h3>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <span class="spec-label">Network Layer</span>
+            Tokio Asynchronous UDP sockets with dynamic port fallback and automated broadside propagation.
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">IPC Interface</span>
+            Tauri (v1.5) and React/TypeScript desktop wrapper with zero background OS blocking.
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Payload Format</span>
+            High-efficiency binary serialization (Bincode protocol) compressing ID, timestamp, seq, and raw floats.
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Visual Mapping</span>
+            Real-time latent vector heatmap displaying dimensional coefficients natives to the edge.
+          </div>
+        </div>
+      </div>
+    </section>
 
-        const count = Math.floor((window.innerWidth * window.innerHeight) / 9000);
-        stars = Array.from({length: count}, () => ({
-          x: Math.random()*w,
-          y: Math.random()*h,
-          r: (Math.random()*1.2 + 0.2) * devicePixelRatio,
-          v: (Math.random()*0.25 + 0.05) * devicePixelRatio,
-          a: Math.random()*0.6 + 0.12
-        }));
-      }
+    <section id="consulting" class="consulting-manifesto">
+      <div class="consulting-card">
+        <h2 class="consulting-title">Sovereign AI Consulting & Architecture</h2>
+        <p class="narrative-p" style="font-size: 14px; margin-bottom: 16px;">
+          For high-net-worth individuals, family offices, and high-security enterprise teams, we provide bespoke, completely cloud-free AI architecture, local hardware procurement specifications, and air-gapped model fine-tuning.
+        </p>
+        <p class="narrative-p" style="font-size: 14px; margin-bottom: 24px; color: var(--text-muted);">
+          Our team executes custom on-device RAG pipelines and secure OpSec audits to eliminate external dependency entirely. We accept a strictly limited number of qualified engagements.
+        </p>
+        <div style="margin-bottom: 20px;">
+          <a href="https://docs.google.com/forms/d/130dJScVlblWDw6JKtmeOCTOTNKfGNIFTQ7k7TXyDoH8/viewform" class="btn btn-solid">Submit Client Intake Form</a>
+        </div>
+        <div class="consulting-meta">
+          <span>● MINIMUM ENGAGEMENT RETAINER: $25,000</span>
+          <span>● BESPOKE LOCAL DEPLOYMENT</span>
+        </div>
+      </div>
+    </section>
+  </main>
 
-      function tick(){
-        ctx.clearRect(0,0,w,h);
-        ctx.globalCompositeOperation = "lighter";
-        for(const s of stars){
-          s.y += s.v;
-          if(s.y > h) { s.y = -10; s.x = Math.random()*w; }
-          ctx.beginPath();
-          ctx.fillStyle = `rgba(200,205,255,${s.a})`;
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-          ctx.fill();
-        }
-        requestAnimationFrame(tick);
-      }
-
-      window.addEventListener("resize", resize);
-      resize();
-      tick();
-    </script>
-  </body>
+  <footer>
+    <div class="container footer-flex">
+      <div class="footer-left">
+        <strong>INTERSIGNAL LLC</strong>
+        <span>Decentralized AI Protocol Research & Local Systems Engineering</span>
+        <span>Florida Base: Fort Lauderdale, FL. Self-funded. Independent.</span>
+      </div>
+      <div class="footer-right">
+        <span>Press & Trust Contact: <a href="mailto:missy@intersignal.ai">missy@intersignal.ai</a></span><br>
+        <span>© 2026 Intersignal. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+</body>
 </html>
