@@ -21,6 +21,7 @@
       color: var(--text);
       line-height: 1.72;
       -webkit-font-smoothing: antialiased;
+      position: relative;
     }
 
     .container {
@@ -28,12 +29,16 @@
       margin: 0 auto;
       padding: 0 24px;
       box-sizing: border-box;
+      position: relative;
+      z-index: 10;
     }
 
     /* Minimal Header */
     header {
       padding: 32px 0;
       border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 20;
     }
 
     .header-flex {
@@ -68,25 +73,49 @@
 
     /* Manifesto Hero */
     .manifesto-hero {
-      padding: 80px 0 60px 0;
+      padding: 80px 0 40px 0;
+      position: relative;
+      z-index: 10;
     }
 
-    .badge {
-      font-family: monospace;
-      font-size: 11px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 16px;
-      display: inline-block;
+    .bootlog {
+      font-family: Consolas, "Courier New", monospace;
+      color: #39dbdb;
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 32px;
+    }
+
+    .bootlog div {
+      opacity: 0;
+      animation: bootReveal .5s forwards;
+    }
+
+    .bootlog div:nth-child(1){animation-delay:.2s;}
+    .bootlog div:nth-child(2){animation-delay:.6s;}
+    .bootlog div:nth-child(3){animation-delay:1.0s;}
+    .bootlog div:nth-child(4){animation-delay:1.4s;}
+    .bootlog div:nth-child(5){animation-delay:1.8s;}
+    .bootlog div:nth-child(6){animation-delay:2.2s;}
+
+    @keyframes bootReveal {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h1 {
-      font-size: 40px;
-      font-weight: 800;
+      font-size: 72px;
+      line-height: .92;
+      text-transform: uppercase;
+      letter-spacing: -3px;
+      max-width: 700px;
       color: var(--text-bright);
-      line-height: 1.15;
-      letter-spacing: -1px;
       margin: 0 0 24px 0;
     }
 
@@ -97,54 +126,43 @@
       margin-bottom: 40px;
     }
 
-    /* The Blender Narrative Section */
-    .section-title {
-      font-size: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
+    /* Minimal Technical Diagram */
+    .blender-flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 0 60px 0;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
-      margin-bottom: 24px;
+      position: relative;
+      z-index: 10;
     }
 
-    .narrative-block {
-      margin-bottom: 60px;
-    }
-
-    .narrative-p {
-      font-size: 15px;
-      margin-bottom: 24px;
-      text-align: justify;
-    }
-
-    .quote-box {
-      border-left: 2px solid var(--accent);
-      padding-left: 20px;
-      margin: 32px 0;
-      font-style: italic;
-      color: var(--text-bright);
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    /* Turnkey Proof */
-    .node-specs {
+    .flow-block {
       background-color: #0c0e14;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 32px;
-      margin-bottom: 60px;
+      border-radius: 4px;
+      padding: 16px 24px;
+      text-align: center;
+      width: 100%;
+      max-width: 480px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
     }
 
-    .node-specs h3 {
-      font-size: 16px;
+    .flow-block.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(57, 219, 219, 0.1);
+    }
+
+    .flow-label {
+      font-size: 11px;
       font-weight: 800;
       color: var(--text-bright);
-      margin: 0 0 16px 0;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
     }
 
     .spec-grid {
@@ -237,25 +255,48 @@
       gap: 16px;
     }
 
-    /* Minimal Footer */
+    /* Refined Architectural Status Footer */
     footer {
       border-top: 1px solid var(--border);
       padding: 48px 0;
       margin-top: 80px;
       font-size: 11px;
       color: var(--text-muted);
+      position: relative;
+      z-index: 20;
     }
 
-    .footer-flex {
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .footer-status-block {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .status-line {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      line-height: 1.6;
     }
 
-    .footer-left {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .status-dots {
+      flex: 1;
+      text-align: left;
+      padding-left: 6px;
+      color: rgba(92, 100, 117, 0.15);
+    }
+
+    .status-val {
+      color: var(--accent);
+      font-weight: 700;
     }
 
     .footer-right {
@@ -270,10 +311,136 @@
     .footer-right a:hover {
       color: var(--accent);
     }
+
+    /* ANIMATED LIVING INFRASTRUCTURE LAYERS */
+    .mesh-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 650px;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: .35;
+      z-index: 1;
+    }
+
+    .mesh-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .mesh-svg line {
+      stroke: #39dbdb;
+      stroke-width: .15;
+      opacity: .25;
+    }
+
+    .node {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #39dbdb;
+      border-radius: 50%;
+      box-shadow:
+        0 0 8px #39dbdb,
+        0 0 20px #39dbdb;
+    }
+
+    .node-a { left: 20%; top: 30%; }
+    .node-b { left: 60%; top: 20%; }
+    .node-c { left: 80%; top: 60%; }
+    .node-d { left: 45%; top: 75%; }
+
+    .packet {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 12px #39dbdb;
+    }
+
+    .packet::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        rgba(57, 219, 219, .7),
+        transparent
+      );
+      left: -40px;
+      top: 2px;
+    }
+
+    .packet-1 {
+      animation: packetA 8s linear infinite;
+    }
+
+    .packet-2 {
+      animation: packetB 11s linear infinite;
+    }
+
+    .packet-3 {
+      animation: packetC 14s linear infinite;
+    }
+
+    @keyframes packetA {
+      0% { left: 20%; top: 30%; opacity: 0; }
+      10% { opacity: 1; }
+      50% { left: 60%; top: 20%; }
+      100% { left: 80%; top: 60%; opacity: 0; }
+    }
+
+    @keyframes packetB {
+      0% { left: 45%; top: 75%; opacity: 0; }
+      10% { opacity: 1; }
+      100% { left: 20%; top: 30%; opacity: 0; }
+    }
+
+    @keyframes packetC {
+      0% { left: 80%; top: 60%; opacity: 0; }
+      10% { opacity: 1; }
+      100% { left: 60%; top: 20%; opacity: 0; }
+    }
+
+    .signal-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: .04;
+      z-index: 0;
+    }
+
+    .signal-field span {
+      position: absolute;
+      font-family: monospace;
+      color: #39dbdb;
+      animation: driftUp 18s linear infinite;
+    }
+
+    .signal-field span:nth-child(1){left:8%;animation-delay:0s;}
+    .signal-field span:nth-child(2){left:28%;animation-delay:4s;}
+    .signal-field span:nth-child(3){left:48%;animation-delay:8s;}
+    .signal-field span:nth-child(4){left:68%;animation-delay:12s;}
+    .signal-field span:nth-child(5){left:88%;animation-delay:16s;}
+
+    @keyframes driftUp {
+      from {
+        transform: translateY(100vh);
+      }
+      to {
+        transform: translateY(-120px);
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="container header-flex">
       <a href="#" class="logo">INTERSIGNAL</a>
@@ -286,9 +453,23 @@
   </header>
 
   <main class="container">
+    <!-- MANIFESTO HERO -->
     <section class="manifesto-hero">
-      <span class="badge">Architectural Release // Braid v0.1</span>
-      <h1>Your local intelligence must belong exclusively to you.</h1>
+      <div class="bootlog">
+        <div>CHECKING CLOUD DEPENDENCIES...</div>
+        <div>NONE DETECTED</div>
+        <div>INITIALIZING LOCAL MESH...</div>
+        <div>ONLINE</div>
+        <div>LOADING BRAID v0.1...</div>
+        <div>ACTIVE</div>
+      </div>
+      
+      <h1>
+        INTELLIGENCE<br>
+        WITHOUT<br>
+        CENTRALIZATION
+      </h1>
+      
       <p class="manifesto-p">
         Centralized AI clouds are fragile, heavily metered, and insecure by design. We build localized cognitive infrastructure that completely bypasses third-party servers. All things can now go in our blender—and should.
       </p>
@@ -298,8 +479,28 @@
       </div>
     </section>
 
-    <section id="blender" class="narrative-block">
-      <div class="section-title">The Blender Narrative</div>
+    <!-- COGNITIVE BLENDER STRUCTURAL DIAGRAM -->
+    <section id="blender" class="blender-flow">
+      <div class="flow-block">
+        <div class="flow-label">INPUT STREAMS</div>
+        <div class="flow-sub">VOICE // CAMERA // TEXT // DOCUMENTS</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-block highlight">
+        <div class="flow-label">LOCAL COMPILATION</div>
+        <div class="flow-sub">IMTP-BC-v0.1</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-block">
+        <div class="flow-label">384D LATENT SPACE</div>
+        <div class="flow-sub">BINARY SERIALIZED PEER-TO-PEER SYNC</div>
+      </div>
+    </section>
+
+    <!-- MODULE 01 -->
+    <section class="narrative-block">
+      <div class="module-num">MODULE_01</div>
+      <div class="section-title">COGNITIVE COMPILATION</div>
       <p class="narrative-p">
         Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
       </p>
@@ -313,12 +514,14 @@
       </div>
 
       <p class="narrative-p">
-        Once blended, these multi-modal states are projected as raw, highly dense 384-dimension binary latent vectors. These mathematical coordinates are serialized using the Bincode protocol and broadcast over a private local UDP mesh—synchronizing state between independent nodes in milliseconds, offline, with zero server overhead.
+        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are serialized using Bincode and synchronized across a private local UDP mesh without dependence on external cloud infrastructure.
       </p>
     </section>
 
+    <!-- MODULE 02 -->
     <section id="node" class="narrative-block">
-      <div class="section-title">The Turnkey Node (Braid v0.1)</div>
+      <div class="module-num">MODULE_02</div>
+      <div class="section-title">SOVEREIGN MESH</div>
       <p class="narrative-p">
         We have built the physical evidence of this thesis. Braid v0.1 is a fully functional Turnkey Local Node wrapped in a minimal, high-integrity GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
       </p>
@@ -328,7 +531,7 @@
         <div class="spec-grid">
           <div class="spec-item">
             <span class="spec-label">Network Layer</span>
-            Tokio Asynchronous UDP sockets with dynamic port fallback and automated broadside propagation.
+            Tokio asynchronous UDP transport with adaptive peer discovery and local mesh synchronization.
           </div>
           <div class="spec-item">
             <span class="spec-label">IPC Interface</span>
@@ -340,12 +543,13 @@
           </div>
           <div class="spec-item">
             <span class="spec-label">Visual Mapping</span>
-            Real-time latent vector heatmap displaying dimensional coefficients natives to the edge.
+            Real-time latent-space activation heatmap for local state visualization.
           </div>
         </div>
       </div>
     </section>
 
+    <!-- CONSULTING AUDIT -->
     <section id="consulting" class="consulting-manifesto">
       <div class="consulting-card">
         <h2 class="consulting-title">Sovereign AI Consulting & Architecture</h2>
@@ -366,18 +570,53 @@
     </section>
   </main>
 
+  <!-- ARCHITECTURAL SYSTEM STATUS FOOTER -->
   <footer>
-    <div class="container footer-flex">
-      <div class="footer-left">
-        <strong>INTERSIGNAL LLC</strong>
-        <span>Decentralized AI Protocol Research & Local Systems Engineering</span>
-        <span>Florida Base: Fort Lauderdale, FL. Self-funded. Independent.</span>
+    <div class="container footer-grid">
+      <div class="footer-status-block">
+        <div class="status-line"><span>STATUS</span><span class="status-dots">........</span><span class="status-val">ONLINE</span></div>
+        <div class="status-line"><span>MESH</span><span class="status-dots">..........</span><span class="status-val">ACTIVE</span></div>
+        <div class="status-line"><span>DEPENDENCIES</span><span class="status-dots">..</span><span class="status-val">NONE</span></div>
+        <div class="status-line"><span>CLOUD</span><span class="status-dots">.........</span><span class="status-val" style="color: var(--text-muted);">DISCONNECTED</span></div>
+      </div>
+      <div class="" style="color: var(--text-muted);">DISCONNECTED</span></div>
       </div>
       <div class="footer-right">
-        <span>Press & Trust Contact: <a href="mailto:missy@intersignal.ai">missy@intersignal.ai</a></span><br>
-        <span>© 2026 Intersignal. All rights reserved.</span>
+        <strong style="color: var(--text-bright); text-transform: uppercase; letter-spacing: 1.5px;">INTERSIGNAL</strong><br>
+        <span>Decentralized AI Protocol Research & Local Systems Engineering</span><br>
+        <span>Florida Base: Fort Lauderdale, FL. Self-funded. Independent.</span><br>
+        <span style="margin-top: 10px; display: inline-block;">Press & Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a></span>
       </div>
     </div>
   </footer>
+
+  <!-- ANIMATED LAYERS -->
+  <div class="signal-field">
+    <span>SEQ:14882</span>
+    <span>SYNC:OK</span>
+    <span>LAT:0.7ms</span>
+    <span>UDP</span>
+    <span>ACTIVE</span>
+  </div>
+
+  <div class="mesh-overlay">
+    <div class="node node-a"></div>
+    <div class="node node-b"></div>
+    <div class="node node-c"></div>
+    <div class="node node-d"></div>
+
+    <svg class="mesh-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <line x1="20" y1="30" x2="60" y2="20" />
+      <line x1="60" y1="20" x2="80" y2="60" />
+      <line x1="20" y1="30" x2="45" y2="75" />
+      <line x1="45" y1="75" x2="80" y2="60" />
+      <line x1="20" y1="30" x2="80" y2="60" />
+    </svg>
+
+    <div class="packet packet-1"></div>
+    <div class="packet packet-2"></div>
+    <div class="packet packet-3"></div>
+  </div>
+
 </body>
 </html>
