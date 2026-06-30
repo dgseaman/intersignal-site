@@ -97,6 +97,8 @@
     .bootlog div:nth-child(4){animation-delay:1.4s;}
     .bootlog div:nth-child(5){animation-delay:1.8s;}
     .bootlog div:nth-child(6){animation-delay:2.2s;}
+    .bootlog div:nth-child(7){animation-delay:2.6s;}
+    .bootlog div:nth-child(8){animation-delay:3.0s;}
 
     @keyframes bootReveal {
       from {
@@ -119,7 +121,7 @@
       margin: 0 0 24px 0;
     }
 
-    /* Media query to handle iOS/mobile text wrapping nicely */
+    /* Media query to handle iOS/mobile text wrapping cleanly */
     @media (max-width: 600px) {
       h1 {
         font-size: 42px;
@@ -540,7 +542,7 @@
       <a href="#" class="logo">INTERSIGNAL</a>
       <div class="nav-links">
         <a href="#blender">The Blender</a>
-        <a href="#node">Braid v0.2</a>
+        <a href="#node">Braid v0.3</a>
         <a href="#consulting">Sovereign Audit</a>
       </div>
     </div>
@@ -552,9 +554,11 @@
       <div class="bootlog">
         <div>CHECKING CLOUD DEPENDENCIES...</div>
         <div>NONE DETECTED</div>
-        <div>INITIALIZING LOCAL MESH...</div>
+        <div>INITIALIZING SOVEREIGN MESH...</div>
         <div>ONLINE</div>
-        <div>LOADING BRAID v0.2...</div>
+        <div>BROADCASTING DISCOVERY BEACONS...</div>
+        <div>PEERS REGISTERED // AUTONOMOUS LINK</div>
+        <div>LOADING BRAID v0.3...</div>
         <div>ACTIVE</div>
       </div>
       
@@ -568,7 +572,7 @@
         Centralized AI clouds are fragile, heavily metered, and insecure by design. We build localized cognitive infrastructure that completely bypasses third-party servers. All things can now go in our blender—and should.
       </p>
       <div class="cta-row">
-        <a href="https://drive.google.com/file/d/1vbilti0b699BSlLBEF3DnLwxauknN1Gn/view?usp=drivesdk" class="btn btn-solid">Download Braid v0.2 Node</a>
+        <a href="https://drive.google.com/file/d/17x5vUiF0VRexaqHFFbNPH8nJ9her8hAh/view?usp=drivesdk" class="btn btn-solid">Download Braid v0.3 Node</a>
         <a href="#consulting" class="btn btn-outline">Request Sovereign Audit</a>
       </div>
     </section>
@@ -582,7 +586,7 @@
       <div class="flow-arrow">↓</div>
       <div class="flow-block highlight">
         <div class="flow-label">LOCAL COMPILATION</div>
-        <div class="flow-sub">IMTP-BC-v0.2</div>
+        <div class="flow-sub">IMTP-BC-v0.3</div>
       </div>
       <div class="flow-arrow">↓</div>
       <div class="flow-block">
@@ -617,7 +621,10 @@
       <div class="module-num">MODULE_02</div>
       <div class="section-title">SOVEREIGN MESH</div>
       <p class="narrative-p">
-        We have built the physical evidence of this thesis. Braid v0.2 is a fully functional Turnkey Local Node wrapped in a minimal, high-integrity GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
+        Braid v0.3 liberates your hardware completely. No IP configurations, no corporate network controllers, and no central server handshakes. Nodes propagate discovery beacons asynchronously across the physical layer—establishing a self-healing, bi-directional peer mesh autonomously.
+      </p>
+      <p class="narrative-p">
+        We have built the physical evidence of this thesis. Braid v0.3 is a fully functional Turnkey Local Node wrapped in a zero-config GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
       </p>
 
       <div class="node-specs">
@@ -625,11 +632,11 @@
         <div class="spec-grid">
           <div class="spec-item">
             <span class="spec-label">Network Layer</span>
-            Tokio asynchronous UDP transport with adaptive peer discovery and local mesh synchronization.
+            Zero-config peer discovery with automatic UDP multicast handshakes and self-healing local topology.
           </div>
           <div class="spec-item">
             <span class="spec-label">IPC Interface</span>
-            Tauri (v1.5) and React/TypeScript desktop wrapper with zero background OS blocking.
+            Idiot-proof visual launcher with live-discovered Familiar Node map and real-time state visualization.
           </div>
           <div class="spec-item">
             <span class="spec-label">Payload Format</span>
@@ -716,4 +723,3 @@
 
 </body>
 </html>
-
