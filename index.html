@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INTERSIGNAL // The Blender Era &amp; Sovereign AI</title>
+  <title>INTERSIGNAL // The Blender Era & Sovereign AI</title>
   <style>
     :root {
       --bg: #07080c;
@@ -22,52 +22,6 @@
       line-height: 1.72;
       -webkit-font-smoothing: antialiased;
       position: relative;
-    }
-
-    /* Slick Sticky Banner */
-    .release-banner {
-      background-color: #0c0e14;
-      border-bottom: 1px solid var(--accent);
-      color: var(--text-bright);
-      font-family: monospace;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      padding: 12px 24px;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 20px rgba(7, 8, 12, 0.5);
-    }
-
-    .banner-pulse {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
-      animation: bannerGlow 1.5s infinite ease-in-out;
-    }
-
-    @keyframes bannerGlow {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
-
-    .banner-link {
-      color: var(--accent);
-      text-decoration: underline;
-      font-weight: 700;
-      margin-left: 8px;
-    }
-
-    .banner-link:hover {
-      color: #ffffff;
     }
 
     .container {
@@ -553,7 +507,7 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
-      opacity: .04;
+      opacity: .05; /* Slightly increased for more depth */
       z-index: 0;
     }
 
@@ -561,33 +515,43 @@
       position: absolute;
       font-family: monospace;
       color: #39dbdb;
-      animation: driftUp 18s linear infinite;
+      font-size: 11px;
+      animation: driftUp 22s linear infinite;
     }
 
-    .signal-field span:nth-child(1){left:8%;animation-delay:0s;}
-    .signal-field span:nth-child(2){left:28%;animation-delay:4s;}
-    .signal-field span:nth-child(3){left:48%;animation-delay:8s;}
-    .signal-field span:nth-child(4){left:68%;animation-delay:12s;}
-    .signal-field span:nth-child(5){left:88%;animation-delay:16s;}
+    /* Beautiful, dispersed vertical flow of log telemetry */
+    .signal-field span:nth-child(1)  { left: 4%;  animation-delay: 0s;   animation-duration: 24s; }
+    .signal-field span:nth-child(2)  { left: 14%; animation-delay: 3s;   animation-duration: 20s; }
+    .signal-field span:nth-child(3)  { left: 24%; animation-delay: 1.5s; animation-duration: 28s; }
+    .signal-field span:nth-child(4)  { left: 34%; animation-delay: 6s;   animation-duration: 22s; }
+    .signal-field span:nth-child(5)  { left: 44%; animation-delay: 4.5s; animation-duration: 26s; }
+    .signal-field span:nth-child(6)  { left: 54%; animation-delay: 9s;   animation-duration: 18s; }
+    .signal-field span:nth-child(7)  { left: 64%; animation-delay: 7.5s; animation-duration: 30s; }
+    .signal-field span:nth-child(8)  { left: 74%; animation-delay: 12s;  animation-duration: 21s; }
+    .signal-field span:nth-child(9)  { left: 84%; animation-delay: 10.5s;animation-duration: 25s; }
+    .signal-field span:nth-child(10) { left: 94%; animation-delay: 14s;  animation-duration: 23s; }
+    .signal-field span:nth-child(11) { left: 19%; animation-delay: 8s;   animation-duration: 27s; }
+    .signal-field span:nth-child(12) { left: 79%; animation-delay: 11s;  animation-duration: 29s; }
 
     @keyframes driftUp {
       from {
         transform: translateY(100vh);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
       }
       to {
         transform: translateY(-120px);
+        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
-
-  <!-- release-banner -->
-  <div class="release-banner">
-    <span class="banner-pulse"></span>
-    <span>RELEASE ACTIVE: <strong>BRAID v0.4.11 (AGNOSTIC ENTERPRISE MESH)</strong> — HEADLESS LOCALHOST VIEWPORT BINDING COMPLETED</span>
-    <a href="https://drive.google.com/file/d/1MBBygIUKcLY3R6OWzbv67xURM0i_-P4e/view?usp=drivesdk" class="banner-link">DOWNLOAD CRT</a>
-  </div>
 
   <!-- HEADER -->
   <header>
@@ -706,7 +670,7 @@
     <!-- CONSULTING AUDIT -->
     <section id="consulting" class="consulting-manifesto">
       <div class="consulting-card">
-        <h2 class="consulting-title">Sovereign AI Consulting &amp; Architecture</h2>
+        <h2 class="consulting-title">Sovereign AI Consulting & Architecture</h2>
         <p class="narrative-p" style="font-size: 14px; margin-bottom: 16px;">
           For high-net-worth individuals, family offices, and high-security enterprise teams, we provide bespoke, completely cloud-free AI architecture, local hardware procurement specifications, and air-gapped model fine-tuning.
         </p>
@@ -735,10 +699,10 @@
       </div>
       <div class="footer-right">
         <strong style="color: var(--text-bright); text-transform: uppercase; letter-spacing: 1.5px;">INTERSIGNAL</strong><br>
-        <span>Decentralized AI Protocol Research &amp; Local Systems Engineering</span><br>
+        <span>Decentralized AI Protocol Research & Local Systems Engineering</span><br>
         <span>Florida Base: Fort Lauderdale, FL. Self-funded. Independent.</span><br>
         <span style="margin-top: 10px; display: inline-block;">
-          Press &amp; Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a>
+          Press & Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a>
           &nbsp;|&nbsp;
           X: <a href="https://x.com/intersignal_ai" style="color: var(--accent); text-decoration: none;">@intersignal_ai</a>
         </span>
@@ -746,13 +710,20 @@
     </div>
   </footer>
 
-  <!-- ANIMATED LAYERS -->
+  <!-- ANIMATED LAYERS (Dispersed vertical flow of log telemetry) -->
   <div class="signal-field">
-    <span>SEQ:14882</span>
+    <span>SEQ:41882</span>
     <span>SYNC:OK</span>
     <span>LAT:0.7ms</span>
-    <span>UDP</span>
-    <span>ACTIVE</span>
+    <span>UDP:ACTIVE</span>
+    <span>DIM:384</span>
+    <span>TTL:15S</span>
+    <span>PORT:12000</span>
+    <span>IMTP-v3</span>
+    <span>SIG:VERIFIED</span>
+    <span>SESSION:OK</span>
+    <span>PEER:ACTIVE</span>
+    <span>BRAID:v0.4.11</span>
   </div>
 
   <div class="mesh-overlay">
@@ -776,5 +747,3 @@
 
 </body>
 </html>
-            High-efficiency binary serialization (Bincode protocol) compressing ID, timestamp, seq, and raw floats.
-
