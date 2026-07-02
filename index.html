@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Braid // Pathfinder & Sovereign AI</title>
+  <title>Intersignal // Braid Pathfinder v0.5 & Sovereign AI</title>
   <style>
     :root {
       --bg: #07080c;
@@ -47,7 +47,35 @@
       align-items: center;
     }
 
+    /* Glowing Cosmic Galaxy Background behind the Logo */
+    .logo-container-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .logo-galaxy {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 60px;
+      background: radial-gradient(circle, rgba(57, 219, 219, 0.22) 0%, rgba(14, 15, 22, 0) 70%);
+      filter: blur(6px);
+      pointer-events: none;
+      z-index: 0;
+      animation: galaxyRotate 14s linear infinite;
+    }
+
+    @keyframes galaxyRotate {
+      0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.9); }
+      50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); }
+      100% { transform: translate(-50%, -50%) rotate(360deg) scale(0.9); }
+    }
+
     .logo {
+      position: relative;
+      z-index: 10;
       font-size: 13px;
       font-weight: 900;
       text-transform: uppercase;
@@ -564,10 +592,13 @@
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- HEADER WITH COSMIC GALAXY GLOW -->
   <header>
     <div class="container header-flex">
-      <a href="#" class="logo">Braid</a>
+      <div class="logo-container-wrapper">
+        <div class="logo-galaxy"></div>
+        <a href="#" class="logo">INTERSIGNAL</a>
+      </div>
       <div class="nav-links">
         <a href="#blender">The Blender</a>
         <a href="#consulting">Audit/Review</a>
@@ -628,7 +659,7 @@
       <div class="module-num">MODULE_01</div>
       <div class="section-title">COGNITIVE COMPILATION</div>
       <p class="narrative-p">
-        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
+        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates operational risk and permanent data harvesting liabilities.
       </p>
       <p class="narrative-p">
         Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.
