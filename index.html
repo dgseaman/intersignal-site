@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Intersignal // Braid DeepBlend v0.5 & Sovereign AI</title>
+  <title>Intersignal // Braid DeepBlend 7</title>
   <style>
     :root {
       --bg: #07080c;
@@ -12,6 +12,7 @@
       --text-bright: #ffffff;
       --text-muted: #5c6475;
       --border: #141722;
+      --portal-glow: rgba(57, 219, 219, 0.3);
     }
 
     body {
@@ -101,9 +102,119 @@
 
     /* Manifesto Hero */
     .manifesto-hero {
-      padding: 80px 0 60px 0;
+      padding: 60px 0 60px 0;
       position: relative;
       z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ICONIC DEEPBLEND 7 PORTAL LOGO & SCHEMATIC (Pillar 6) */
+    .portal-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portal-galaxy-backdrop {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(57, 219, 219, 0.18) 0%, rgba(7, 8, 12, 0) 70%);
+      filter: blur(15px);
+      z-index: 1;
+      pointer-events: none;
+      animation: portalPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes portalPulse {
+      0% { opacity: 0.6; transform: scale(0.92); }
+      100% { opacity: 1.0; transform: scale(1.08); }
+    }
+
+    .portal-ring-outer {
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border: 1px dashed rgba(57, 219, 219, 0.25);
+      border-radius: 50%;
+      z-index: 2;
+      animation: rotateRingClockwise 25s linear infinite;
+    }
+
+    .portal-ring-mid {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 1.5px solid rgba(57, 219, 219, 0.35);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      z-index: 3;
+      animation: rotateRingCounter 12s linear infinite;
+    }
+
+    .portal-ring-inner {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border: 1px dashed rgba(57, 219, 219, 0.5);
+      border-left-color: transparent;
+      border-radius: 50%;
+      z-index: 4;
+      animation: rotateRingClockwise 6s linear infinite;
+    }
+
+    .portal-core {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 
+        0 0 12px var(--accent),
+        0 0 30px var(--accent),
+        0 0 60px rgba(57, 219, 219, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-weight: 900;
+      color: #07080c;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .portal-node {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #ffffff;
+      z-index: 6;
+    }
+
+    .node-p1 { top: 15px; left: 50%; transform: translateX(-50%); }
+    .node-p2 { bottom: 15px; left: 50%; transform: translateX(-50%); }
+    .node-p3 { left: 15px; top: 50%; transform: translateY(-50%); }
+    .node-p4 { right: 15px; top: 50%; transform: translateY(-50%); }
+
+    @keyframes rotateRingClockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateRingCounter {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
     }
 
     .bootlog {
@@ -112,6 +223,9 @@
       font-size: 12px;
       letter-spacing: 1px;
       margin-bottom: 32px;
+      width: 100%;
+      max-width: 500px;
+      text-align: left;
     }
 
     .bootlog div {
@@ -140,7 +254,7 @@
     }
 
     h1 {
-      font-size: 60px;
+      font-size: 54px;
       line-height: .95;
       text-transform: uppercase;
       letter-spacing: -2px;
@@ -150,18 +264,19 @@
     }
 
     .subtitle-pathfinder {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--accent);
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       margin-bottom: 24px;
+      max-width: 600px;
     }
 
     /* Media query to handle iOS/mobile text wrapping cleanly */
     @media (max-width: 600px) {
       h1 {
-        font-size: 38px;
+        font-size: 34px;
         letter-spacing: -1px;
         line-height: 1.0;
       }
@@ -179,10 +294,11 @@
     }
 
     .manifesto-p {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.6;
       color: var(--text);
       margin-bottom: 40px;
+      max-width: 650px;
     }
 
     /* Minimal Technical Diagram */
@@ -510,15 +626,15 @@
 
     /* Increased speed and intensity of packet pings */
     .packet-1 {
-      animation: packetA 3.5s linear infinite;
+      animation: packetA 2.5s linear infinite;
     }
 
     .packet-2 {
-      animation: packetB 4.2s linear infinite;
+      animation: packetB 3.2s linear infinite;
     }
 
     .packet-3 {
-      animation: packetC 5.5s linear infinite;
+      animation: packetC 4.5s linear infinite;
     }
 
     @keyframes packetA {
@@ -609,29 +725,44 @@
   <main class="container">
     <!-- MANIFESTO HERO -->
     <section class="manifesto-hero">
+      
+      <!-- ICONIC RETRO-FUTURISTIC DEEPBLEND 7 PORTAL LOGO (Pillar 6) -->
+      <div class="portal-container">
+        <div class="portal-galaxy-backdrop"></div>
+        <div class="portal-ring-outer"></div>
+        <div class="portal-ring-mid"></div>
+        <div class="portal-ring-inner">
+          <div class="portal-node node-p1"></div>
+          <div class="portal-node node-p2"></div>
+          <div class="portal-node node-p3"></div>
+          <div class="portal-node node-p4"></div>
+        </div>
+        <div class="portal-core">7</div>
+      </div>
+
       <div class="bootlog">
         <div>CHECKING CLOUD DEPENDENCIES...</div>
         <div>NONE DETECTED</div>
-        <div>INITIALIZING SOVEREIGN MESH...</div>
-        <div>ONLINE</div>
+        <div>INITIALIZING SECURE WAN INTERFACE...</div>
+        <div>mTLS ENCLAVE TUNNELS ACTIVE</div>
         <div>BROADCASTING DISCOVERY BEACONS...</div>
-        <div>PEERS REGISTERED // AUTONOMOUS LINK</div>
-        <div>LOADING BRAID DEEPBLEND v0.6-alpha...</div>
-        <div>ACTIVE</div>
+        <div>RENDEZVOUS DIRECTORY ONLINE</div>
+        <div>LOADING DEEPBLEND 7...</div>
+        <div>ACTIVE // WAN MODE RUNNING</div>
       </div>
       
       <h1>
-        BRAID DEEPBLEND
+        BRAID DEEPBLEND 7
       </h1>
       <div class="subtitle-pathfinder">
-        Signed local AI state sync for sovereign compute.
+        WAN-by-default neural state synchronization.
       </div>
       
       <p class="manifesto-p">
-        DeepBlend is the first portable Braid release focused on policy-gated peer discovery, signed envelopes, capability negotiation, and direct peer path health.
+        DeepBlend 7 is Braid's flagship release. Architected for secure WAN-by-default routing, pluggable mTLS enclaves, active capability negotiation, and 8-bit vector quantization.
       </p>
       <div class="cta-row">
-        <a href="https://drive.google.com/file/d/13MW_NaXJeGb1KMLT4BNNcAconWtDZaoJ/view?usp=drivesdk" class="btn btn-solid">Download Pathfinder</a>
+        <a href="https://drive.google.com/file/d/1Tpc-R-f2wrBZA4OZqtTXn_v_9w-8wD1M/view?usp=drivesdk" class="btn btn-solid">Download Braid DeepBlend 7</a>
         <a href="#consulting" class="btn btn-outline">Request Sovereign Audit</a>
       </div>
     </section>
@@ -645,7 +776,7 @@
       <div class="flow-arrow">↓</div>
       <div class="flow-block highlight">
         <div class="flow-label">LOCAL COMPILATION</div>
-        <div class="flow-sub">IMTP-v5</div>
+        <div class="flow-sub">IMTP-v6-alpha</div>
       </div>
       <div class="flow-arrow">↓</div>
       <div class="flow-block">
@@ -680,10 +811,10 @@
       <div class="module-num">MODULE_02</div>
       <div class="section-title">SOVEREIGN MESH</div>
       <p class="narrative-p">
-        Braid DeepBlend v0.5 liberates your hardware completely. No IP configurations, no corporate network controllers, and no central server handshakes. Nodes propagate discovery beacons asynchronously across the physical layer—establishing a self-healing, bi-directional peer mesh autonomously.
+        Braid DeepBlend 7 liberates your hardware completely. No IP configurations, no corporate network controllers, and no central server handshakes. Nodes propagate discovery beacons asynchronously across the physical layer—establishing a self-healing, bi-directional peer mesh autonomously.
       </p>
       <p class="narrative-p">
-        We have built the physical evidence of this thesis. Braid DeepBlend v0.5 is a fully functional Turnkey Local Node wrapped in a zero-config GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
+        We have built the physical evidence of this thesis. Braid DeepBlend 7 is a fully functional Turnkey Local Node wrapped in a zero-config GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
       </p>
 
       <div class="node-specs">
@@ -691,11 +822,11 @@
         <div class="spec-grid">
           <div class="spec-item">
             <span class="spec-label">Current Release</span>
-            DeepBlend v0.6-alpha (Node Software 0.6.0-alpha)
+            DeepBlend v0.7-alpha (Node Software 0.7.0-alpha)
           </div>
           <div class="spec-item">
             <span class="spec-label">Wire Protocol</span>
-            Protocol Version 6
+            Protocol Version 7
           </div>
           <div class="spec-item">
             <span class="spec-label">Default Transport</span>
@@ -703,7 +834,7 @@
           </div>
           <div class="spec-item">
             <span class="spec-label">Status</span>
-            Developer Preview
+            Developer Preview (Conformance Verified)
           </div>
         </div>
       </div>
@@ -761,7 +892,7 @@
     <span>DIM:384</span>
     <span>TTL:15S</span>
     <span>PORT:12000</span>
-    <span>IMTP-v5</span>
+    <span>IMTP-v6</span>
     <span>SIG:VERIFIED</span>
     <span>SESSION:OK</span>
     <span>PEER:ACTIVE</span>
