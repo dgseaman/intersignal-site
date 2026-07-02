@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INTERSIGNAL // Braid Pathfinder v0.5 & Sovereign AI</title>
+  <title>Braid // Pathfinder & Sovereign AI</title>
   <style>
     :root {
       --bg: #07080c;
@@ -480,16 +480,17 @@
       top: 2px;
     }
 
+    /* Increased speed and intensity of packet pings */
     .packet-1 {
-      animation: packetA 8s linear infinite;
+      animation: packetA 3.5s linear infinite;
     }
 
     .packet-2 {
-      animation: packetB 11s linear infinite;
+      animation: packetB 4.2s linear infinite;
     }
 
     .packet-3 {
-      animation: packetC 14s linear infinite;
+      animation: packetC 5.5s linear infinite;
     }
 
     @keyframes packetA {
@@ -516,7 +517,7 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
-      opacity: .05;
+      opacity: .03; /* Lowered opacity for absolute minimal, clean backdrop */
       z-index: 0;
     }
 
@@ -525,10 +526,11 @@
       font-family: monospace;
       color: #39dbdb;
       font-size: 11px;
+      text-shadow: none; /* Eliminated text blurs entirely for sharp, crisp rendering */
       animation: driftUp 22s linear infinite;
     }
 
-    /* Beautiful, dispersed vertical flow of log telemetry */
+    /* Dispersed vertical flow of log telemetry */
     .signal-field span:nth-child(1)  { left: 4%;  animation-delay: 0s;   animation-duration: 24s; }
     .signal-field span:nth-child(2)  { left: 14%; animation-delay: 3s;   animation-duration: 20s; }
     .signal-field span:nth-child(3)  { left: 24%; animation-delay: 1.5s; animation-duration: 28s; }
@@ -548,10 +550,10 @@
         opacity: 0;
       }
       10% {
-        opacity: 0.8;
+        opacity: 1;
       }
       90% {
-        opacity: 0.8;
+        opacity: 1;
       }
       to {
         transform: translateY(-120px);
@@ -565,11 +567,10 @@
   <!-- HEADER -->
   <header>
     <div class="container header-flex">
-      <a href="#" class="logo">INTERSIGNAL</a>
+      <a href="#" class="logo">Braid</a>
       <div class="nav-links">
         <a href="#blender">The Blender</a>
-        <a href="#node">Braid Pathfinder</a>
-        <a href="#consulting">Sovereign Audit</a>
+        <a href="#consulting">Audit/Review</a>
       </div>
     </div>
   </header>
@@ -589,7 +590,6 @@
       </div>
       
       <h1>
-        INTERSIGNAL<br>
         BRAID PATHFINDER
       </h1>
       <div class="subtitle-pathfinder">
@@ -628,7 +628,7 @@
       <div class="module-num">MODULE_01</div>
       <div class="section-title">COGNITIVE COMPILATION</div>
       <p class="narrative-p">
-        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates operational risk and permanent data harvesting liabilities.
+        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
       </p>
       <p class="narrative-p">
         Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.
