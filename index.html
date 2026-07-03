@@ -3,25 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Intersignal // Braid Pathfinder & Sovereign AI</title>
+  <title>Intersignal // Braid Tendril v0.8.2-alpha</title>
   <style>
     :root {
       --bg: #07080c;
+      --bg-deep: #030409;
+      --panel: #0c0d12;
+      --panel-hot: #101827;
       --accent: #39dbdb;
+      --accent-2: #8d7cff;
+      --accent-3: #e65f73;
       --text: #c5cbd3;
       --text-bright: #ffffff;
-      --text-muted: #5c6475;
+      --text-muted: #6f7788;
       --border: #141722;
+      --border-hot: rgba(57, 219, 219, 0.34);
     }
 
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(57, 219, 219, 0.14), transparent 32%),
+        radial-gradient(circle at 86% 20%, rgba(141, 124, 255, 0.13), transparent 30%),
+        radial-gradient(circle at 58% 84%, rgba(230, 95, 115, 0.08), transparent 34%),
+        linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 42%, #05060a 100%);
       color: var(--text);
       line-height: 1.72;
       -webkit-font-smoothing: antialiased;
       position: relative;
+    }
+
+    ::selection {
+      background: rgba(57, 219, 219, 0.22);
+      color: var(--text-bright);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent 78%);
     }
 
     .container {
@@ -36,7 +64,9 @@
     /* Minimal Header */
     header {
       padding: 32px 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-hot);
+      background: linear-gradient(180deg, rgba(3, 4, 9, 0.78), rgba(3, 4, 9, 0));
+      backdrop-filter: blur(14px);
       position: relative;
       z-index: 20;
     }
@@ -60,7 +90,9 @@
       transform: translate(-50%, -50%);
       width: 140px;
       height: 60px;
-      background: radial-gradient(circle, rgba(57, 219, 219, 0.45) 0%, rgba(57, 219, 219, 0.08) 50%, rgba(14, 15, 22, 0) 80%);
+      background:
+        radial-gradient(circle, rgba(57, 219, 219, 0.52) 0%, rgba(57, 219, 219, 0.12) 46%, rgba(14, 15, 22, 0) 78%),
+        conic-gradient(from 180deg, rgba(57,219,219,0), rgba(141,124,255,0.38), rgba(57,219,219,0));
       filter: blur(6px);
       pointer-events: none;
       z-index: 0;
@@ -101,16 +133,17 @@
 
     /* Hero / Manifesto Block */
     .hero {
-      padding: 60px 0 40px 0;
+      padding: 72px 0 44px 0;
       border-bottom: 1px solid var(--border);
+      position: relative;
     }
 
     .hero-h1 {
-      font-size: 28px;
-      font-weight: 900;
+      font-size: clamp(34px, 6vw, 68px);
+      font-weight: 950;
       color: var(--text-bright);
-      line-height: 1.25;
-      letter-spacing: -0.5px;
+      line-height: 0.96;
+      letter-spacing: -2px;
       margin: 0 0 24px 0;
     }
 
@@ -120,10 +153,88 @@
       margin: 0 0 24px 0;
     }
 
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 6px 10px;
+      border: 1px solid var(--border-hot);
+      border-radius: 999px;
+      background: rgba(57, 219, 219, 0.05);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent);
+    }
+
+    .hero-lede {
+      max-width: 720px;
+      font-size: 18px;
+      line-height: 1.58;
+      color: var(--text-bright);
+    }
+
+    .signal-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 28px 0 24px;
+    }
+
+    .signal-pill {
+      border: 1px solid rgba(57, 219, 219, 0.18);
+      border-radius: 6px;
+      padding: 12px;
+      background: linear-gradient(180deg, rgba(57, 219, 219, 0.07), rgba(255,255,255,0.01));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .signal-pill strong {
+      display: block;
+      color: var(--text-bright);
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .signal-pill span {
+      display: block;
+      margin-top: 5px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .hero-callout {
+      margin: 20px 0 24px;
+      padding: 14px 16px;
+      border-left: 2px solid var(--accent);
+      background: linear-gradient(90deg, rgba(57, 219, 219, 0.09), rgba(57, 219, 219, 0));
+      color: var(--text-bright);
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .signal-strip { grid-template-columns: 1fr 1fr; }
+      .nav-links a { margin-left: 12px; }
+    }
+
     /* Installer Section */
     .installer-box {
-      background-color: #0c0d12;
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(12, 13, 18, 0.96), rgba(5, 6, 9, 0.96));
+      border: 1px solid var(--border-hot);
       border-radius: 8px;
       padding: 24px;
       margin-bottom: 32px;
@@ -170,12 +281,13 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       text-decoration: none;
-      transition: all 0.15s;
+      transition: transform 0.15s, border-color 0.15s, color 0.15s, background-color 0.15s, box-shadow 0.15s;
     }
 
     .btn-solid {
-      background-color: var(--accent);
+      background: linear-gradient(135deg, var(--accent), #ffffff);
       color: #07080c;
+      box-shadow: 0 0 24px rgba(57, 219, 219, 0.18);
     }
 
     .btn-solid:hover {
@@ -191,6 +303,8 @@
     .btn-outline:hover {
       border-color: var(--accent);
       color: var(--text-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(57, 219, 219, 0.10);
     }
 
     .alpha-note {
@@ -199,6 +313,46 @@
       line-height: 1.6;
       border-left: 2px solid var(--accent);
       padding-left: 12px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(12, 13, 18, 0.9), rgba(5, 6, 9, 0.92));
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+    }
+
+    .card-title {
+      margin: 0;
+      padding: 20px;
+      color: var(--text-bright);
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.015);
+    }
+
+    .cardContent {
+      color: var(--text);
+    }
+
+    .node-stat {
+      border: 1px solid rgba(57, 219, 219, 0.14);
+      border-radius: 6px;
+      padding: 14px;
+      background: rgba(57, 219, 219, 0.03);
+    }
+
+    .node-stat > span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
     }
 
     /* Narrative Segments */
@@ -240,8 +394,8 @@
     }
 
     .node-specs {
-      background-color: #0c0d12;
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(12, 13, 18, 0.96), rgba(5, 6, 9, 0.96));
+      border: 1px solid var(--border-hot);
       border-radius: 6px;
       padding: 24px;
       margin-top: 32px;
@@ -333,13 +487,13 @@
     }
 
     .packet-1 {
-      animation: pingA toB 0.9s linear infinite;
+      animation: toB 0.9s linear infinite;
     }
     .packet-2 {
-      animation: pingB toC 1.2s linear infinite;
+      animation: toC 1.2s linear infinite;
     }
     .packet-3 {
-      animation: pingC toD 1.4s linear infinite;
+      animation: toD 1.4s linear infinite;
     }
 
     @keyframes toB {
@@ -376,8 +530,8 @@
 
     .footer-status-block {
       font-family: monospace;
-      background-color: #0c0d12;
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(12, 13, 18, 0.96), rgba(5, 6, 9, 0.96));
+      border: 1px solid var(--border-hot);
       padding: 16px;
       border-radius: 4px;
     }
@@ -407,6 +561,13 @@
     .footer-right {
       line-height: 1.8;
     }
+
+    @media (max-width: 760px) {
+      footer .footer-inner {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -429,14 +590,26 @@
   <main class="container">
     <!-- HERO / MANIFESTO BLOCK -->
     <section class="hero">
-      <h1 class="hero-h1" style="font-size: 32px; color: var(--accent); text-shadow: 0 0 10px rgba(57, 219, 219, 0.3);">Braid Tendril v0.8.2-alpha</h1>
-      <p class="hero-p" style="font-size: 16px; line-height: 1.5; color: var(--text-bright); margin-bottom: 30px;">
-        A source/package-verified alpha for signed 384-dimensional vector transfer over direct and relayed UDP paths.
+      <div class="eyebrow">Alpha build now package-verified</div>
+      <h1 class="hero-h1" style="background: linear-gradient(135deg, #ffffff 0%, var(--accent) 48%, var(--accent-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 28px rgba(57, 219, 219, 0.18);">Braid Tendril v0.8.2-alpha</h1>
+      <p class="hero-p hero-lede">
+        A hardened edge-node release for <strong>signed 384-dimensional vector transfer</strong> across direct and relayed UDP paths — built for people who want AI state to move like infrastructure, not like harvested chat logs.
       </p>
+
+      <div class="signal-strip" aria-label="Release highlights">
+        <div class="signal-pill"><strong>384d raw f32</strong><span>Runtime transfer</span></div>
+        <div class="signal-pill"><strong>QINT8 codec</strong><span>Compact signal path</span></div>
+        <div class="signal-pill"><strong>Signed envelopes</strong><span>Protocol integrity</span></div>
+        <div class="signal-pill"><strong>Relay TTL gates</strong><span>WAN-ready trust</span></div>
+      </div>
+
+      <div class="hero-callout">
+        Tendril is the pathfinder layer for sovereign AI meshwork: local cognition compiled into compact vectors, signed at the edge, and moved over real network paths without surrendering the source mindstream.
+      </div>
 
       <!-- Primary CTA -->
       <div class="node-specs" style="margin-top: 20px; margin-bottom: 24px; padding: 24px; border: 1px solid var(--border); background-color: #0b0c10; border-radius: 6px; text-align: left;">
-        <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 14px; letter-spacing: 1px; color: var(--accent);">PRIMARY DISTRIBUTION</h3>
+        <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 14px; letter-spacing: 1px; color: var(--accent);">PRIMARY DISTRIBUTION // VERIFIED SOURCE DROP</h3>
         <p style="font-size: 14px; color: var(--text-bright); margin-bottom: 15px;">
           <strong>Target Archive:</strong> <code>braid-node-v0.8.2-updated.tar.gz</code>
         </p>
@@ -444,20 +617,20 @@
           SHA-256 Checksum:<br>
           <strong>3ea31e7959d37afea2e98ea177c87e5088053f93412c3467a2ddfef42dab930d</strong>
         </p>
-        <a href="https://drive.google.com/file/d/1U21df07FSMRof9EXbJB9cBfzjNrAG4Hj/view?usp=drivesdk" class="btn btn-solid" style="display: inline-block; padding: 12px 24px; font-weight: bold; background-color: var(--accent); color: #000000; text-decoration: none; border-radius: 4px; text-align: center;">Download source tarball</a>
+        <a href="https://drive.google.com/file/d/1U21df07FSMRof9EXbJB9cBfzjNrAG4Hj/view?usp=drivesdk" class="btn btn-solid" target="_blank" rel="noopener" style="display: inline-block; padding: 12px 24px; font-weight: bold; background-color: var(--accent); color: #000000; text-decoration: none; border-radius: 4px; text-align: center;">Download verified source tarball</a>
       </div>
 
       <!-- Verification Status -->
       <div style="margin-top: 24px; margin-bottom: 24px; padding: 24px; border: 1px solid rgba(57, 219, 219, 0.25); background-color: rgba(57, 219, 219, 0.03); border-radius: 6px; text-align: left;">
-        <h4 style="margin-top: 0; margin-bottom: 16px; color: var(--accent); font-size: 14px; letter-spacing: 1px; font-weight: bold; text-shadow: 0 0 8px rgba(57, 219, 219, 0.2);">✓ VERIFIED IN REVIEW</h4>
+        <h4 style="margin-top: 0; margin-bottom: 16px; color: var(--accent); font-size: 14px; letter-spacing: 1px; font-weight: bold; text-shadow: 0 0 8px rgba(57, 219, 219, 0.2);">✓ GREEN-LIT REVIEW SIGNALS</h4>
         <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; color: var(--text-bright); padding-left: 20px; line-height: 1.5; margin-bottom: 0;">
-          <li>Frontend production compilation</li>
-          <li>Protocol conformance fixtures check</li>
-          <li>384d raw f32 vector transfer demo</li>
-          <li>384d qint8 vector transfer demo</li>
-          <li>UDP socket loopback transmissions</li>
-          <li>Package manifest integrity verification</li>
-          <li>Installer checksum validation</li>
+          <li>Frontend production build passes</li>
+          <li>Protocol conformance fixtures pass</li>
+          <li>Real 384d raw f32 vector transfer</li>
+          <li>Real 384d QINT8 vector transfer</li>
+          <li>UDP socket loopback verified</li>
+          <li>Package manifest integrity checked</li>
+          <li>Installer checksum validation passes</li>
         </ul>
       </div>
 
@@ -465,13 +638,13 @@
       <div style="padding: 24px; border: 1px solid var(--border); background-color: #10121a; border-radius: 6px; text-align: left; margin-bottom: 24px;">
         <h4 style="margin-top: 0; color: var(--accent); font-size: 14px; letter-spacing: 0.5px;">WHAT'S NEW IN V0.8.2-ALPHA</h4>
         <p style="font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 0;">
-          This pre-release hardens vector ingestion capabilities. Key improvements include <strong>direct 384d state drift transfer</strong>, optimized <strong>QINT8 quantization codec</strong>, end-to-end <strong>cryptographically signed envelopes</strong>, robust <strong>signed relay frame support</strong> with TTL validation, a <strong>final-recipient session-readiness gate</strong>, a <strong>transit-forwarder trust policy gate</strong>, and standardized SHA-256 package checksum manifests.
+          This pre-release turns Tendril from a promising local-node substrate into something sharper: <strong>real 384d state drift transfer</strong>, an optimized <strong>QINT8 quantization codec</strong>, end-to-end <strong>cryptographically signed envelopes</strong>, <strong>signed relay frame support</strong> with TTL validation, a <strong>final-recipient session-readiness gate</strong>, a <strong>transit-forwarder trust policy gate</strong>, and standardized SHA-256 package checksum manifests. In plain terms: the signal now moves, the package verifies, and the protocol surface is tightening.
         </p>
       </div>
 
       <!-- Install / Verify Block -->
       <div style="padding: 24px; border: 1px solid var(--border); background-color: #050609; border-radius: 6px; text-align: left; margin-bottom: 24px; font-family: monospace;">
-        <h4 style="margin-top: 0; color: var(--accent); font-size: 13px; font-family: sans-serif; letter-spacing: 0.5px;">STANDARDIZED INSTALLATION & VERIFICATION SEQUENCE</h4>
+        <h4 style="margin-top: 0; color: var(--accent); font-size: 13px; font-family: sans-serif; letter-spacing: 0.5px;">LOCAL VERIFICATION RITUAL</h4>
         <pre style="font-size: 12px; color: #c5cbd3; line-height: 1.5; overflow-x: auto; margin-bottom: 0; background: none; border: none; padding: 0; white-space: pre-wrap; word-break: break-all;">
 sha256sum braid-node-v0.8.2-updated.tar.gz
 tar -xzf braid-node-v0.8.2-updated.tar.gz
@@ -488,21 +661,20 @@ python3 vector_transfer_demo.py</pre>
       <div style="text-align: left; margin-bottom: 40px;">
         <h4 style="margin-top: 0; color: var(--accent); font-size: 14px; letter-spacing: 0.5px;">SUPPORT DOCUMENTS & MANIFESTS</h4>
         <div class="link-section-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 15px;">
-          <a href="https://docs.google.com/document/d/1uUHhOFHGA6F2eIf_3pJSdYi_OFjwDCatQExAN2cVMKw/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">README.md</a>
-          <a href="https://docs.google.com/document/d/1aYhFeB2RSV0NRFH4JOm9FtCufLuve9TnITAwqv2SA9E/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">SECURITY.md</a>
-          <a href="https://docs.google.com/document/d/10U4fAnm4fldrhIQgCUT08MrENA2xza4iKJdXZNnVlU8/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">CHANGELOG.md</a>
-          <a href="https://drive.google.com/file/d/1EMSERbu0y3TmglE2cGBUEC6ASqPEVKAd/view?usp=drivesdk" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">RELEASE_MANIFEST.json</a>
-          <a href="https://docs.google.com/document/d/1ePKqFtzOFJf7j50whfiy4X56A_jBMfi6GdJAkhzv1mc/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">checksums.txt</a>
-          <a href="https://docs.google.com/document/d/1bFDdBr8i0fXFCrTgjYkwGNz-9Y4xQdIA70pwR_JpLSg/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">cargo_transcript.txt</a>
-          <a href="https://docs.google.com/document/d/11IgGOlnlY3C44OBnef2i14g2YWSAezuEXM8dmzTPOIw/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">conformance_verify.py</a>
-          <a href="https://docs.google.com/document/d/1SjbWa6KzEgeYkwGNz-9Y4xQdIA70pwR_JpLSg/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank">vector_transfer_demo.py</a>
+          <a href="https://docs.google.com/document/d/1uUHhOFHGA6F2eIf_3pJSdYi_OFjwDCatQExAN2cVMKw/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank" rel="noopener">README.md</a>
+          <a href="https://docs.google.com/document/d/1aYhFeB2RSV0NRFH4JOm9FtCufLuve9TnITAwqv2SA9E/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank" rel="noopener">SECURITY.md</a>
+          <a href="https://docs.google.com/document/d/10U4fAnm4fldrhIQgCUT08MrENA2xza4iKJdXZNnVlU8/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank" rel="noopener">CHANGELOG.md</a>
+          <a href="https://drive.google.com/file/d/1EMSERbu0y3TmglE2cGBUEC6ASqPEVKAd/view?usp=drivesdk" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank" rel="noopener">RELEASE_MANIFEST.json</a>
+          <a href="https://docs.google.com/document/d/1ePKqFtzOFJf7j50whfiy4X56A_jBMfi6GdJAkhzv1mc/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank" rel="noopener">checksums.txt</a>
+          <a href="https://docs.google.com/document/d/1bFDdBr8i0fXFCrTgjYkwGNz-9Y4xQdIA70pwR_JpLSg/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank" rel="noopener">cargo_transcript.txt</a>
+          <a href="https://docs.google.com/document/d/11IgGOlnlY3C44OBnef2i14g2YWSAezuEXM8dmzTPOIw/edit?usp=drivesdk&ouid=104621204832216628958" class="btn btn-outline" style="font-size: 12px; padding: 8px 12px; text-align: center;" target="_blank" rel="noopener">conformance_verify.py</a>
         </div>
       </div>
 
       <!-- Alpha Disclaimer -->
       <div style="padding: 16px; border: 1px dashed #e65f73; background-color: rgba(230, 95, 115, 0.05); border-radius: 6px; text-align: left; margin-bottom: 40px;">
         <p style="font-size: 13px; color: var(--text-bright); line-height: 1.5; margin-bottom: 0;">
-          <strong>Alpha Disclaimer:</strong> This is an alpha developer release. It is intended for protocol review, local testing, and integration experiments.
+          <strong>Alpha Disclaimer:</strong> This is an alpha developer release: sharp enough for protocol review, local testing, and integration experiments; not yet a promise of production stability.
         </p>
       </div>
     </section>
@@ -512,10 +684,10 @@ python3 vector_transfer_demo.py</pre>
       <div class="module-num">MODULE_01</div>
       <div class="section-title">COGNITIVE COMPILATION</div>
       <p class="narrative-p">
-        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
+        Traditional AI software still asks you to pour raw transcripts, documents, voice, and context into corporate API gateways. That is not neutral architecture. It is a standing exfiltration surface wrapped in convenience.
       </p>
       <p class="narrative-p">
-        Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.
+        Braid pivots the center of gravity back to the machine you control. The local edge node becomes a private cognitive crucible — a Blender — ingesting multimodal streams, documents, voice, keyboard flow, and camera context locally before anything becomes network state.
       </p>
       
       <div class="quote-box">
@@ -524,9 +696,9 @@ python3 vector_transfer_demo.py</pre>
       </div>
 
       <p class="narrative-p">
-        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are cryptographically signed and synchronized over physical UDP subnets.
+        Once blended, these multimodal states are projected into dense 384-dimensional latent vectors: compact, signed, machine-native state objects that can be synchronized across physical UDP paths instead of replaying the whole human transcript.
       </p>
-    </div>
+    </section>
 
     <!-- MODULE 2: WAN TOPOLOGY AND ROUTING ENGINE -->
     <section class="card">
@@ -537,7 +709,7 @@ python3 vector_transfer_demo.py</pre>
           <code style="color: var(--accent); font-size: 13px; font-family: monospace;">NodeId-first WAN Routing Protocol // Tendril Kernel</code>
         </div>
         <p style="font-size: 13px; line-height: 1.5; color: var(--text); margin-top: 12px;">
-          Braid Tendril abstracts physical IP addresses completely. By implementing signed presence records and routing candidates directly in the **Tendril Transport Manager**, edge nodes achieve seamless peer synchronization across variable wide-area routes, gracefully falling back from direct QUIC/UDP paths to zero-trust opaque transit relays without breaking active Handshakes.
+          Braid Tendril abstracts the peer above any single physical IP address. Signed presence records and routing candidates live directly in the <strong>Tendril Transport Manager</strong>, allowing edge nodes to synchronize across variable wide-area routes and fall back from direct UDP paths to zero-trust opaque transit relays without breaking active handshakes.
         </p>
       </div>
     </section>
@@ -561,10 +733,10 @@ python3 vector_transfer_demo.py</pre>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div style="display: flex; justify-content: space-between; max-width: 900px; margin: 0 auto; padding: 0 24px;">
+    <div class="footer-inner" style="display: flex; justify-content: space-between; gap: 18px; max-width: 900px; margin: 0 auto; padding: 0 24px;">
       <div>PROTOCOL: <strong>IMTP Wire Spec v8 (Tendril WAN Enabled)</strong></div>
       <div>Policy & Trust: <strong><a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a></strong></div>
-      <div>Follow us on X: <strong><a href="https://x.com/intersignal_ai" style="color: var(--accent); text-decoration: none;" target="_blank">@intersignal_ai</a></strong></div>
+      <div>Follow us on X: <strong><a href="https://x.com/intersignal_ai" style="color: var(--accent); text-decoration: none;" target="_blank" rel="noopener">@intersignal_ai</a></strong></div>
     </div>
   </footer>
 
