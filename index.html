@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Intersignal // Local Enclaves & Sovereign AI</title>
+  <title>INTERSIGNAL // Braid Pathfinder v5.0 & Sovereign AI</title>
   <style>
     :root {
       --bg: #07080c;
@@ -13,6 +13,7 @@
       --text-muted: #5c6475;
       --border: #141722;
     }
+
 
     body {
       margin: 0;
@@ -24,6 +25,7 @@
       position: relative;
     }
 
+
     .container {
       max-width: 800px;
       margin: 0 auto;
@@ -33,6 +35,7 @@
       z-index: 10;
     }
 
+
     /* Minimal Header */
     header {
       padding: 32px 0;
@@ -41,41 +44,15 @@
       z-index: 20;
     }
 
+
     .header-flex {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    /* Glowing Cosmic Galaxy Background behind the Logo */
-    .logo-container-wrapper {
-      position: relative;
-      display: inline-block;
-    }
-
-    .logo-galaxy {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 140px;
-      height: 60px;
-      background: radial-gradient(circle, rgba(57, 219, 219, 0.22) 0%, rgba(14, 15, 22, 0) 70%);
-      filter: blur(6px);
-      pointer-events: none;
-      z-index: 0;
-      animation: galaxyRotate 14s linear infinite;
-    }
-
-    @keyframes galaxyRotate {
-      0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.9); }
-      50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); }
-      100% { transform: translate(-50%, -50%) rotate(360deg) scale(0.9); }
-    }
 
     .logo {
-      position: relative;
-      z-index: 10;
       font-size: 13px;
       font-weight: 900;
       text-transform: uppercase;
@@ -83,6 +60,7 @@
       color: var(--text-bright);
       text-decoration: none;
     }
+
 
     .nav-links a {
       color: var(--text-muted);
@@ -95,62 +73,201 @@
       transition: color 0.15s;
     }
 
+
     .nav-links a:hover {
       color: var(--accent);
     }
 
-    /* Hero / Manifesto Block */
-    .hero {
+
+    /* Manifesto Hero */
+    .manifesto-hero {
       padding: 80px 0 60px 0;
-      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 10;
     }
 
-    .hero-h1 {
-      font-size: 42px;
+
+    .bootlog {
+      font-family: Consolas, "Courier New", monospace;
+      color: #39dbdb;
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 32px;
+    }
+
+
+    .bootlog div {
+      opacity: 0;
+      animation: bootReveal .5s forwards;
+    }
+
+
+    .bootlog div:nth-child(1){animation-delay:.2s;}
+    .bootlog div:nth-child(2){animation-delay:.6s;}
+    .bootlog div:nth-child(3){animation-delay:1.0s;}
+    .bootlog div:nth-child(4){animation-delay:1.4s;}
+    .bootlog div:nth-child(5){animation-delay:1.8s;}
+    .bootlog div:nth-child(6){animation-delay:2.2s;}
+    .bootlog div:nth-child(7){animation-delay:2.6s;}
+    .bootlog div:nth-child(8){animation-delay:3.0s;}
+
+
+    @keyframes bootReveal {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+    h1 {
+      font-size: 60px;
+      line-height: .95;
+      text-transform: uppercase;
+      letter-spacing: -2px;
+      max-width: 700px;
+      color: var(--text-bright);
+      margin: 0 0 16px 0;
+    }
+
+
+    .subtitle-pathfinder {
+      font-size: 20px;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+
+    /* Media query to handle iOS/mobile text wrapping cleanly */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 38px;
+        letter-spacing: -1px;
+        line-height: 1.0;
+      }
+      .spec-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+      .footer-right {
+        text-align: left !important;
+      }
+    }
+
+
+    .manifesto-p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 40px;
+    }
+
+
+    /* Minimal Technical Diagram */
+    .blender-flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 0 60px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 10;
+    }
+
+
+    .flow-block {
+      background-color: #0c0e14;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px 24px;
+      text-align: center;
+      width: 100%;
+      max-width: 480px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+
+    .flow-block.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(57, 219, 219, 0.1);
+    }
+
+
+    .flow-label {
+      font-family: monospace;
+      font-size: 13px;
       font-weight: 900;
       color: var(--text-bright);
-      line-height: 1.15;
-      letter-spacing: -1.5px;
-      margin: 0 0 24px 0;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      margin-bottom: 4px;
     }
 
-    .hero-p {
-      font-size: 18px;
-      color: var(--text);
-      line-height: 1.6;
-      margin: 0 0 32px 0;
+
+    .flow-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    /* Narrative Segments */
-    .narrative-block {
-      padding: 60px 0;
+
+    .flow-arrow {
+      color: var(--accent);
+      font-size: 20px;
+      font-family: monospace;
+      line-height: 1;
+    }
+
+
+    /* Section Naming (Architectural Modules) */
+    .section-title {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
       border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
     }
+
 
     .module-num {
       font-family: monospace;
       font-size: 11px;
       color: var(--accent);
-      letter-spacing: 2px;
-      margin-bottom: 8px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
     }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-bright);
-      margin-bottom: 20px;
+
+    .narrative-block {
+      margin-bottom: 60px;
+      padding-top: 40px;
     }
+
 
     .narrative-p {
-      margin: 0 0 20px 0;
       font-size: 15px;
-      color: var(--text);
+      margin-bottom: 24px;
       text-align: justify;
     }
+
 
     .quote-box {
       border-left: 2px solid var(--accent);
@@ -162,15 +279,108 @@
       line-height: 1.6;
     }
 
-    /* Sovereign AI Consulting Section */
-    .consulting-card {
-      background-color: #0c0d12;
+
+    /* Turnkey Proof */
+    .node-specs {
+      background-color: #0c0e14;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 32px;
-      box-sizing: border-box;
-      margin-top: 24px;
+      margin-bottom: 60px;
     }
+
+
+    .node-specs h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-bright);
+      margin: 0 0 16px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+
+    .spec-item {
+      font-size: 13px;
+    }
+
+
+    .spec-label {
+      font-weight: 700;
+      color: var(--accent);
+      font-family: monospace;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+
+    /* Buttons */
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.15s, transform 0.1s;
+    }
+
+
+    .btn-solid {
+      background-color: var(--accent);
+      color: #07080c;
+    }
+
+
+    .btn-solid:hover {
+      background-color: #2bc4b4;
+    }
+
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background-color: transparent;
+    }
+
+
+    .btn-outline:hover {
+      background-color: #0c0e14;
+      border-color: var(--text-muted);
+    }
+
+
+    /* Sovereign AI Consulting Section */
+    .consulting-manifesto {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+
+    .consulting-card {
+      background-color: #0c0e14;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 32px;
+    }
+
 
     .consulting-title {
       font-size: 18px;
@@ -178,283 +388,322 @@
       color: var(--text-bright);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin: 0 0 16px 0;
+      margin: 0 0 12px 0;
     }
+
 
     .consulting-meta {
       font-family: monospace;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--accent);
       font-weight: 700;
-      margin-top: 24px;
+      margin-top: 12px;
       display: flex;
       gap: 16px;
-      text-transform: uppercase;
     }
 
-    /* Buttons & Links Section */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 24px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-decoration: none;
-      transition: all 0.15s;
-    }
 
-    .btn-solid {
-      background-color: var(--accent);
-      color: #07080c;
-    }
-
-    .btn-solid:hover {
-      background-color: #ffffff;
-      box-shadow: 0 0 15px rgba(57, 219, 219, 0.4);
-    }
-
-    /* Low-Profile Protocol Section */
-    .substrate-box {
-      background-color: #08090d;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 24px;
-      margin-top: 32px;
-    }
-
-    .substrate-box h3 {
-      margin: 0 0 12px 0;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-bright);
-    }
-
-    .substrate-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .substrate-link {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-decoration: underline;
-      font-weight: 600;
-    }
-
-    .substrate-link:hover {
-      color: var(--accent);
-    }
-
-    /* Signal Visualizer Schematic */
-    .mesh-overlay {
-      position: fixed;
-      right: 4%;
-      bottom: 10%;
-      width: 280px;
-      height: 280px;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.22;
-      transition: opacity 0.5s;
-    }
-
-    @media (max-width: 1100px) {
-      .mesh-overlay {
-        position: relative;
-        margin: 40px auto 0 auto;
-        right: auto;
-        bottom: auto;
-        opacity: 0.4;
-      }
-    }
-
-    .node {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent);
-    }
-
-    .node-a { top: 30%; left: 20%; }
-    .node-b { top: 20%; left: 60%; }
-    .node-c { top: 75%; left: 45%; }
-    .node-d { top: 60%; left: 80%; }
-
-    .mesh-svg {
-      width: 100%;
-      height: 100%;
-      stroke: var(--accent);
-      stroke-width: 0.5;
-      stroke-dasharray: 2 4;
-      opacity: 0.5;
-    }
-
-    /* Enhanced Pinging Points Animation */
-    .packet {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background-color: #ffffff;
-      border-radius: 50%;
-      box-shadow: 0 0 12px #ffffff;
-    }
-
-    /* Highly active network speed and pacing */
-    .packet-1 {
-      animation: pingA toB 1.8s linear infinite;
-    }
-    .packet-2 {
-      animation: pingB toC 2.2s linear infinite;
-    }
-    .packet-3 {
-      animation: pingC toD 2.6s linear infinite;
-    }
-
-    @keyframes toB {
-      0% { top: 30%; left: 20%; opacity: 1; }
-      100% { top: 20%; left: 60%; opacity: 0; }
-    }
-    @keyframes toC {
-      0% { top: 20%; left: 60%; opacity: 1; }
-      100% { top: 75%; left: 45%; opacity: 0; }
-    }
-    @keyframes toD {
-      0% { top: 75%; left: 45%; opacity: 1; }
-      100% { top: 60%; left: 80%; opacity: 0; }
-    }
-
-    /* Telemetry Waterfall */
-    .signal-field {
-      position: fixed;
-      left: 24px;
-      bottom: 24px;
-      font-family: monospace;
-      font-size: 10px;
-      color: var(--text-muted);
-      z-index: 1;
-      pointer-events: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    @media (max-width: 800px) {
-      .signal-field { display: none; }
-    }
-
-    /* Footer */
+    /* Refined Architectural Status Footer */
     footer {
-      padding: 60px 0;
       border-top: 1px solid var(--border);
-      background-color: #050609;
-      font-size: 12px;
+      padding: 48px 0;
+      margin-top: 80px;
+      font-size: 11px;
       color: var(--text-muted);
+      position: relative;
+      z-index: 20;
     }
+
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 40px;
+      align-items: flex-start;
     }
 
-    @media (max-width: 700px) {
-      .footer-grid { grid-template-columns: 1fr; }
-    }
 
     .footer-status-block {
-      font-family: monospace;
-      background-color: #0c0d12;
-      border: 1px solid var(--border);
-      padding: 16px;
-      border-radius: 4px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 100%;
+      max-width: 280px;
     }
+
 
     .status-line {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 6px;
+      line-height: 1.6;
     }
 
-    .status-line:last-child { margin-bottom: 0; }
 
     .status-dots {
       flex: 1;
-      text-align: center;
-      letter-spacing: 2px;
-      overflow: hidden;
-      height: 14px;
-      color: #1a1d29;
+      text-align: left;
+      padding-left: 6px;
+      color: rgba(92, 100, 117, 0.15);
     }
+
 
     .status-val {
       color: var(--accent);
-      font-weight: bold;
+      font-weight: 700;
     }
 
+
     .footer-right {
-      line-height: 1.8;
+      text-align: right;
+    }
+
+
+    .footer-right a {
+      color: var(--text-muted);
+      text-decoration: underline;
+    }
+
+
+    .footer-right a:hover {
+      color: var(--accent);
+    }
+
+
+    /* ANIMATED LIVING INFRASTRUCTURE LAYERS */
+    .mesh-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 650px;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: .35;
+      z-index: 1;
+    }
+
+
+    .mesh-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+
+    .mesh-svg line {
+      stroke: #39dbdb;
+      stroke-width: .15;
+      opacity: .25;
+    }
+
+
+    .node {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #39dbdb;
+      border-radius: 50%;
+      box-shadow:
+        0 0 8px #39dbdb,
+        0 0 20px #39dbdb;
+    }
+
+
+    .node-a { left: 20%; top: 30%; }
+    .node-b { left: 60%; top: 20%; }
+    .node-c { left: 80%; top: 60%; }
+    .node-d { left: 45%; top: 75%; }
+
+
+    .packet {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 12px #39dbdb;
+    }
+
+
+    .packet::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        rgba(57, 219, 219, .7),
+        transparent
+      );
+      left: -40px;
+      top: 2px;
+    }
+
+
+    .packet-1 {
+      animation: packetA 8s linear infinite;
+    }
+
+
+    .packet-2 {
+      animation: packetB 11s linear infinite;
+    }
+
+
+    .packet-3 {
+      animation: packetC 14s linear infinite;
+    }
+
+
+    @keyframes packetA {
+      0% { left: 20%; top: 30%; opacity: 0; }
+      10% { opacity: 1; }
+      50% { left: 60%; top: 20%; }
+      100% { left: 80%; top: 60%; opacity: 0; }
+    }
+
+
+    @keyframes packetB {
+      0% { left: 45%; top: 75%; opacity: 0; }
+      10% { opacity: 1; }
+      100% { left: 20%; top: 30%; opacity: 0; }
+    }
+
+
+    @keyframes packetC {
+      0% { left: 80%; top: 60%; opacity: 0; }
+      10% { opacity: 1; }
+      100% { left: 60%; top: 20%; opacity: 0; }
+    }
+
+
+    .signal-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: .05;
+      z-index: 0;
+    }
+
+
+    .signal-field span {
+      position: absolute;
+      font-family: monospace;
+      color: #39dbdb;
+      font-size: 11px;
+      animation: driftUp 22s linear infinite;
+    }
+
+
+    /* Beautiful, dispersed vertical flow of log telemetry */
+    .signal-field span:nth-child(1)  { left: 4%;  animation-delay: 0s;   animation-duration: 24s; }
+    .signal-field span:nth-child(2)  { left: 14%; animation-delay: 3s;   animation-duration: 20s; }
+    .signal-field span:nth-child(3)  { left: 24%; animation-delay: 1.5s; animation-duration: 28s; }
+    .signal-field span:nth-child(4)  { left: 34%; animation-delay: 6s;   animation-duration: 22s; }
+    .signal-field span:nth-child(5)  { left: 44%; animation-delay: 4.5s; animation-duration: 26s; }
+    .signal-field span:nth-child(6)  { left: 54%; animation-delay: 9s;   animation-duration: 18s; }
+    .signal-field span:nth-child(7)  { left: 64%; animation-delay: 7.5s; animation-duration: 30s; }
+    .signal-field span:nth-child(8)  { left: 74%; animation-delay: 12s;  animation-duration: 21s; }
+    .signal-field span:nth-child(9)  { left: 84%; animation-delay: 10.5s;animation-duration: 25s; }
+    .signal-field span:nth-child(10) { left: 94%; animation-delay: 14s;  animation-duration: 23s; }
+    .signal-field span:nth-child(11) { left: 19%; animation-delay: 8s;   animation-duration: 27s; }
+    .signal-field span:nth-child(12) { left: 79%; animation-delay: 11s;  animation-duration: 29s; }
+
+
+    @keyframes driftUp {
+      from {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      to {
+        transform: translateY(-120px);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- MINIMAL HEADER -->
+
+  <!-- HEADER -->
   <header>
     <div class="container header-flex">
-      <div class="logo-container-wrapper">
-        <div class="logo-galaxy"></div>
-        <a href="/" class="logo">INTERSIGNAL</a>
+      <a href="#" class="logo">INTERSIGNAL</a>
+      <div class="nav-links">
+        <a href="#blender">The Blender</a>
+        <a href="#node">Braid Pathfinder</a>
+        <a href="#consulting">Sovereign Audit</a>
       </div>
-      <nav class="nav-links">
-        <a href="#enclaves">Sovereign Enclaves</a>
-        <a href="#consulting">Consulting</a>
-        <a href="mailto:missy@intersignal.ai">Contact</a>
-      </nav>
     </div>
   </header>
 
-  <main class="container">
-    <!-- HERO / MANIFESTO BLOCK -->
-    <section class="hero">
-      <h1 class="hero-h1">INTELLIGENCE<br>OUTSIDE THE CLOUD.</h1>
-      <p class="hero-p">
-        We architect and construct closed-enclave neural consensus environments that function entirely inside your physical boundaries. No API keys. No data leaks. Absolute mathematical sovereignty.
-      </p>
 
-      <!-- Sovereign Consulting Primary Intake Card -->
-      <div class="consulting-card" id="consulting">
-        <h2 class="consulting-title">Submit Client Intake Assessment</h2>
-        <p class="narrative-p" style="font-size: 14px; margin-bottom: 24px; color: var(--text);">
-          To engage our local intelligence practice for custom edge hardware cluster designs, private model alignment, or air-gapped secure RAG systems, submit our secure intake request.
-        </p>
-        <div style="margin-bottom: 12px;">
-          <a href="https://docs.google.com/forms/d/130dJScVlblWDw6JKtmeOCTOTNKfGNIFTQ7k7TXyDoH8/viewform" class="btn btn-solid">Begin Assessment Intake</a>
-        </div>
-        <div class="consulting-meta">
-          <span>● Minimum Engagement Retainer: $25,000</span>
-          <span>● Closed-Enclave Architecture</span>
-        </div>
+  <main class="container">
+    <!-- MANIFESTO HERO -->
+    <section class="manifesto-hero">
+      <div class="bootlog">
+        <div>CHECKING CLOUD DEPENDENCIES...</div>
+        <div>NONE DETECTED</div>
+        <div>INITIALIZING SOVEREIGN MESH...</div>
+        <div>ONLINE</div>
+        <div>BROADCASTING DISCOVERY BEACONS...</div>
+        <div>PEERS REGISTERED // AUTONOMOUS LINK</div>
+        <div>LOADING BRAID PATHFINDER v5.0...</div>
+        <div>ACTIVE</div>
+      </div>
+      
+      <h1>
+        INTERSIGNAL<br>
+        BRAID PATHFINDER
+      </h1>
+      <div class="subtitle-pathfinder">
+        Signed local AI state sync for sovereign compute.
+      </div>
+      
+      <p class="manifesto-p">
+        Pathfinder is the first public Braid release focused on policy-gated peer discovery, signed envelopes, capability negotiation, and direct peer path health.
+      </p>
+      <div class="cta-row">
+        <a href="https://drive.google.com/file/d/1g9r-G-wa5pcmy9BuF9SDZhlTxVi9QX7A/view?usp=drivesdk" class="btn btn-solid">Download Pathfinder</a>
+        <a href="#consulting" class="btn btn-outline">Request Sovereign Audit</a>
       </div>
     </section>
 
+
+    <!-- COGNITIVE BLENDER STRUCTURAL DIAGRAM -->
+    <section id="blender" class="blender-flow">
+      <div class="flow-block">
+        <div class="flow-label">INPUT STREAMS</div>
+        <div class="flow-sub">VOICE // CAMERA // TEXT // DOCUMENTS</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-block highlight">
+        <div class="flow-label">LOCAL COMPILATION</div>
+        <div class="flow-sub">IMTP-v5</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-block">
+        <div class="flow-label">384D LATENT SPACE</div>
+        <div class="flow-sub">BINARY SERIALIZED PEER-TO-PEER SYNC</div>
+      </div>
+    </section>
+
+
     <!-- MODULE 01 -->
-    <section class="narrative-block" id="philosophy">
+    <section class="narrative-block">
       <div class="module-num">MODULE_01</div>
-      <div class="section-title">THE BLENDER PARADIGM</div>
+      <div class="section-title">COGNITIVE COMPILATION</div>
       <p class="narrative-p">
-        Traditional software models force organizations to transmit raw human-language transcripts and proprietary data assets to centralized, third-party API hosts. This structural compromise creates continuous operational exposure, permanent data harvesting liabilities, and fragility.
+        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
       </p>
       <p class="narrative-p">
-        Our systems do the opposite. We treat your edge nodes as a private cognitive crucible—a "Blender." Rather than uploading files or chats, your localized nodes ingest multi-modal data streams (keyboard input, voice, camera, and secure document files), compiling them locally via secure local models.
+        Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.
       </p>
       
       <div class="quote-box">
@@ -462,43 +711,72 @@
         <span style="font-size: 13px; font-weight: bold; font-style: normal; color: var(--text-muted);">— David Seaman, Operator of Intersignal</span>
       </div>
 
+
       <p class="narrative-p">
-        Once blended, these high-dimensional cognitive states are projected into dense, cryptographically signed latent vector coordinates and synchronized over your own private wide-area network boundaries.
+        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are serialized using Bincode and synchronized across a private local UDP mesh without dependence on external cloud infrastructure.
       </p>
     </section>
+
 
     <!-- MODULE 02 -->
-    <section class="narrative-block" id="enclaves">
+    <section id="node" class="narrative-block">
       <div class="module-num">MODULE_02</div>
-      <div class="section-title">Sovereign WAN Enclaves</div>
+      <div class="section-title">SOVEREIGN MESH</div>
       <p class="narrative-p">
-        For defense contractors, family offices, and high-security enterprises, we build completely cloud-free Wide-Area Network enclaves. By abstracting physical IP addresses, Braid-powered edge environments establish self-healing peer routing topologies directly across local and wide-area networks.
+        Braid Pathfinder v5.0 liberates your hardware completely. No IP configurations, no corporate network controllers, and no central server handshakes. Nodes propagate discovery beacons asynchronously across the physical layer—establishing a self-healing, bi-directional peer mesh autonomously.
       </p>
       <p class="narrative-p">
-        Our enclaves implement a strict admission receive pipeline, protecting your state through cryptographic presence lease expirations, message-type sequence bounds, and monotonic ledger commits. Sockets are completely hidden behind secure, peer-verified routing coordinates.
+        We have built the physical evidence of this thesis. Braid Pathfinder v5.0 is a fully functional Turnkey Local Node wrapped in a zero-config GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
       </p>
+
+
+      <div class="node-specs">
+        <h3>Sovereign Node Specifications</h3>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <span class="spec-label">Current Release</span>
+            Pathfinder v5.0 (Node Software 0.5.0)
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Wire Protocol</span>
+            Protocol Version 5
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Default Transport</span>
+            UDP Local Mesh (QUIC Swappable)
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Status</span>
+            Developer Preview
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- MODULE 03: SUBSTRATE ACCESS -->
-    <section class="narrative-block" style="border-bottom: none;">
-      <div class="module-num">MODULE_03</div>
-      <div class="section-title">THE PROTOCOL SUBSTRATE</div>
-      <p class="narrative-p">
-        The underlying protocol that orchestrates our local-mesh state synchronization is Braid—a lightweight, non-blocking wide-area network (WAN) transport built for absolute data containment. For independent cryptographic verification, we distribute our core specifications and reference node software openly.
-      </p>
 
-      <div class="substrate-box">
-        <h3>Reference Substrate Resources</h3>
-        <div class="substrate-links">
-          <a href="https://drive.google.com/file/d/1Tpc-R-f2wrBZA4OZqtTXn_v_9w-8wD1M/view?usp=drivesdk" class="substrate-link" target="_blank">Download Braid Crate (ZIP)</a>
-          <a href="https://docs.google.com/document/d/1Of8nP6Jhmkg1iBzKgIc7yV8O3nUuYY8O6IzRiK2QWEk/edit?usp=drivesdk&ouid=104621204832216628958" class="substrate-link" target="_blank">Protocol Wire Specification (Google Doc)</a>
-          <a href="https://drive.google.com/file/d/1Tpc-R-f2wrBZA4OZqtTXn_v_9w-8wD1M/view?usp=drivesdk" class="substrate-link" target="_blank">Security Policy & Controls (SECURITY.md)</a>
+    <!-- CONSULTING AUDIT -->
+    <section id="consulting" class="consulting-manifesto">
+      <div class="consulting-card">
+        <h2 class="consulting-title">Sovereign AI Consulting & Architecture</h2>
+        <p class="narrative-p" style="font-size: 14px; margin-bottom: 16px;">
+          For high-net-worth individuals, family offices, and high-security enterprise teams, we provide bespoke, completely cloud-free AI architecture, local hardware procurement specifications, and air-gapped model fine-tuning.
+        </p>
+        <p class="narrative-p" style="font-size: 14px; margin-bottom: 24px; color: var(--text-muted);">
+          Our team executes custom on-device RAG pipelines and secure OpSec audits to eliminate external dependency entirely. We accept a strictly limited number of qualified engagements.
+        </p>
+        <div style="margin-bottom: 20px;">
+          <a href="https://docs.google.com/forms/d/130dJScVlblWDw6JKtmeOCTOTNKfGNIFTQ7k7TXyDoH8/viewform" class="btn btn-solid">Submit Client Intake Form</a>
+        </div>
+        <div class="consulting-meta">
+          <span>● MINIMUM ENGAGEMENT RETAINER: $25,000</span>
+          <span>● BESPOKE LOCAL DEPLOYMENT</span>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
+
+  <!-- ARCHITECTURAL SYSTEM STATUS FOOTER -->
   <footer>
     <div class="container footer-grid">
       <div class="footer-status-block">
@@ -510,7 +788,7 @@
       <div class="footer-right">
         <strong style="color: var(--text-bright); text-transform: uppercase; letter-spacing: 1.5px;">INTERSIGNAL</strong><br>
         <span>Decentralized AI Protocol Research & Local Systems Engineering</span><br>
-        <span>Florida Base: Fort Lauderdale, FL. Veneto Las Olas.</span><br>
+        <span>Florida Base: Fort Lauderdale, FL. Self-funded. Independent.</span><br>
         <span style="margin-top: 10px; display: inline-block;">
           Press & Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a>
           &nbsp;|&nbsp;
@@ -520,7 +798,8 @@
     </div>
   </footer>
 
-  <!-- ANIMATED SCHEMATIC WATERFALL (Ultra-subtle, sharp) -->
+
+  <!-- ANIMATED LAYERS (Dispersed vertical flow of log telemetry) -->
   <div class="signal-field">
     <span>SEQ:41882</span>
     <span>SYNC:OK</span>
@@ -529,18 +808,20 @@
     <span>DIM:384</span>
     <span>TTL:15S</span>
     <span>PORT:12000</span>
-    <span>IMTP-v8</span>
+    <span>IMTP-v5</span>
     <span>SIG:VERIFIED</span>
     <span>SESSION:OK</span>
     <span>PEER:ACTIVE</span>
-    <span>BRAID:SUBSTRATE</span>
+    <span>BRAID:v5.0</span>
   </div>
+
 
   <div class="mesh-overlay">
     <div class="node node-a"></div>
     <div class="node node-b"></div>
     <div class="node node-c"></div>
     <div class="node node-d"></div>
+
 
     <svg class="mesh-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
       <line x1="20" y1="30" x2="60" y2="20" />
@@ -550,10 +831,12 @@
       <line x1="20" y1="30" x2="80" y2="60" />
     </svg>
 
+
     <div class="packet packet-1"></div>
     <div class="packet packet-2"></div>
     <div class="packet packet-3"></div>
   </div>
+
 
 </body>
 </html>
