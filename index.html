@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Intersignal // Braid Pathfinder v0.6 "DeepBlend" & Sovereign AI</title>
+  <title>Intersignal // Braid Pathfinder & Sovereign AI</title>
   <style>
     :root {
       --bg: #07080c;
@@ -99,240 +99,78 @@
       color: var(--accent);
     }
 
-    /* Manifesto Hero */
-    .manifesto-hero {
-      padding: 80px 0 60px 0;
-      position: relative;
-      z-index: 10;
+    /* Hero / Manifesto Block */
+    .hero {
+      padding: 60px 0 40px 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .bootlog {
-      font-family: Consolas, "Courier New", monospace;
-      color: #39dbdb;
-      font-size: 12px;
-      letter-spacing: 1px;
-      margin-bottom: 32px;
-    }
-
-    .bootlog div {
-      opacity: 0;
-      animation: bootReveal .5s forwards;
-    }
-
-    .bootlog div:nth-child(1){animation-delay:.2s;}
-    .bootlog div:nth-child(2){animation-delay:.6s;}
-    .bootlog div:nth-child(3){animation-delay:1.0s;}
-    .bootlog div:nth-child(4){animation-delay:1.4s;}
-    .bootlog div:nth-child(5){animation-delay:1.8s;}
-    .bootlog div:nth-child(6){animation-delay:2.2s;}
-    .bootlog div:nth-child(7){animation-delay:2.6s;}
-    .bootlog div:nth-child(8){animation-delay:3.0s;}
-
-    @keyframes bootReveal {
-      from {
-        opacity: 0;
-        transform: translateY(5px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    h1 {
-      font-size: 60px;
-      line-height: .95;
-      text-transform: uppercase;
-      letter-spacing: -2px;
-      max-width: 700px;
+    .hero-h1 {
+      font-size: 28px;
+      font-weight: 900;
       color: var(--text-bright);
+      line-height: 1.25;
+      letter-spacing: -0.5px;
       margin: 0 0 24px 0;
     }
 
-    .subtitle-pathfinder {
-      font-size: 20px;
-      color: var(--accent);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 24px;
-    }
-
-    /* Media query to handle iOS/mobile text wrapping cleanly */
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 38px;
-        letter-spacing: -1px;
-        line-height: 1.0;
-      }
-      .spec-grid {
-        grid-template-columns: 1fr !important;
-        gap: 16px !important;
-      }
-      .footer-grid {
-        grid-template-columns: 1fr !important;
-        gap: 32px !important;
-      }
-      .footer-right {
-        text-align: left !important;
-      }
-    }
-
-    .manifesto-p {
+    .hero-p {
       font-size: 16px;
-      line-height: 1.6;
       color: var(--text);
-      margin-bottom: 40px;
+      margin: 0 0 24px 0;
     }
 
-    /* Minimal Technical Diagram */
-    .blender-flow {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 20px 0 60px 0;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-      z-index: 10;
-    }
-
-    .flow-block {
-      background-color: #0c0e14;
+    /* Installer Section */
+    .installer-box {
+      background-color: #0c0d12;
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 16px 24px;
-      text-align: center;
-      width: 100%;
-      max-width: 480px;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 32px;
       box-sizing: border-box;
-      transition: border-color 0.2s;
     }
 
-    .flow-block.highlight {
-      border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(57, 219, 219, 0.1);
+    .sober-warning {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-weight: 600;
     }
 
-    .flow-label {
-      font-family: monospace;
+    .terminal-code {
+      background-color: #050609;
+      border: 1px solid #10121a;
+      border-radius: 4px;
+      padding: 12px 16px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       font-size: 13px;
-      font-weight: 900;
-      color: var(--text-bright);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .flow-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .flow-arrow {
       color: var(--accent);
-      font-size: 20px;
-      font-family: monospace;
-      line-height: 1;
-    }
-
-    /* Section Naming (Architectural Modules) */
-    .section-title {
-      font-size: 11px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
       margin-bottom: 24px;
+      display: block;
+      white-space: nowrap;
+      overflow-x: auto;
     }
 
-    .module-num {
-      font-family: monospace;
-      font-size: 11px;
-      color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 2px;
-    }
-
-    .narrative-block {
-      margin-bottom: 60px;
-      padding-top: 40px;
-    }
-
-    .narrative-p {
-      font-size: 15px;
-      margin-bottom: 24px;
-      text-align: justify;
-    }
-
-    .quote-box {
-      border-left: 2px solid var(--accent);
-      padding-left: 20px;
-      margin: 32px 0;
-      font-style: italic;
-      color: var(--text-bright);
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    /* Turnkey Proof */
-    .node-specs {
-      background-color: #0c0e14;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 32px;
-      margin-bottom: 60px;
-    }
-
-    .node-specs h3 {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text-bright);
-      margin: 0 0 16px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .spec-grid {
+    /* Buttons & Links Section */
+    .link-section-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .spec-item {
-      font-size: 13px;
-    }
-
-    .spec-label {
-      font-weight: 700;
-      color: var(--accent);
-      font-family: monospace;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    /* Buttons */
-    .cta-row {
-      display: flex;
       gap: 16px;
-      margin-top: 40px;
+      margin-bottom: 24px;
     }
 
     .btn {
-      display: inline-block;
-      padding: 12px 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
       border-radius: 4px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      text-decoration: none;
       text-transform: uppercase;
       letter-spacing: 1px;
-      transition: background-color 0.15s, transform 0.1s;
+      text-decoration: none;
+      transition: all 0.15s;
     }
 
     .btn-solid {
@@ -341,317 +179,314 @@
     }
 
     .btn-solid:hover {
-      background-color: #2bc4b4;
+      background-color: #ffffff;
+      box-shadow: 0 0 15px rgba(57, 219, 219, 0.4);
     }
 
     .btn-outline {
       border: 1px solid var(--border);
       color: var(--text);
-      background-color: transparent;
     }
 
     .btn-outline:hover {
-      background-color: #0c0e14;
-      border-color: var(--text-muted);
+      border-color: var(--accent);
+      color: var(--text-bright);
     }
 
-    /* Sovereign AI Consulting Section */
-    .consulting-manifesto {
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      margin-top: 60px;
+    .alpha-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      border-left: 2px solid var(--accent);
+      padding-left: 12px;
     }
 
-    .consulting-card {
-      background-color: #0c0e14;
-      border: 1px solid var(--accent);
-      border-radius: 6px;
-      padding: 32px;
+    /* Narrative Segments */
+    .narrative-block {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .consulting-title {
+    .module-num {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
       font-size: 18px;
       font-weight: 800;
-      color: var(--text-bright);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 0 0 12px 0;
+      letter-spacing: 1.5px;
+      color: var(--text-bright);
+      margin-bottom: 20px;
     }
 
-    .consulting-meta {
-      font-family: monospace;
-      font-size: 12px;
-      color: var(--accent);
-      font-weight: 700;
-      margin-top: 12px;
-      display: flex;
+    .narrative-p {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .quote-box {
+      border-left: 1px solid var(--accent);
+      padding-left: 20px;
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--text-bright);
+      font-size: 15px;
+    }
+
+    .node-specs {
+      background-color: #0c0d12;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+
+    .node-specs h3 {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-bright);
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
 
-    /* Refined Architectural Status Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 48px 0;
-      margin-top: 80px;
-      font-size: 11px;
+    .spec-item {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .spec-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       color: var(--text-muted);
-      position: relative;
-      z-index: 20;
+      margin-bottom: 4px;
+    }
+
+    /* Signal Visualizer Schematic */
+    .mesh-overlay {
+      position: fixed;
+      right: 4%;
+      bottom: 10%;
+      width: 280px;
+      height: 280px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.22;
+      transition: opacity 0.5s;
+    }
+
+    @media (max-width: 1100px) {
+      .mesh-overlay {
+        position: relative;
+        margin: 40px auto 0 auto;
+        right: auto;
+        bottom: auto;
+        opacity: 0.4;
+      }
+    }
+
+    .node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .node-a { top: 30%; left: 20%; }
+    .node-b { top: 20%; left: 60%; }
+    .node-c { top: 75%; left: 45%; }
+    .node-d { top: 60%; left: 80%; }
+
+    .mesh-svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--accent);
+      stroke-width: 0.5;
+      stroke-dasharray: 2 4;
+      opacity: 0.5;
+    }
+
+    /* Enhanced Pinging Points Animation */
+    .packet {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #ffffff;
+    }
+
+    .packet-1 {
+      animation: pingA toB 0.9s linear infinite;
+    }
+    .packet-2 {
+      animation: pingB toC 1.2s linear infinite;
+    }
+    .packet-3 {
+      animation: pingC toD 1.4s linear infinite;
+    }
+
+    @keyframes toB {
+      0% { top: 30%; left: 20%; opacity: 1; }
+      100% { top: 20%; left: 60%; opacity: 0; }
+    }
+    @keyframes toC {
+      0% { top: 20%; left: 60%; opacity: 1; }
+      100% { top: 75%; left: 45%; opacity: 0; }
+    }
+    @keyframes toD {
+      0% { top: 75%; left: 45%; opacity: 1; }
+      100% { top: 60%; left: 80%; opacity: 0; }
+    }
+
+    /* Telemetry Waterfall */
+    .signal-field {
+      position: fixed;
+      left: 24px;
+      bottom: 24px;
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      z-index: 1;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    @media (max-width: 800px) {
+      .signal-field { display: none; }
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+      background-color: #050609;
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 280px 1fr;
       gap: 40px;
-      align-items: flex-start;
+    }
+
+    @media (max-width: 700px) {
+      .footer-grid { grid-template-columns: 1fr; }
     }
 
     .footer-status-block {
-      font-family: Consolas, "Courier New", monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      width: 100%;
-      max-width: 280px;
+      font-family: monospace;
+      background-color: #0c0d12;
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 4px;
     }
 
     .status-line {
       display: flex;
       justify-content: space-between;
-      line-height: 1.6;
+      margin-bottom: 6px;
     }
+
+    .status-line:last-child { margin-bottom: 0; }
 
     .status-dots {
       flex: 1;
-      text-align: left;
-      padding-left: 6px;
-      color: rgba(92, 100, 117, 0.15);
+      text-align: center;
+      letter-spacing: 2px;
+      overflow: hidden;
+      height: 14px;
+      color: #1a1d29;
     }
 
     .status-val {
       color: var(--accent);
-      font-weight: 700;
+      font-weight: bold;
     }
 
     .footer-right {
-      text-align: right;
-    }
-
-    .footer-right a {
-      color: var(--text-muted);
-      text-decoration: underline;
-    }
-
-    .footer-right a:hover {
-      color: var(--accent);
-    }
-
-    /* ANIMATED LIVING INFRASTRUCTURE LAYERS */
-    .mesh-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 650px;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: .35;
-      z-index: 1;
-    }
-
-    .mesh-svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .mesh-svg line {
-      stroke: #39dbdb;
-      stroke-width: .15;
-      opacity: .25;
-    }
-
-    .node {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: #39dbdb;
-      border-radius: 50%;
-      box-shadow:
-        0 0 8px #39dbdb,
-        0 0 20px #39dbdb;
-    }
-
-    .node-a { left: 20%; top: 30%; }
-    .node-b { left: 60%; top: 20%; }
-    .node-c { left: 80%; top: 60%; }
-    .node-d { left: 45%; top: 75%; }
-
-    .packet {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 0 12px #39dbdb;
-    }
-
-    .packet::after {
-      content: '';
-      position: absolute;
-      width: 40px;
-      height: 1px;
-      background: linear-gradient(
-        to right,
-        rgba(57, 219, 219, .7),
-        transparent
-      );
-      left: -40px;
-      top: 2px;
-    }
-
-    /* Increased speed and intensity of packet pings */
-    .packet-1 {
-      animation: packetA 3.5s linear infinite;
-    }
-
-    .packet-2 {
-      animation: packetB 4.2s linear infinite;
-    }
-
-    .packet-3 {
-      animation: packetC 5.5s linear infinite;
-    }
-
-    @keyframes packetA {
-      0% { left: 20%; top: 30%; opacity: 0; }
-      10% { opacity: 1; }
-      50% { left: 60%; top: 20%; }
-      100% { left: 80%; top: 60%; opacity: 0; }
-    }
-
-    @keyframes packetB {
-      0% { left: 45%; top: 75%; opacity: 0; }
-      10% { opacity: 1; }
-      100% { left: 20%; top: 30%; opacity: 0; }
-    }
-
-    @keyframes packetC {
-      0% { left: 80%; top: 60%; opacity: 0; }
-      10% { opacity: 1; }
-      100% { left: 60%; top: 20%; opacity: 0; }
-    }
-
-    .signal-field {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: .03; /* Lowered opacity for absolute minimal, clean backdrop */
-      z-index: 0;
-    }
-
-    .signal-field span {
-      position: absolute;
-      font-family: monospace;
-      color: #39dbdb;
-      font-size: 11px;
-      text-shadow: none; /* Eliminated text blurs entirely for sharp, crisp rendering */
-      animation: driftUp 22s linear infinite;
-    }
-
-    /* Dispersed vertical flow of log telemetry */
-    .signal-field span:nth-child(1)  { left: 4%;  animation-delay: 0s;   animation-duration: 24s; }
-    .signal-field span:nth-child(2)  { left: 14%; animation-delay: 3s;   animation-duration: 20s; }
-    .signal-field span:nth-child(3)  { left: 24%; animation-delay: 1.5s; animation-duration: 28s; }
-    .signal-field span:nth-child(4)  { left: 34%; animation-delay: 6s;   animation-duration: 22s; }
-    .signal-field span:nth-child(5)  { left: 44%; animation-delay: 4.5s; animation-duration: 26s; }
-    .signal-field span:nth-child(6)  { left: 54%; animation-delay: 9s;   animation-duration: 18s; }
-    .signal-field span:nth-child(7)  { left: 64%; animation-delay: 7.5s; animation-duration: 30s; }
-    .signal-field span:nth-child(8)  { left: 74%; animation-delay: 12s;  animation-duration: 21s; }
-    .signal-field span:nth-child(9)  { left: 84%; animation-delay: 10.5s;animation-duration: 25s; }
-    .signal-field span:nth-child(10) { left: 94%; animation-delay: 14s;  animation-duration: 23s; }
-    .signal-field span:nth-child(11) { left: 19%; animation-delay: 8s;   animation-duration: 27s; }
-    .signal-field span:nth-child(12) { left: 79%; animation-delay: 11s;  animation-duration: 29s; }
-
-    @keyframes driftUp {
-      from {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-120px);
-        opacity: 0;
-      }
+      line-height: 1.8;
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER WITH COSMIC GALAXY GLOW -->
+  <!-- MINIMAL HEADER -->
   <header>
     <div class="container header-flex">
       <div class="logo-container-wrapper">
         <div class="logo-galaxy"></div>
-        <a href="#" class="logo">INTERSIGNAL</a>
+        <a href="/" class="logo">INTERSIGNAL</a>
       </div>
-      <div class="nav-links">
-        <a href="#blender">The Blender</a>
-        <a href="#consulting">Audit/Review</a>
-      </div>
+      <nav class="nav-links">
+        <a href="#node">Protocol</a>
+        <a href="#consulting">Consulting</a>
+        <a href="mailto:missy@intersignal.ai">Contact</a>
+      </nav>
     </div>
   </header>
 
   <main class="container">
-    <!-- MANIFESTO HERO -->
-    <section class="manifesto-hero">
-      <div class="bootlog">
-        <div>CHECKING CLOUD DEPENDENCIES...</div>
-        <div>NONE DETECTED</div>
-        <div>INITIALIZING SOVEREIGN MESH...</div>
-        <div>ONLINE</div>
-        <div>BROADCASTING DISCOVERY BEACONS...</div>
-        <div>PEERS REGISTERED // AUTONOMOUS LINK</div>
-        <div>LOADING BRAID PATHFINDER v0.6 "DEEPBLEND" v0.6-alpha...</div>
-        <div>ACTIVE</div>
-      </div>
-      
-      <h1>
-        BRAID PATHFINDER v0.6 "DEEPBLEND"
-      </h1>
-      <div class="subtitle-pathfinder">
-        Signed local AI state sync for sovereign compute.
-      </div>
-      
-      <p class="manifesto-p">
-        Pathfinder is the first portable Braid release focused on policy-gated peer discovery, signed envelopes, capability negotiation, and direct peer path health.
+    <!-- HERO / MANIFESTO BLOCK -->
+    <section class="hero">
+      <h1 class="hero-h1">Braid Pathfinder v0.8.2-alpha & Sovereign AI</h1>
+      <p class="hero-p">
+        We architect and construct completely cloud-free, decentralized neural consensus mechanisms for localized enclaves and high-security enterprise teams. No API keys, no central servers, and zero telemetry harvesting.
       </p>
-      <div class="cta-row" style="flex-wrap: wrap; gap: 12px;">
-        <a href="https://drive.google.com/file/d/1SUgc5N5e8oGrMDTZZrHex3RGH7czHTkj/view?usp=drivesdk" class="btn btn-solid">LAN Pathfinder (v0.6.0-stable)</a>
-        <a href="https://drive.google.com/file/d/1cMaab1Hc61QAcqM5X5Z-zaUJRG7G_GfD/view?usp=drivesdk" class="btn btn-outline">WAN Tendril v0.8.2 (conformance verified)</a>
-        <a href="#consulting" class="btn btn-outline" style="border-color: rgba(57, 219, 219, 0.3); color: var(--accent);">Request Sovereign Audit</a>
-      </div>
-    </section>
 
-    <!-- COGNITIVE BLENDER STRUCTURAL DIAGRAM -->
-    <section id="blender" class="blender-flow">
-      <div class="flow-block">
-        <div class="flow-label">INPUT STREAMS</div>
-        <div class="flow-sub">VOICE // CAMERA // TEXT // DOCUMENTS</div>
+      <!-- Turnkey Installer Section (BLOCKER 1 & 3 RESOLVED) -->
+      <div class="node-specs" style="margin-top: 40px; margin-bottom: 24px; padding: 24px;">
+        <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 13px; letter-spacing: 1px;">INSTALL & DEPLOY DEVELOPMENT PREVIEW</h3>
+        <p class="narrative-p" style="font-size: 14px; margin-bottom: 20px; color: var(--text-bright);">
+          Braid Tendril v0.8.2-alpha is now available as an early developer preview.
+        </p>
+        
+        <p class="heatmap-desc" style="font-size: 12px; margin-bottom: 10px; color: var(--text-muted); font-style: italic;">
+          Always inspect remote install scripts before running them:
+        </p>
+        <code style="background-color: #0d0e12; border: 1px solid var(--border); padding: 6px 12px; border-radius: 4px; display: block; font-family: monospace; font-size: 13px; color: var(--accent); margin-bottom: 15px; overflow-x: auto;">
+          curl -fsSL https://intersignal.org/install-braid.sh
+        </code>
+
+        <p class="heatmap-desc" style="font-size: 12px; margin-bottom: 10px; color: var(--text-muted); font-weight: bold;">
+          Run the SHA256-verified turnkey installer:
+        </p>
+        <code style="background-color: #050609; border: 1px solid #10121a; padding: 12px 16px; border-radius: 4px; display: block; font-family: monospace; font-size: 13px; color: #ffffff; margin-bottom: 24px; overflow-x: auto;">
+          curl -fsSL https://intersignal.org/install-braid.sh | sh
+        </code>
+
+        <p class="alpha-note" style="margin-bottom: 0;">
+          This alpha build includes signed node identities, Wire Protocol 8, local two-node demo support, trust-policy scaffolding, conformance fixtures, and SHA256-verified release assets. It is intended for developers, testers, and protocol reviewers — not production deployments yet.
+        </p>
       </div>
-      <div class="flow-arrow">↓</div>
-      <div class="flow-block highlight">
-        <div class="flow-label">LOCAL COMPILATION</div>
-        <div class="flow-sub">IMTP-v6</div>
-      </div>
-      <div class="flow-arrow">↓</div>
-      <div class="flow-block">
-        <div class="flow-label">384D LATENT SPACE</div>
-        <div class="flow-sub">BINARY SERIALIZED PEER-TO-PEER SYNC</div>
+
+      <!-- Action Card / Navigation Links (BLOCKER 1 & 4 RESOLVED) -->
+      <div class="link-section-grid">
+        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/src/braid-node-v0.8.2.zip" class="btn btn-solid">Download Braid Tendril Alpha</a>
+        <a href="https://intersignal.org/install-braid.sh" class="btn btn-outline" target="_blank">Install Script: install-braid.sh</a>
+        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/" class="btn btn-outline" target="_blank">Release Assets: v0.8.2-alpha</a>
+        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/braid-v0.8.2-alpha-linux-x64.tar.gz.sha256" class="btn btn-outline" target="_blank">Checksums: SHA256SUMS</a>
+        <a href="#node" class="btn btn-outline">Demo: braid demo</a>
+        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/src/SECURITY.md" class="btn btn-outline" target="_blank">Security Notes: SECURITY.md</a>
       </div>
     </section>
 
@@ -672,102 +507,54 @@
       </div>
 
       <p class="narrative-p">
-        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are serialized using Bincode and synchronized across a private local UDP mesh without dependence on external cloud infrastructure.
+        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are cryptographically signed and synchronized over physical UDP subnets.
       </p>
-    </section>
+    </div>
 
-    <!-- MODULE 02 -->
-    <section id="node" class="narrative-block">
-      <div class="module-num">MODULE_02</div>
-      <div class="section-title">SOVEREIGN MESH</div>
-      <p class="narrative-p">
-        Braid Tendril WAN v0.6-alpha liberates your hardware completely. No IP configurations, no corporate network controllers, and no central server handshakes. Nodes propagate discovery beacons asynchronously across the physical layer—establishing a self-healing, bi-directional peer mesh autonomously.
-      </p>
-      <p class="narrative-p">
-        We have built the physical evidence of this thesis. Braid Tendril WAN v0.8.2 is a fully functional Turnkey Local Node wrapped in a zero-config GUI desktop application. It runs locally, binding asynchronously to your physical network cards to manage your state mesh without cloud intermediate servers.
-      </p>
-
-      <div class="node-specs">
-        <h3>Sovereign Node Specifications</h3>
-        <div class="spec-grid">
-          <div class="spec-item">
-            <span class="spec-label">Current Release</span>
-            Tendril v0.8.2 (Node Software 0.8.2)
-          </div>
-          <div class="spec-item">
-            <span class="spec-label">Wire Protocol</span>
-            Protocol Version 8
-          </div>
-          <div class="spec-item">
-            <span class="spec-label">Default Transport</span>
-            NodeId-first WAN routing (pluggable transports)
-          </div>
-          <div class="spec-item">
-            <span class="spec-label">Status</span>
-            Developer Preview (conformance verified)
-          </div>
+    <!-- MODULE 2: WAN TOPOLOGY AND ROUTING ENGINE -->
+    <section class="card">
+      <h2 class="card-title" style="padding: 20px 20px 0 20px;">WAN Peering Topology</h2>
+      <div class="cardContent" style="padding: 0 20px 20px 20px;">
+        <div class="node-stat">
+          <span>COGNITIVE ALIGNMENT SCHEMA</span>
+          <code style="color: var(--accent); font-size: 13px; font-family: monospace;">NodeId-first WAN Routing Protocol // Tendril Kernel</code>
         </div>
-      </div>
-    </section>
-
-    <!-- CONSULTING AUDIT -->
-    <section id="consulting" class="consulting-manifesto">
-      <div class="consulting-card">
-        <h2 class="consulting-title">Sovereign AI Consulting & Architecture</h2>
-        <p class="narrative-p" style="font-size: 14px; margin-bottom: 16px;">
-          For high-net-worth individuals, family offices, and high-security enterprise teams, we provide bespoke, completely cloud-free AI architecture, local hardware procurement specifications, and air-gapped model fine-tuning.
+        <p style="font-size: 13px; line-height: 1.5; color: var(--text); margin-top: 12px;">
+          Braid Tendril abstracts physical IP addresses completely. By implementing signed presence records and routing candidates directly in the **Tendril Transport Manager**, edge nodes achieve seamless peer synchronization across variable wide-area routes, gracefully falling back from direct QUIC/UDP paths to zero-trust opaque transit relays without breaking active Handshakes.
         </p>
-        <p class="narrative-p" style="font-size: 14px; margin-bottom: 24px; color: var(--text-muted);">
-          Our team executes custom on-device RAG pipelines and secure OpSec audits to eliminate external dependency entirely. We accept a strictly limited number of qualified engagements.
-        </p>
-        <div style="margin-bottom: 20px;">
-          <a href="https://docs.google.com/forms/d/130dJScVlblWDw6JKtmeOCTOTNKfGNIFTQ7k7TXyDoH8/viewform" class="btn btn-solid">Submit Client Intake Form</a>
-        </div>
-        <div class="consulting-meta">
-          <span>● MINIMUM ENGAGEMENT RETAINER: $25,000</span>
-          <span>● BESPOKE LOCAL DEPLOYMENT</span>
+      </div>
+    </section>
+
+    <!-- CONFORMANCE SECTION -->
+    <section style="margin-top: 24px;"></section>
+
+    <!-- RIGHT PANEL: REAL-TIME INGESTION FEED -->
+    <section class="card" style="margin-top: 20px;">
+      <h2 class="card-title">Ingestion & Path Health Telemetry</h2>
+      <div class="cardContent" style="padding: 0 20px 20px 20px;">
+        <div class="node-stat">
+          <span>PEER ADMISSION AND TRUST PATHS</span>
+          <p style="font-size: 12px; line-height: 1.4; color: var(--text);">
+            Braid Tendril implements a strict admission receive pipeline, protecting local state through cryptographic presence lease expirations, message-type sequence limits, and monotonic ledger commits.
+          </p>
         </div>
       </div>
     </section>
-  </main>
+  </div>
 
-  <!-- ARCHITECTURAL SYSTEM STATUS FOOTER -->
-  <footer>
-    <div class="container footer-grid">
-      <div class="footer-status-block">
-        <div class="status-line"><span>STATUS</span><span class="status-dots">........</span><span class="status-val">ONLINE</span></div>
-        <div class="status-line"><span>MESH</span><span class="status-dots">..........</span><span class="status-val">ACTIVE</span></div>
-        <div class="status-line"><span>DEPENDENCIES</span><span class="status-dots">..</span><span class="status-val">NONE</span></div>
-        <div class="status-line"><span>CLOUD</span><span class="status-dots">.........</span><span class="status-val" style="color: var(--text-muted);">DISCONNECTED</span></div>
-      </div>
-      <div class="footer-right">
-        <strong style="color: var(--text-bright); text-transform: uppercase; letter-spacing: 1.5px;">INTERSIGNAL</strong><br>
-        <span>Decentralized AI Protocol Research & Local Systems Engineering</span><br>
-        <span>Florida Base: Fort Lauderdale, FL. Self-funded. Independent.</span><br>
-        <span style="margin-top: 10px; display: inline-block;">
-          Press & Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a>
-          &nbsp;|&nbsp;
-          X: <a href="https://x.com/intersignal_ai" style="color: var(--accent); text-decoration: none;">@intersignal_ai</a>
-        </span>
-      </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div style="display: flex; justify-content: space-between; max-width: 900px; margin: 0 auto; padding: 0 24px;">
+      <div>PROTOCOL: <strong>IMTP Wire Spec v8 (Tendril WAN Enabled)</strong></div>
+      <div>CRYPTO: <strong>Ed25519 Signed Envelopes</strong></div>
+      <div>STATUS: <span style="color: var(--accent);">● ONLINE DISCOVERY</span></div>
     </div>
   </footer>
 
-  <!-- ANIMATED LAYERS (Dispersed vertical flow of log telemetry) -->
+  <!-- ANIMATED LAYERS -->
   <div class="signal-field">
     <span>SEQ:41882</span>
-    <span>SYNC:OK</span>
-    <span>LAT:0.7ms</span>
-    <span>UDP:ACTIVE</span>
-    <span>DIM:384</span>
-    <span>TTL:15S</span>
-    <span>PORT:12000</span>
-    <span>IMTP-v6</span>
-    <span>SIG:VERIFIED</span>
-    <span>SESSION:OK</span>
-    <span>PEER:ACTIVE</span>
-    <span>BRAID:v5.0</span>
-  </div>
+    <span>SYNC:OK</span>\n    <span>LAT:0.7ms</span>\n    <span>UDP:ACTIVE</span>\n    <span>DIM:384</span>\n    <span>TTL:15S</span>\n    <span>PORT:12000</span>\n    <span>IMTP-v8</span>\n    <span>SIG:VERIFIED</span>\n    <span>SESSION:OK</span>\n    <span>PEER:ACTIVE</span>\n    <span>BRAID:v0.8.2-alpha</span>\n  </div>
 
   <div class="mesh-overlay">
     <div class="node node-a"></div>
