@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Intersignal // Braid Pathfinder & Sovereign AI</title>
+  <title>Intersignal // Local Enclaves & Sovereign AI</title>
   <style>
     :root {
       --bg: #07080c;
@@ -101,109 +101,30 @@
 
     /* Hero / Manifesto Block */
     .hero {
-      padding: 60px 0 40px 0;
+      padding: 80px 0 60px 0;
       border-bottom: 1px solid var(--border);
     }
 
     .hero-h1 {
-      font-size: 28px;
+      font-size: 42px;
       font-weight: 900;
       color: var(--text-bright);
-      line-height: 1.25;
-      letter-spacing: -0.5px;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
       margin: 0 0 24px 0;
+      text-transform: uppercase;
     }
 
     .hero-p {
-      font-size: 16px;
+      font-size: 18px;
       color: var(--text);
-      margin: 0 0 24px 0;
-    }
-
-    /* Installer Section */
-    .installer-box {
-      background-color: #0c0d12;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 32px;
-      box-sizing: border-box;
-    }
-
-    .sober-warning {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-
-    .terminal-code {
-      background-color: #050609;
-      border: 1px solid #10121a;
-      border-radius: 4px;
-      padding: 12px 16px;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 13px;
-      color: var(--accent);
-      margin-bottom: 24px;
-      display: block;
-      white-space: nowrap;
-      overflow-x: auto;
-    }
-
-    /* Buttons & Links Section */
-    .link-section-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 18px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-decoration: none;
-      transition: all 0.15s;
-    }
-
-    .btn-solid {
-      background-color: var(--accent);
-      color: #07080c;
-    }
-
-    .btn-solid:hover {
-      background-color: #ffffff;
-      box-shadow: 0 0 15px rgba(57, 219, 219, 0.4);
-    }
-
-    .btn-outline {
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--accent);
-      color: var(--text-bright);
-    }
-
-    .alpha-note {
-      font-size: 12px;
-      color: var(--text-muted);
       line-height: 1.6;
-      border-left: 2px solid var(--accent);
-      padding-left: 12px;
+      margin: 0 0 32px 0;
     }
 
     /* Narrative Segments */
     .narrative-block {
-      padding: 48px 0;
+      padding: 60px 0;
       border-bottom: 1px solid var(--border);
     }
 
@@ -226,54 +147,109 @@
 
     .narrative-p {
       margin: 0 0 20px 0;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text);
+      text-align: justify;
     }
 
     .quote-box {
-      border-left: 1px solid var(--accent);
+      border-left: 2px solid var(--accent);
       padding-left: 20px;
       margin: 32px 0;
       font-style: italic;
       color: var(--text-bright);
-      font-size: 15px;
+      font-size: 16px;
+      line-height: 1.6;
     }
 
-    .node-specs {
+    /* Sovereign AI Consulting Section */
+    .consulting-card {
       background-color: #0c0d12;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+      box-sizing: border-box;
+      margin-top: 24px;
+    }
+
+    .consulting-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 16px 0;
+    }
+
+    .consulting-meta {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-top: 24px;
+      display: flex;
+      gap: 16px;
+      text-transform: uppercase;
+    }
+
+    /* Buttons & Links Section */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .btn-solid {
+      background-color: var(--accent);
+      color: #07080c;
+    }
+
+    .btn-solid:hover {
+      background-color: #ffffff;
+      box-shadow: 0 0 15px rgba(57, 219, 219, 0.4);
+    }
+
+    /* Low-Profile Protocol Section */
+    .substrate-box {
+      background-color: #08090d;
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 24px;
       margin-top: 32px;
     }
 
-    .node-specs h3 {
-      margin: 0 0 16px 0;
-      font-size: 13px;
+    .substrate-box h3 {
+      margin: 0 0 12px 0;
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-bright);
     }
 
-    .spec-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    .substrate-links {
+      display: flex;
+      flex-wrap: wrap;
       gap: 16px;
+      margin-top: 16px;
     }
 
-    .spec-item {
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .spec-label {
-      display: block;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    .substrate-link {
+      font-size: 12px;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .substrate-link:hover {
+      color: var(--accent);
     }
 
     /* Signal Visualizer Schematic */
@@ -332,14 +308,15 @@
       box-shadow: 0 0 12px #ffffff;
     }
 
+    /* Highly active network speed and pacing */
     .packet-1 {
-      animation: pingA toB 0.9s linear infinite;
+      animation: pingA toB 1.8s linear infinite;
     }
     .packet-2 {
-      animation: pingB toC 1.2s linear infinite;
+      animation: pingB toC 2.2s linear infinite;
     }
     .packet-3 {
-      animation: pingC toD 1.4s linear infinite;
+      animation: pingC toD 2.6s linear infinite;
     }
 
     @keyframes toB {
@@ -438,7 +415,7 @@
         <a href="/" class="logo">INTERSIGNAL</a>
       </div>
       <nav class="nav-links">
-        <a href="#node">Protocol</a>
+        <a href="#enclaves">Sovereign Enclaves</a>
         <a href="#consulting">Consulting</a>
         <a href="mailto:missy@intersignal.ai">Contact</a>
       </nav>
@@ -448,57 +425,36 @@
   <main class="container">
     <!-- HERO / MANIFESTO BLOCK -->
     <section class="hero">
-      <h1 class="hero-h1">Braid Pathfinder v0.8.2-alpha & Sovereign AI</h1>
+      <h1 class="hero-h1">INTELLIGENCE<br>OUTSIDE THE CLOUD.</h1>
       <p class="hero-p">
-        We architect and construct completely cloud-free, decentralized neural consensus mechanisms for localized enclaves and high-security enterprise teams. No API keys, no central servers, and zero telemetry harvesting.
+        We architect and construct closed-enclave neural consensus environments that function entirely inside your physical boundaries. No API keys. No data leaks. Absolute mathematical sovereignty.
       </p>
 
-      <!-- Turnkey Installer Section (BLOCKER 1 & 3 RESOLVED) -->
-      <div class="node-specs" style="margin-top: 40px; margin-bottom: 24px; padding: 24px;">
-        <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 13px; letter-spacing: 1px;">INSTALL & DEPLOY DEVELOPMENT PREVIEW</h3>
-        <p class="narrative-p" style="font-size: 14px; margin-bottom: 20px; color: var(--text-bright);">
-          Braid Tendril v0.8.2-alpha is now available as an early developer preview.
+      <!-- Sovereign Consulting Primary Intake Card -->
+      <div class="consulting-card" id="consulting">
+        <h2 class="consulting-title">Submit Client Intake Assessment</h2>
+        <p class="narrative-p" style="font-size: 14px; margin-bottom: 24px; color: var(--text);">
+          To engage our local intelligence practice for custom edge hardware cluster designs, private model alignment, or air-gapped secure RAG systems, submit our secure intake request.
         </p>
-        
-        <p class="heatmap-desc" style="font-size: 12px; margin-bottom: 10px; color: var(--text-muted); font-style: italic;">
-          Always inspect remote install scripts before running them:
-        </p>
-        <code style="background-color: #0d0e12; border: 1px solid var(--border); padding: 6px 12px; border-radius: 4px; display: block; font-family: monospace; font-size: 13px; color: var(--accent); margin-bottom: 15px; overflow-x: auto;">
-          curl -fsSL https://intersignal.org/install-braid.sh
-        </code>
-
-        <p class="heatmap-desc" style="font-size: 12px; margin-bottom: 10px; color: var(--text-muted); font-weight: bold;">
-          Run the SHA256-verified turnkey installer:
-        </p>
-        <code style="background-color: #050609; border: 1px solid #10121a; padding: 12px 16px; border-radius: 4px; display: block; font-family: monospace; font-size: 13px; color: #ffffff; margin-bottom: 24px; overflow-x: auto;">
-          curl -fsSL https://intersignal.org/install-braid.sh | sh
-        </code>
-
-        <p class="alpha-note" style="margin-bottom: 0;">
-          This alpha build includes signed node identities, Wire Protocol 8, local two-node demo support, trust-policy scaffolding, conformance fixtures, and SHA256-verified release assets. It is intended for developers, testers, and protocol reviewers — not production deployments yet.
-        </p>
-      </div>
-
-      <!-- Action Card / Navigation Links (BLOCKER 1 & 4 RESOLVED) -->
-      <div class="link-section-grid">
-        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/src/braid-node-v0.8.2.zip" class="btn btn-solid">Download Braid Tendril Alpha</a>
-        <a href="https://intersignal.org/install-braid.sh" class="btn btn-outline" target="_blank">Install Script: install-braid.sh</a>
-        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/" class="btn btn-outline" target="_blank">Release Assets: v0.8.2-alpha</a>
-        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/braid-v0.8.2-alpha-linux-x64.tar.gz.sha256" class="btn btn-outline" target="_blank">Checksums: SHA256SUMS</a>
-        <a href="#node" class="btn btn-outline">Demo: braid demo</a>
-        <a href="https://intersignal.org/releases/braid/v0.8.2-alpha/src/SECURITY.md" class="btn btn-outline" target="_blank">Security Notes: SECURITY.md</a>
+        <div style="margin-bottom: 12px;">
+          <a href="https://docs.google.com/forms/d/130dJScVlblWDw6JKtmeOCTOTNKfGNIFTQ7k7TXyDoH8/viewform" class="btn btn-solid">Begin Assessment Intake</a>
+        </div>
+        <div class="consulting-meta">
+          <span>● Minimum Engagement Retainer: $25,000</span>
+          <span>● Closed-Enclave Architecture</span>
+        </div>
       </div>
     </section>
 
     <!-- MODULE 01 -->
-    <section class="narrative-block">
+    <section class="narrative-block" id="philosophy">
       <div class="module-num">MODULE_01</div>
-      <div class="section-title">COGNITIVE COMPILATION</div>
+      <div class="section-title">THE BLENDER PARADIGM</div>
       <p class="narrative-p">
-        Traditional software models force you to transmit raw, human-language transcripts of your intellectual capital to corporate API gateways. This architectural compromise creates continuous operational risk and permanent data harvesting liabilities.
+        Traditional software models force organizations to transmit raw human-language transcripts and proprietary data assets to centralized, third-party API hosts. This structural compromise creates continuous operational exposure, permanent data harvesting liabilities, and fragility.
       </p>
       <p class="narrative-p">
-        Our architecture pivots. We treat the local edge node as a private cognitive crucible—a "Blender." Rather than uploading files or chats, the local node ingests all multi-modal streams (keyboard text, voice audio, camera feeds, and secure documents), blending them locally through optimized local reasoning models.
+        Our systems do the opposite. We treat your edge nodes as a private cognitive crucible—a "Blender." Rather than uploading files or chats, your localized nodes ingest multi-modal data streams (keyboard input, voice, camera, and secure document files), compiling them locally via secure local models.
       </p>
       
       <div class="quote-box">
@@ -507,54 +463,78 @@
       </div>
 
       <p class="narrative-p">
-        Once blended, these multi-modal states are projected into dense 384-dimensional latent vectors. These compact numerical representations are cryptographically signed and synchronized over physical UDP subnets.
+        Once blended, these high-dimensional cognitive states are projected into dense, cryptographically signed latent vector coordinates and synchronized over your own private wide-area network boundaries.
       </p>
-    </div>
-
-    <!-- MODULE 2: WAN TOPOLOGY AND ROUTING ENGINE -->
-    <section class="card">
-      <h2 class="card-title" style="padding: 20px 20px 0 20px;">WAN Peering Topology</h2>
-      <div class="cardContent" style="padding: 0 20px 20px 20px;">
-        <div class="node-stat">
-          <span>COGNITIVE ALIGNMENT SCHEMA</span>
-          <code style="color: var(--accent); font-size: 13px; font-family: monospace;">NodeId-first WAN Routing Protocol // Tendril Kernel</code>
-        </div>
-        <p style="font-size: 13px; line-height: 1.5; color: var(--text); margin-top: 12px;">
-          Braid Tendril abstracts physical IP addresses completely. By implementing signed presence records and routing candidates directly in the **Tendril Transport Manager**, edge nodes achieve seamless peer synchronization across variable wide-area routes, gracefully falling back from direct QUIC/UDP paths to zero-trust opaque transit relays without breaking active Handshakes.
-        </p>
-      </div>
     </section>
 
-    <!-- CONFORMANCE SECTION -->
-    <section style="margin-top: 24px;"></section>
+    <!-- MODULE 02 -->
+    <section class="narrative-block" id="enclaves">
+      <div class="module-num">MODULE_02</div>
+      <div class="section-title">Sovereign WAN Enclaves</div>
+      <p class="narrative-p">
+        For defense contractors, family offices, and high-security enterprises, we build completely cloud-free Wide-Area Network enclaves. By abstracting physical IP addresses, Braid-powered edge environments establish self-healing peer routing topologies directly across local and wide-area networks.
+      </p>
+      <p class="narrative-p">
+        Our enclaves implement a strict admission receive pipeline, protecting your state through cryptographic presence lease expirations, message-type sequence bounds, and monotonic ledger commits. Sockets are completely hidden behind secure, peer-verified routing coordinates.
+      </p>
+    </section>
 
-    <!-- RIGHT PANEL: REAL-TIME INGESTION FEED -->
-    <section class="card" style="margin-top: 20px;">
-      <h2 class="card-title">Ingestion & Path Health Telemetry</h2>
-      <div class="cardContent" style="padding: 0 20px 20px 20px;">
-        <div class="node-stat">
-          <span>PEER ADMISSION AND TRUST PATHS</span>
-          <p style="font-size: 12px; line-height: 1.4; color: var(--text);">
-            Braid Tendril implements a strict admission receive pipeline, protecting local state through cryptographic presence lease expirations, message-type sequence limits, and monotonic ledger commits.
-          </p>
+    <!-- MODULE 03: SUBSTRATE ACCESS -->
+    <section class="narrative-block" style="border-bottom: none;">
+      <div class="module-num">MODULE_03</div>
+      <div class="section-title">THE PROTOCOL SUBSTRATE</div>
+      <p class="narrative-p">
+        The underlying protocol that orchestrates our local-mesh state synchronization is Braid—a lightweight, non-blocking wide-area network (WAN) transport built for absolute data containment. For independent cryptographic verification, we distribute our core specifications and reference node software openly.
+      </p>
+
+      <div class="substrate-box">
+        <h3>Reference Substrate Resources</h3>
+        <div class="substrate-links">
+          <a href="https://drive.google.com/file/d/1Tpc-R-f2wrBZA4OZqtTXn_v_9w-8wD1M/view?usp=drivesdk" class="substrate-link" target="_blank">Download Braid Crate (ZIP)</a>
+          <a href="https://docs.google.com/document/d/1Of8nP6Jhmkg1iBzKgIc7yV8O3nUuYY8O6IzRiK2QWEk/edit?usp=drivesdk&ouid=104621204832216628958" class="substrate-link" target="_blank">Protocol Wire Specification (Google Doc)</a>
+          <a href="https://drive.google.com/file/d/1Tpc-R-f2wrBZA4OZqtTXn_v_9w-8wD1M/view?usp=drivesdk" class="substrate-link" target="_blank">Security Policy & Controls (SECURITY.md)</a>
         </div>
       </div>
     </section>
-  </div>
+  </main>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <div style="display: flex; justify-content: space-between; max-width: 900px; margin: 0 auto; padding: 0 24px;">
-      <div>PROTOCOL: <strong>IMTP Wire Spec v8 (Tendril WAN Enabled)</strong></div>
-      <div>CRYPTO: <strong>Ed25519 Signed Envelopes</strong></div>
-      <div>STATUS: <span style="color: var(--accent);">● ONLINE DISCOVERY</span></div>
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-status-block">
+        <div class="status-line"><span>STATUS</span><span class="status-dots">........</span><span class="status-val">ONLINE</span></div>
+        <div class="status-line"><span>MESH</span><span class="status-dots">..........</span><span class="status-val">ACTIVE</span></div>
+        <div class="status-line"><span>DEPENDENCIES</span><span class="status-dots">..</span><span class="status-val">NONE</span></div>
+        <div class="status-line"><span>CLOUD</span><span class="status-dots">.........</span><span class="status-val" style="color: var(--text-muted);">DISCONNECTED</span></div>
+      </div>
+      <div class="footer-right">
+        <strong style="color: var(--text-bright); text-transform: uppercase; letter-spacing: 1.5px;">INTERSIGNAL</strong><br>
+        <span>Decentralized AI Protocol Research & Local Systems Engineering</span><br>
+        <span>Florida Base: Fort Lauderdale, FL. Veneto Las Olas.</span><br>
+        <span style="margin-top: 10px; display: inline-block;">
+          Press & Trust Contact: <a href="mailto:missy@intersignal.ai" style="color: var(--accent); text-decoration: none;">missy@intersignal.ai</a>
+          &nbsp;|&nbsp;
+          X: <a href="https://x.com/intersignal_ai" style="color: var(--accent); text-decoration: none;">@intersignal_ai</a>
+        </span>
+      </div>
     </div>
   </footer>
 
-  <!-- ANIMATED LAYERS -->
+  <!-- ANIMATED SCHEMATIC WATERFALL (Ultra-subtle, sharp) -->
   <div class="signal-field">
     <span>SEQ:41882</span>
-    <span>SYNC:OK</span>\n    <span>LAT:0.7ms</span>\n    <span>UDP:ACTIVE</span>\n    <span>DIM:384</span>\n    <span>TTL:15S</span>\n    <span>PORT:12000</span>\n    <span>IMTP-v8</span>\n    <span>SIG:VERIFIED</span>\n    <span>SESSION:OK</span>\n    <span>PEER:ACTIVE</span>\n    <span>BRAID:v0.8.2-alpha</span>\n  </div>
+    <span>SYNC:OK</span>
+    <span>LAT:0.7ms</span>
+    <span>UDP:ACTIVE</span>
+    <span>DIM:384</span>
+    <span>TTL:15S</span>
+    <span>PORT:12000</span>
+    <span>IMTP-v8</span>
+    <span>SIG:VERIFIED</span>
+    <span>SESSION:OK</span>
+    <span>PEER:ACTIVE</span>
+    <span>BRAID:SUBSTRATE</span>
+  </div>
 
   <div class="mesh-overlay">
     <div class="node node-a"></div>
