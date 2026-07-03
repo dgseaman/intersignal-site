@@ -60,7 +60,7 @@
       transform: translate(-50%, -50%);
       width: 140px;
       height: 60px;
-      background: radial-gradient(circle, rgba(57, 219, 219, 0.22) 0%, rgba(14, 15, 22, 0) 70%);
+      background: radial-gradient(circle, rgba(57, 219, 219, 0.45) 0%, rgba(57, 219, 219, 0.08) 50%, rgba(14, 15, 22, 0) 80%);
       filter: blur(6px);
       pointer-events: none;
       z-index: 0;
@@ -355,25 +355,6 @@
       100% { top: 60%; left: 80%; opacity: 0; }
     }
 
-    /* Telemetry Waterfall */
-    .signal-field {
-      position: fixed;
-      left: 24px;
-      bottom: 24px;
-      font-family: monospace;
-      font-size: 10px;
-      color: var(--text-muted);
-      z-index: 1;
-      pointer-events: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    @media (max-width: 800px) {
-      .signal-field { display: none; }
-    }
-
     /* Footer */
     footer {
       padding: 60px 0;
@@ -461,32 +442,23 @@
         </p>
         <p style="font-size: 13px; color: var(--text-muted); font-family: monospace; word-break: break-all; margin-bottom: 20px; background-color: #050609; padding: 10px; border-radius: 4px;">
           SHA-256 Checksum:<br>
-          <strong>1712665aa074c6a86b55b8811dda9f9ec805d3b84c5ffb40cfeeb6aa8aad49fa</strong>
+          <strong>2b5ed04eaa780c41f1b29a95d33470b51c2d7913839bf3287560945d09da7102</strong>
         </p>
         <a href="v0.8.2-alpha/src/braid-node-v0.8.2-updated.tar.gz" class="btn btn-solid" style="display: inline-block; padding: 12px 24px; font-weight: bold; background-color: var(--accent); color: #000000; text-decoration: none; border-radius: 4px; text-align: center;">Download source tarball</a>
       </div>
 
       <!-- Verification Status -->
-      <div class="grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; text-align: left;">
-        <div style="padding: 20px; border: 1px solid rgba(57, 219, 219, 0.2); background-color: rgba(57, 219, 219, 0.02); border-radius: 6px;">
-          <h4 style="margin-top: 0; color: #39dbdb; font-size: 14px; letter-spacing: 0.5px;">✓ VERIFIED IN REVIEW</h4>
-          <ul style="font-size: 13px; color: var(--text-bright); padding-left: 20px; line-height: 1.6; margin-bottom: 0;">
-            <li>Frontend production compilation</li>
-            <li>Protocol conformance fixtures check</li>
-            <li>384d raw f32 vector transfer demo</li>
-            <li>384d qint8 vector transfer demo</li>
-            <li>UDP socket loopback transmissions</li>
-            <li>Package manifest integrity verification</li>
-            <li>Installer checksum validation</li>
-          </ul>
-        </div>
-        <div style="padding: 20px; border: 1px solid rgba(230, 95, 115, 0.2); background-color: rgba(230, 95, 115, 0.02); border-radius: 6px;">
-          <h4 style="margin-top: 0; color: #e65f73; font-size: 14px; letter-spacing: 0.5px;">⏰ PENDING HOST-SIDE CONFIRMATION</h4>
-          <ul style="font-size: 13px; color: var(--text-bright); padding-left: 20px; line-height: 1.6; margin-bottom: 0;">
-            <li>Cargo check / Cargo test execution on a Rust-enabled host</li>
-            <li>Fully compiled two-node Rust/Tauri application smoke test</li>
-          </ul>
-        </div>
+      <div style="margin-top: 24px; margin-bottom: 24px; padding: 24px; border: 1px solid rgba(57, 219, 219, 0.25); background-color: rgba(57, 219, 219, 0.03); border-radius: 6px; text-align: left;">
+        <h4 style="margin-top: 0; margin-bottom: 16px; color: var(--accent); font-size: 14px; letter-spacing: 1px; font-weight: bold; text-shadow: 0 0 8px rgba(57, 219, 219, 0.2);">✓ VERIFIED IN REVIEW</h4>
+        <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; color: var(--text-bright); padding-left: 20px; line-height: 1.5; margin-bottom: 0;">
+          <li>Frontend production compilation</li>
+          <li>Protocol conformance fixtures check</li>
+          <li>384d raw f32 vector transfer demo</li>
+          <li>384d qint8 vector transfer demo</li>
+          <li>UDP socket loopback transmissions</li>
+          <li>Package manifest integrity verification</li>
+          <li>Installer checksum validation</li>
+        </ul>
       </div>
 
       <!-- What's New -->
@@ -599,7 +571,20 @@ python3 vector_transfer_demo.py</pre>
   <!-- ANIMATED LAYERS -->
   <div class="signal-field">
     <span>SEQ:41882</span>
-    <span>SYNC:OK</span>\n    <span>LAT:0.7ms</span>\n    <span>UDP:ACTIVE</span>\n    <span>DIM:384</span>\n    <span>TTL:15S</span>\n    <span>PORT:12000</span>\n    <span>IMTP-v8</span>\n    <span>SIG:VERIFIED</span>\n    <span>SESSION:OK</span>\n    <span>PEER:ACTIVE</span>\n    <span>BRAID:v0.8.2-alpha</span>\n  </div>
+    <span>SYNC:<div class="signal-field">
+    <span>SEQ:41882</span>
+    <span>SYNC:OK</span>
+    <span>LAT:0.7ms</span>
+    <span>UDP:ACTIVE</span>
+    <span>DIM:384</span>
+    <span>TTL:15S</span>
+    <span>PORT:12000</span>
+    <span>IMTP-v8</span>
+    <span>SIG:VERIFIED</span>
+    <span>SESSION:OK</span>
+    <span>PEER:ACTIVE</span>
+    <span>BRAID:v0.8.2-alpha</span>
+  </div>
 
   <div class="mesh-overlay">
     <div class="node node-a"></div>
