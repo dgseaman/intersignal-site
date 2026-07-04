@@ -116,19 +116,82 @@
       text-decoration: none;
     }
 
-    .nav-links a {
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-links a,
+    .nav-drop-trigger {
       color: var(--text-muted);
       text-decoration: none;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-left: 20px;
       transition: color 0.15s;
     }
 
-    .nav-links a:hover {
+    .nav-drop-trigger {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .nav-links a:hover,
+    .nav-drop-trigger:hover,
+    .nav-dropdown:focus-within .nav-drop-trigger {
       color: var(--accent);
+    }
+
+    .nav-dropdown {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      min-width: 210px;
+      padding: 8px;
+      border: 1px solid var(--border-hot);
+      border-radius: 8px;
+      background: rgba(5, 6, 9, 0.96);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35), 0 0 24px rgba(57, 219, 219, 0.10);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+      z-index: 50;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 6px;
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: 0.2px;
+      font-size: 12px;
+    }
+
+    .nav-dropdown-menu a:hover,
+    .nav-dropdown-menu a:focus {
+      background: rgba(57, 219, 219, 0.08);
+      color: var(--text-bright);
+      outline: none;
     }
 
     /* Hero / Manifesto Block */
@@ -226,9 +289,47 @@
       font-size: 14px;
     }
 
+    .compat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 0;
+    }
+
+    .compat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(57, 219, 219, 0.18);
+      background: rgba(255,255,255,0.02);
+      color: var(--text-bright);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .compat-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #07080c;
+      background: linear-gradient(135deg, var(--accent), #ffffff);
+      box-shadow: 0 0 14px rgba(57, 219, 219, 0.25);
+      font-weight: 900;
+    }
+
     @media (max-width: 700px) {
       .signal-strip { grid-template-columns: 1fr 1fr; }
-      .nav-links a { margin-left: 12px; }
+      .nav-links { gap: 12px; }
+      .nav-dropdown-menu { right: auto; left: 50%; transform: translate(-50%, -6px); }
+      .nav-dropdown:hover .nav-dropdown-menu,
+      .nav-dropdown:focus-within .nav-dropdown-menu { transform: translate(-50%, 0); }
     }
 
     /* Installer Section */
@@ -484,29 +585,48 @@
       background-color: #ffffff;
       border-radius: 50%;
       box-shadow: 0 0 12px #ffffff;
+      opacity: 0;
     }
 
-    .packet-1 {
-      animation: toB 0.9s linear infinite;
-    }
-    .packet-2 {
-      animation: toC 1.2s linear infinite;
-    }
-    .packet-3 {
-      animation: toD 1.4s linear infinite;
-    }
+    .packet-1 { animation: toB 0.65s linear infinite; }
+    .packet-2 { animation: toB 0.72s linear infinite 0.18s; }
+    .packet-3 { animation: toC 0.78s linear infinite; }
+    .packet-4 { animation: toC 0.86s linear infinite 0.14s; }
+    .packet-5 { animation: toD 0.82s linear infinite; }
+    .packet-6 { animation: toD 0.94s linear infinite 0.20s; }
+    .packet-7 { animation: toDiag 0.88s linear infinite; }
+    .packet-8 { animation: backToA 0.70s linear infinite 0.10s; }
+    .packet-9 { animation: backToB 0.76s linear infinite 0.08s; }
 
     @keyframes toB {
-      0% { top: 30%; left: 20%; opacity: 1; }
-      100% { top: 20%; left: 60%; opacity: 0; }
+      0% { top: 30%; left: 20%; opacity: 0; transform: scale(0.7); }
+      12% { opacity: 1; }
+      100% { top: 20%; left: 60%; opacity: 0; transform: scale(1); }
     }
     @keyframes toC {
-      0% { top: 20%; left: 60%; opacity: 1; }
-      100% { top: 75%; left: 45%; opacity: 0; }
+      0% { top: 20%; left: 60%; opacity: 0; transform: scale(0.7); }
+      10% { opacity: 1; }
+      100% { top: 75%; left: 45%; opacity: 0; transform: scale(1); }
     }
     @keyframes toD {
-      0% { top: 75%; left: 45%; opacity: 1; }
-      100% { top: 60%; left: 80%; opacity: 0; }
+      0% { top: 75%; left: 45%; opacity: 0; transform: scale(0.7); }
+      10% { opacity: 1; }
+      100% { top: 60%; left: 80%; opacity: 0; transform: scale(1); }
+    }
+    @keyframes toDiag {
+      0% { top: 30%; left: 20%; opacity: 0; transform: scale(0.75); }
+      12% { opacity: 1; }
+      100% { top: 60%; left: 80%; opacity: 0; transform: scale(1); }
+    }
+    @keyframes backToA {
+      0% { top: 60%; left: 80%; opacity: 0; transform: scale(0.75); }
+      12% { opacity: 1; }
+      100% { top: 30%; left: 20%; opacity: 0; transform: scale(1); }
+    }
+    @keyframes backToB {
+      0% { top: 75%; left: 45%; opacity: 0; transform: scale(0.75); }
+      10% { opacity: 1; }
+      100% { top: 20%; left: 60%; opacity: 0; transform: scale(1); }
     }
 
     /* Footer */
@@ -581,7 +701,13 @@
       </div>
       <nav class="nav-links">
         <a href="#node">Protocol</a>
-        <a href="#consulting">Consulting</a>
+        <div class="nav-dropdown">
+          <button class="nav-drop-trigger" type="button" aria-haspopup="true">Consulting</button>
+          <div class="nav-dropdown-menu" role="menu" aria-label="Consulting contact options">
+            <a href="mailto:missy@intersignal.ai" role="menuitem">missy@intersignal.ai</a>
+            <a href="mailto:hello@intersignal.ai" role="menuitem">hello@intersignal.ai</a>
+          </div>
+        </div>
         <a href="mailto:missy@intersignal.ai">Contact</a>
       </nav>
     </div>
@@ -614,10 +740,15 @@
           <strong>Source Package:</strong> <code>braid-node-v0.8.4-updated.tar.gz</code>
         </p>
         <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; background-color: #050609; padding: 10px; border-radius: 4px;">
-          The newest build includes the v0.8.4-alpha candidate package with NAT traversal capability represented in the release line.
+          The latest source tarball carries the newest v0.8.4-alpha candidate package, including NAT traversal capability in the current release line.
         </p>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <a href="https://drive.google.com/file/d/1SKAIi6KScY1g_XOhWjT1TSSgGW3qcWww/view" class="btn btn-solid" target="_blank" rel="noopener" style="display: inline-block; padding: 12px 24px; font-weight: bold; background-color: var(--accent); color: #000000; text-decoration: none; border-radius: 4px; text-align: center;">Download source package</a>
+          <a href="https://drive.google.com/file/d/1xs-AB0sB_WGErTtfNfXaycsqW0nDDYCT/view" class="btn btn-solid" target="_blank" rel="noopener" style="display: inline-block; padding: 12px 24px; font-weight: bold; background-color: var(--accent); color: #000000; text-decoration: none; border-radius: 4px; text-align: center;">Download source package</a>
+        </div>
+        <div class="compat-row" aria-label="Platform compatibility">
+          <div class="compat-pill"><span class="compat-icon">⊞</span>Windows</div>
+          <div class="compat-pill"><span class="compat-icon">⌘</span>macOS</div>
+          <div class="compat-pill"><span class="compat-icon">◉</span>Linux</div>
         </div>
       </div>
 
@@ -761,6 +892,12 @@ python3 vector_transfer_demo.py
     <div class="packet packet-1"></div>
     <div class="packet packet-2"></div>
     <div class="packet packet-3"></div>
+    <div class="packet packet-4"></div>
+    <div class="packet packet-5"></div>
+    <div class="packet packet-6"></div>
+    <div class="packet packet-7"></div>
+    <div class="packet packet-8"></div>
+    <div class="packet packet-9"></div>
   </div>
 
 </body>
