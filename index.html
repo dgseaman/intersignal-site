@@ -829,11 +829,15 @@
 
       <!-- Install / Verify Block -->
       <div style="padding: 24px; border: 1px solid var(--border); background-color: #050609; border-radius: 6px; text-align: left; margin-bottom: 24px; font-family: monospace;">
-        <h4 style="margin-top: 0; color: var(--accent); font-size: 13px; font-family: sans-serif; letter-spacing: 0.5px;">OPTIONAL LOCAL VERIFICATION</h4>
+        <h4 style="margin-top: 0; color: var(--accent); font-size: 13px; font-family: sans-serif; letter-spacing: 0.5px;">INSTALL / OPTIONAL LOCAL VERIFICATION</h4>
         <pre style="font-size: 12px; color: #c5cbd3; line-height: 1.5; overflow-x: auto; margin-bottom: 0; background: none; border: none; padding: 0; white-space: pre-wrap; word-break: break-all;">
 # macOS Apple Silicon installer
 curl -LO https://intersignal.org/braid-node_0.8.4-alpha_aarch64.dmg
 open braid-node_0.8.4-alpha_aarch64.dmg
+
+# If macOS reports the unsigned alpha app as damaged after drag-and-drop install:
+xattr -dr com.apple.quarantine /Applications/braid-node.app
+open /Applications/braid-node.app
 
 # Source verification path
 shasum -a 256 braid-node-v0.8.4-updated.tar.gz
@@ -860,9 +864,9 @@ python3 vector_transfer_demo.py</pre>
       </div>
 
       <!-- Alpha Disclaimer -->
-      <div style="padding: 16px; border: 1px dashed #e65f73; background-color: rgba(230, 95, 115, 0.05); border-radius: 6px; text-align: left; margin-bottom: 40px;">
-        <p style="font-size: 13px; color: var(--text-bright); line-height: 1.5; margin-bottom: 0;">
-          <strong>Alpha candidate note:</strong> This is not a final production network release. The current package has passed checksum validation, frontend build, Rust/Tauri release compilation, and macOS DMG bundle generation on Apple Silicon. This alpha DMG is intended for early testing and should be treated as an unsigned candidate build unless separately notarized.
+      <div style="padding: 18px 18px; border: 1px solid rgba(57, 219, 219, 0.24); background: linear-gradient(180deg, rgba(57, 219, 219, 0.07), rgba(141, 124, 255, 0.035)); border-radius: 8px; text-align: left; margin-bottom: 40px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);">
+        <p style="font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 0;">
+          <strong style="color: var(--text-bright);">Alpha candidate note:</strong> The current package has passed checksum validation, frontend build, Rust/Tauri release compilation, macOS DMG bundle generation, drag-and-drop installation, and local GUI launch on Apple Silicon. This early DMG is unsigned and not yet Apple-notarized, so some testers may need to remove macOS quarantine metadata before first launch. A signed/notarized installer is planned for a later release.
         </p>
       </div>
     </section>
