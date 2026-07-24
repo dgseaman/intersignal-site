@@ -1,434 +1,653 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Intersignal // Local AI Infrastructure Consulting</title>
-  <meta name="description" content="Intersignal helps serious teams design local-first AI infrastructure, private agent workflows, and sovereign edge-node systems." />
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Braid State Transport Primitive — an Intersignal research project for authenticated semantic state transfer between independent AI agents."
+  >
+
+  <meta name="theme-color" content="#090c10">
+
+  <title>Braid State Transport Primitive | Intersignal</title>
+
   <style>
     :root {
-      --bg: #07080c;
-      --bg-deep: #030409;
-      --panel: #0c0d12;
-      --panel-2: #10131c;
-      --accent: #39dbdb;
-      --accent-2: #8d7cff;
-      --text: #c5cbd3;
-      --text-bright: #ffffff;
-      --text-muted: #7b8394;
-      --border: #181c2a;
-      --border-hot: rgba(57, 219, 219, 0.32);
+      color-scheme: dark;
     }
 
-    * { box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #05070a;
+      scroll-behavior: smooth;
+    }
 
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background:
-        radial-gradient(circle at 18% 8%, rgba(57, 219, 219, 0.16), transparent 32%),
-        radial-gradient(circle at 86% 20%, rgba(141, 124, 255, 0.14), transparent 30%),
-        linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 48%, #05060a 100%);
-      color: var(--text);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.78), transparent 78%);
-      z-index: 0;
-    }
-
-    .container {
-      width: min(920px, calc(100% - 48px));
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    header {
-      padding: 30px 0;
-      border-bottom: 1px solid var(--border-hot);
-      backdrop-filter: blur(14px);
-    }
-
-    .header-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .logo-wrap {
-      position: relative;
-      display: inline-block;
-    }
-
-    .logo-glow {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 150px;
-      height: 62px;
-      transform: translate(-50%, -50%);
+      margin: 0;
       background:
-        radial-gradient(circle, rgba(57,219,219,0.50), rgba(57,219,219,0.10) 48%, transparent 76%),
-        conic-gradient(from 180deg, transparent, rgba(141,124,255,0.34), transparent);
-      filter: blur(7px);
-      opacity: 0.9;
-      animation: rotate 16s linear infinite;
+        radial-gradient(
+          circle at 15% 0%,
+          rgba(45, 190, 220, 0.08),
+          transparent 32rem
+        ),
+        radial-gradient(
+          circle at 90% 85%,
+          rgba(70, 145, 255, 0.055),
+          transparent 35rem
+        ),
+        #05070a;
+      color: #edf8fa;
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
 
-    @keyframes rotate {
-      0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.92); }
-      50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.08); }
-      100% { transform: translate(-50%, -50%) rotate(360deg) scale(0.92); }
+    a {
+      color: inherit;
     }
 
-    .logo {
-      position: relative;
-      z-index: 1;
-      color: var(--text-bright);
-      text-decoration: none;
-      font-weight: 950;
-      font-size: 13px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    nav {
+    .page-shell {
       display: flex;
-      gap: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-    }
-
-    nav a:hover { color: var(--accent); }
-
-    .hero {
-      padding: 78px 0 46px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin-bottom: 18px;
-      padding: 6px 11px;
-      border: 1px solid var(--border-hot);
-      border-radius: 999px;
-      background: rgba(57,219,219,0.055);
-      color: var(--accent);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 16px var(--accent);
-    }
-
-    h1 {
-      margin: 0 0 24px;
-      color: transparent;
-      font-size: clamp(38px, 7vw, 76px);
-      line-height: 0.96;
-      letter-spacing: -2.5px;
-      font-weight: 950;
-      background: linear-gradient(135deg, #ffffff 0%, var(--accent) 48%, var(--accent-2) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-shadow: 0 0 28px rgba(57,219,219,0.16);
-    }
-
-    .lede {
-      max-width: 790px;
-      margin: 0 0 26px;
-      color: var(--text-bright);
-      font-size: 19px;
-      line-height: 1.58;
-    }
-
-    .sublede {
-      max-width: 790px;
-      margin: 0 0 30px;
-      color: var(--text);
-      font-size: 15px;
-    }
-
-    .cta-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 26px;
-    }
-
-    .btn {
-      display: inline-flex;
+      min-height: 100vh;
       align-items: center;
       justify-content: center;
-      min-height: 46px;
-      padding: 12px 20px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      padding: clamp(1rem, 4vw, 4rem);
     }
 
-    .btn-solid {
-      background: linear-gradient(135deg, var(--accent), #ffffff);
-      color: #050609;
-      box-shadow: 0 0 28px rgba(57,219,219,0.20);
-    }
+    .braid-capsule {
+      --braid-panel: rgba(11, 16, 22, 0.96);
+      --braid-cyan: #63e9ff;
+      --braid-cyan-soft: #bcf7ff;
+      --braid-text: #edf8fa;
+      --braid-muted: #98aab2;
+      --braid-border: rgba(160, 229, 241, 0.16);
 
-    .btn-outline {
-      border: 1px solid var(--border-hot);
-      color: var(--text-bright);
-      background: rgba(255,255,255,0.02);
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 28px rgba(57,219,219,0.22);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin: 34px 0 0;
-    }
-
-    .pill {
-      min-height: 106px;
-      padding: 17px;
-      border: 1px solid rgba(57,219,219,0.16);
-      border-radius: 8px;
-      background: linear-gradient(180deg, rgba(16,19,28,0.92), rgba(7,8,12,0.90));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-    }
-
-    .pill strong {
-      display: block;
-      color: var(--text-bright);
-      font-size: 14px;
-      line-height: 1.25;
-      margin-bottom: 8px;
-    }
-
-    .pill span {
-      color: var(--text-muted);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    section {
-      padding: 50px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .section-title {
-      margin: 0 0 18px;
-      color: var(--text-bright);
-      font-size: 18px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 900;
-    }
-
-    .panel {
-      padding: 24px;
-      border: 1px solid var(--border-hot);
-      border-radius: 10px;
+      position: relative;
+      isolation: isolate;
+      width: min(100%, 1080px);
+      overflow: hidden;
+      border: 1px solid var(--braid-border);
+      border-radius: 22px;
       background:
-        radial-gradient(circle at 14% 20%, rgba(57,219,219,0.13), transparent 28%),
-        radial-gradient(circle at 82% 10%, rgba(141,124,255,0.14), transparent 30%),
-        linear-gradient(180deg, rgba(16,19,28,0.95), rgba(6,7,11,0.95));
-      box-shadow: 0 24px 70px rgba(0,0,0,0.30);
+        linear-gradient(
+          135deg,
+          rgba(99, 233, 255, 0.04),
+          transparent 44%
+        ),
+        linear-gradient(
+          180deg,
+          var(--braid-panel),
+          rgba(7, 10, 14, 0.99)
+        );
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+      color: var(--braid-text);
     }
 
-    .panel p {
-      margin: 0 0 16px;
-      font-size: 14px;
+    /* Subtle procedural node field */
+    .braid-capsule::before {
+      content: "";
+      position: absolute;
+      z-index: -2;
+      inset: -15%;
+      opacity: 0.55;
+      background-image:
+        radial-gradient(
+          circle at 12% 24%,
+          rgba(99, 233, 255, 0.64) 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 28% 76%,
+          rgba(99, 233, 255, 0.43) 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 49% 19%,
+          rgba(99, 233, 255, 0.47) 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 68% 67%,
+          rgba(99, 233, 255, 0.6) 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 84% 28%,
+          rgba(99, 233, 255, 0.4) 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 94% 82%,
+          rgba(99, 233, 255, 0.5) 0 1px,
+          transparent 2px
+        );
+      background-size:
+        210px 170px,
+        270px 230px,
+        320px 210px,
+        250px 280px,
+        290px 190px,
+        230px 250px;
+      pointer-events: none;
     }
 
-    .panel p:last-child { margin-bottom: 0; }
+    /* Faint connective geometry */
+    .braid-capsule::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      opacity: 0.35;
+      background:
+        linear-gradient(
+          116deg,
+          transparent 0 18%,
+          rgba(99, 233, 255, 0.13) 18.1%,
+          transparent 18.35% 48%,
+          rgba(99, 233, 255, 0.08) 48.1%,
+          transparent 48.35%
+        ),
+        linear-gradient(
+          28deg,
+          transparent 0 54%,
+          rgba(99, 233, 255, 0.1) 54.1%,
+          transparent 54.35%
+        ),
+        radial-gradient(
+          circle at 85% 20%,
+          rgba(31, 203, 236, 0.12),
+          transparent 30%
+        );
+      pointer-events: none;
+    }
 
-    .list {
+    .braid-capsule__inner {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 18px;
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 285px);
+      gap: clamp(1.7rem, 4vw, 4rem);
+      align-items: end;
+      padding: clamp(1.5rem, 4vw, 3rem);
     }
 
-    .item {
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 7px;
-      background: rgba(255,255,255,0.025);
-      font-size: 13px;
+    .braid-capsule__content {
+      max-width: 740px;
     }
 
-    .item strong {
-      display: block;
-      color: var(--text-bright);
-      margin-bottom: 5px;
-      font-size: 13px;
+    .braid-capsule__eyebrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      margin-bottom: 1.15rem;
     }
 
-    .note {
-      margin-top: 20px;
-      padding: 16px;
-      border-left: 2px solid var(--accent);
-      background: rgba(57,219,219,0.065);
-      color: var(--text-bright);
-      font-size: 14px;
+    .braid-capsule__label {
+      color: var(--braid-cyan-soft);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      line-height: 1;
+      text-transform: uppercase;
     }
 
-    footer {
-      padding: 40px 0 56px;
-      color: var(--text-muted);
-      font-size: 12px;
+    .braid-capsule__status {
+      display: inline-flex;
+      gap: 0.46rem;
+      align-items: center;
+      min-height: 28px;
+      padding: 0.42rem 0.7rem;
+      border: 1px solid rgba(99, 233, 255, 0.24);
+      border-radius: 999px;
+      background: rgba(99, 233, 255, 0.07);
+      color: var(--braid-cyan);
+      font-size: 0.68rem;
+      font-weight: 750;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      text-transform: uppercase;
+      box-shadow:
+        inset 0 0 18px rgba(99, 233, 255, 0.025);
     }
 
-    footer a {
-      color: var(--accent);
+    .braid-capsule__status-dot {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 12px rgba(99, 233, 255, 0.9);
+    }
+
+    .braid-capsule__title {
+      max-width: 760px;
+      margin: 0;
+      color: var(--braid-text);
+      font-size: clamp(1.65rem, 3.8vw, 3rem);
+      font-weight: 630;
+      letter-spacing: -0.045em;
+      line-height: 1.03;
+      text-wrap: balance;
+    }
+
+    .braid-capsule__description {
+      max-width: 710px;
+      margin: 1rem 0 0;
+      color: var(--braid-muted);
+      font-size: clamp(0.96rem, 1.6vw, 1.08rem);
+      line-height: 1.68;
+    }
+
+    .braid-capsule__description strong {
+      color: #d9f9ff;
+      font-weight: 590;
+    }
+
+    .braid-capsule__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.35rem;
+      margin: 1.2rem 0 0;
+      padding: 0;
+      color: #7f929a;
+      font-size: 0.79rem;
+      line-height: 1.45;
+      list-style: none;
+    }
+
+    .braid-capsule__meta li {
+      position: relative;
+    }
+
+    .braid-capsule__meta li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -0.72rem;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(99, 233, 255, 0.44);
+      transform: translateY(-50%);
+    }
+
+    .braid-capsule__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.72rem;
+      width: 100%;
+    }
+
+    .braid-capsule__button,
+    .braid-capsule__link {
+      display: inline-flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      min-height: 46px;
+      padding: 0.78rem 0.95rem;
+      border-radius: 11px;
+      color: inherit;
+      font-size: 0.79rem;
+      font-weight: 650;
+      letter-spacing: 0.015em;
+      line-height: 1.25;
       text-decoration: none;
-      font-weight: 800;
+      transition:
+        border-color 180ms ease,
+        background-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
     }
 
-    @media (max-width: 760px) {
-      .container { width: min(100% - 34px, 920px); }
-      .header-flex { align-items: flex-start; flex-direction: column; }
-      nav { justify-content: flex-start; gap: 14px; }
-      .hero { padding-top: 54px; }
-      .grid, .list { grid-template-columns: 1fr; }
-      h1 { letter-spacing: -1.5px; }
+    .braid-capsule__button {
+      border: 1px solid rgba(99, 233, 255, 0.62);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(99, 233, 255, 0.16),
+          rgba(99, 233, 255, 0.065)
+        );
+      color: #dcfbff;
+      box-shadow:
+        inset 0 0 22px rgba(99, 233, 255, 0.04),
+        0 0 0 rgba(99, 233, 255, 0);
+    }
+
+    .braid-capsule__button--x {
+      border-color: rgba(99, 233, 255, 0.92);
+      background:
+        radial-gradient(
+          circle at 15% 20%,
+          rgba(99, 233, 255, 0.19),
+          transparent 46%
+        ),
+        linear-gradient(
+          135deg,
+          rgba(99, 233, 255, 0.19),
+          rgba(99, 233, 255, 0.075)
+        );
+      box-shadow:
+        inset 0 0 24px rgba(99, 233, 255, 0.055),
+        0 0 22px rgba(99, 233, 255, 0.06);
+    }
+
+    .braid-capsule__button-main {
+      display: flex;
+      gap: 0.72rem;
+      align-items: center;
+    }
+
+    .braid-capsule__x-mark {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 25px;
+      height: 25px;
+      flex: 0 0 auto;
+      border: 1px solid rgba(99, 233, 255, 0.3);
+      border-radius: 7px;
+      background: rgba(3, 8, 11, 0.52);
+      color: #effdff;
+      font-size: 0.82rem;
+      font-weight: 750;
+      line-height: 1;
+    }
+
+    .braid-capsule__button-copy {
+      display: grid;
+      gap: 0.14rem;
+    }
+
+    .braid-capsule__button-title {
+      color: #edfdff;
+    }
+
+    .braid-capsule__button-subtitle {
+      color: #83a1a9;
+      font-size: 0.66rem;
+      font-weight: 550;
+      letter-spacing: 0.035em;
+    }
+
+    .braid-capsule__link {
+      border: 1px solid rgba(169, 215, 224, 0.12);
+      background: rgba(255, 255, 255, 0.018);
+      color: #aebfc5;
+    }
+
+    .braid-capsule__arrow {
+      flex: 0 0 auto;
+      color: var(--braid-cyan);
+      font-size: 1rem;
+      line-height: 1;
+      transition: transform 180ms ease;
+    }
+
+    .braid-capsule__button:hover,
+    .braid-capsule__button:focus-visible {
+      border-color: rgba(99, 233, 255, 1);
+      background-color: rgba(99, 233, 255, 0.15);
+      box-shadow: 0 0 28px rgba(99, 233, 255, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .braid-capsule__link:hover,
+    .braid-capsule__link:focus-visible {
+      border-color: rgba(99, 233, 255, 0.27);
+      background: rgba(99, 233, 255, 0.045);
+      color: #d3f7fc;
+      transform: translateY(-1px);
+    }
+
+    .braid-capsule__button:hover .braid-capsule__arrow,
+    .braid-capsule__button:focus-visible .braid-capsule__arrow,
+    .braid-capsule__link:hover .braid-capsule__arrow,
+    .braid-capsule__link:focus-visible .braid-capsule__arrow {
+      transform: translateX(3px);
+    }
+
+    .braid-capsule__button:focus-visible,
+    .braid-capsule__link:focus-visible {
+      outline: 2px solid var(--braid-cyan);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 780px) {
+      .braid-capsule {
+        border-radius: 18px;
+      }
+
+      .braid-capsule__inner {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .braid-capsule__actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page-shell {
+        padding: 0.8rem;
+      }
+
+      .braid-capsule__inner {
+        padding: 1.35rem;
+      }
+
+      .braid-capsule__actions {
+        grid-template-columns: 1fr;
+      }
+
+      .braid-capsule__meta {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .braid-capsule__meta li::after {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .braid-capsule__button,
+      .braid-capsule__link,
+      .braid-capsule__arrow {
+        transition: none;
+      }
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="container header-flex">
-      <div class="logo-wrap">
-        <div class="logo-glow"></div>
-        <a class="logo" href="/">INTERSIGNAL</a>
-      </div>
-      <nav>
-        <a href="#consulting">Consulting</a>
-        <a href="#focus">Focus</a>
-        <a href="mailto:hello@intersignal.ai">Contact</a>
-      </nav>
-    </div>
-  </header>
+  <main class="page-shell">
+    <section
+      id="braid-state-transport"
+      class="braid-capsule"
+      aria-labelledby="braid-capsule-title"
+      aria-describedby="braid-capsule-description"
+    >
+      <div class="braid-capsule__inner">
 
-  <main class="container">
-    <section class="hero">
-      <div class="eyebrow">Local AI Infrastructure // Private Consulting</div>
-      <h1>Build the AI substrate before the crowd arrives.</h1>
-      <p class="lede">
-        Intersignal helps serious teams design local-first AI systems: private agent workflows, sovereign edge nodes, model-adjacent tooling, and practical infrastructure for organizations that cannot afford to treat AI as a toy chatbot layer.
-      </p>
-      <p class="sublede">
-        We are currently accepting a small number of high-minimum consulting engagements for founders, operators, research groups, and businesses preparing for the next phase of local AI infrastructure.
-      </p>
-      <div class="cta-row">
-        <a class="btn btn-solid" href="mailto:hello@intersignal.ai?subject=Intersignal%20Consulting%20Inquiry">Email hello@intersignal.ai</a>
-        <a class="btn btn-outline" href="#consulting">View engagement fit</a>
-      </div>
+        <div class="braid-capsule__content">
+          <div class="braid-capsule__eyebrow">
+            <span class="braid-capsule__label">
+              Intersignal Research
+            </span>
 
-      <div class="grid" aria-label="Intersignal focus areas">
-        <div class="pill"><strong>Local-first AI</strong><span>Architecture for private compute, private context, and edge-node workflows.</span></div>
-        <div class="pill"><strong>Agent infrastructure</strong><span>Practical systems for memory, routing, adapters, evaluation, and operational visibility.</span></div>
-        <div class="pill"><strong>Protocol taste</strong><span>We treat infrastructure as both engineering and interface culture: legible, verifiable, and alive.</span></div>
-      </div>
-    </section>
+            <span class="braid-capsule__status">
+              <span
+                class="braid-capsule__status-dot"
+                aria-hidden="true"
+              ></span>
 
-    <section id="consulting">
-      <h2 class="section-title">Consulting engagements</h2>
-      <div class="panel">
-        <p>
-          The market is moving from novelty prompts toward durable AI infrastructure. The hard questions are no longer only “which model?” They are questions of context ownership, local state, privacy boundaries, agent coordination, workflow design, routing, verification, and human adoption.
-        </p>
-        <p>
-          Intersignal works best with teams that want a serious technical and strategic partner rather than a generic AI vendor. We can help map your current workflows, identify where local AI is actually useful, design internal prototypes, and create infrastructure plans that respect privacy, operational reality, and long-term leverage.
-        </p>
-        <div class="note">
-          We are intentionally selective. Current engagements are limited, high-context, and high-minimum so the work remains focused and useful.
+              Implementable Design
+            </span>
+          </div>
+
+          <h1
+            id="braid-capsule-title"
+            class="braid-capsule__title"
+          >
+            Braid State Transport Primitive
+          </h1>
+
+          <p
+            id="braid-capsule-description"
+            class="braid-capsule__description"
+          >
+            A receiver-controlled protocol for transferring bounded semantic
+            state between independent AI agents. Braid separates
+            <strong>deterministic authority from neural state</strong>,
+            authenticates every handoff, and provides a constrained
+            384-dimensional interlingua for coordination between heterogeneous
+            frozen models.
+          </p>
+
+          <ul
+            class="braid-capsule__meta"
+            aria-label="Project status"
+          >
+            <li>v1.4.0 frozen specification</li>
+            <li>384D bounded interlingua</li>
+            <li>Behavioral validation next</li>
+          </ul>
         </div>
-      </div>
-    </section>
 
-    <section id="focus">
-      <h2 class="section-title">Where we can help</h2>
-      <div class="list">
-        <div class="item"><strong>Local AI strategy</strong>Roadmaps for teams moving beyond cloud-only AI workflows.</div>
-        <div class="item"><strong>Private agent design</strong>Agent workflows that respect data boundaries and human review loops.</div>
-        <div class="item"><strong>Context architecture</strong>Memory, retrieval, adapter, and state-management design for real operations.</div>
-        <div class="item"><strong>Prototype direction</strong>Rapid but sober prototype plans for edge-node and local model tooling.</div>
-        <div class="item"><strong>AI infrastructure review</strong>Assessment of current AI tools, risks, data flow, and adoption bottlenecks.</div>
-        <div class="item"><strong>Product narrative</strong>Positioning and technical storytelling for serious AI products and protocols.</div>
-      </div>
-    </section>
+        <nav
+          class="braid-capsule__actions"
+          aria-label="Braid public updates and technical resources"
+        >
+          <a
+            class="braid-capsule__button braid-capsule__button--x"
+            href="https://x.com/intersignal_ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow Intersignal AI on X for public updates"
+          >
+            <span class="braid-capsule__button-main">
+              <span
+                class="braid-capsule__x-mark"
+                aria-hidden="true"
+              >
+                𝕏
+              </span>
 
-    <section>
-      <h2 class="section-title">About Braid</h2>
-      <div class="panel">
-        <p>
-          Braid is Intersignal’s ongoing local AI infrastructure research line. It explores private node identity, signed state objects, local adapters, peer presence, NAT-aware routing, and compact state transport for future agent systems.
-        </p>
-        <p>
-          Public downloads are temporarily paused while we harden the next release candidate. Consulting inquiries remain open for teams interested in the broader architecture, strategy, or private implementation work.
-        </p>
-      </div>
-    </section>
+              <span class="braid-capsule__button-copy">
+                <span class="braid-capsule__button-title">
+                  Follow @intersignal_ai
+                </span>
 
-    <section>
-      <h2 class="section-title">Start a conversation</h2>
-      <div class="panel">
-        <p>
-          Tell us what you are building, what kind of AI infrastructure problem you are facing, and why local-first or private-agent design matters for your work.
-        </p>
-        <div class="cta-row">
-          <a class="btn btn-solid" href="mailto:hello@intersignal.ai?subject=Intersignal%20Consulting%20Inquiry">hello@intersignal.ai</a>
-        </div>
+                <span class="braid-capsule__button-subtitle">
+                  Public updates and releases
+                </span>
+              </span>
+            </span>
+
+            <span
+              class="braid-capsule__arrow"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+
+          <a
+            class="braid-capsule__button"
+            href="https://drive.google.com/open?id=1OEUMQ33bsKNCw1n-2ecuB7RfJ-3IlFah"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Technical Specification</span>
+
+            <span
+              class="braid-capsule__arrow"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+
+          <a
+            class="braid-capsule__link"
+            href="https://drive.google.com/open?id=1q6TmyROT9CpYVnRC90FECmrgZGsOUFEe05JlaqXxMRI"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Receiver Boundary</span>
+
+            <span
+              class="braid-capsule__arrow"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+
+          <a
+            class="braid-capsule__link"
+            href="https://drive.google.com/open?id=1-9xT4pBbdyUsZBBhKS2OkK8acxumt8WkrF_r6nQvYbA"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Pathfinder Architecture</span>
+
+            <span
+              class="braid-capsule__arrow"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+
+          <a
+            class="braid-capsule__link"
+            href="https://drive.google.com/open?id=1UhAza220y4oSl7blXq468Ao4S9Vkk4sabxcwtKWZNiI"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Release Index</span>
+
+            <span
+              class="braid-capsule__arrow"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+        </nav>
+
       </div>
     </section>
   </main>
-
-  <footer>
-    <div class="container">
-      Intersignal // local AI infrastructure, private agent workflows, sovereign substrate research. Contact: <a href="mailto:hello@intersignal.ai">hello@intersignal.ai</a>
-    </div>
-  </footer>
 </body>
 </html>
