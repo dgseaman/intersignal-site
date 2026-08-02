@@ -999,5 +999,909 @@
       requestAnimationFrame(tick);
     })();
   </script>
+  <style id="braid-pathway-mobile-fix">
+  .path-card {
+    min-height: 720px;
+  }
+
+  .path-stage {
+    position: relative;
+    height: 364px;
+    margin-top: 22px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(145, 218, 225, 0.11);
+  }
+
+  .path-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(116, 235, 232, 0.03), transparent 28%),
+      radial-gradient(
+        circle at 50% 52%,
+        rgba(53, 204, 210, 0.07),
+        transparent 38%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(120, 235, 233, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        rgba(120, 235, 233, 0.04) 1px,
+        transparent 1px
+      );
+    background-size: auto, auto, 44px 44px, 44px 44px;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.72)
+    );
+    mask-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.72)
+    );
+  }
+
+  .path-stage .node-box {
+    top: 16px;
+    z-index: 8;
+  }
+
+  .transition-lane {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 76px;
+    height: 196px;
+  }
+
+  .transition-lane::before,
+  .transition-lane::after {
+    content: "";
+    position: absolute;
+    left: 72px;
+    right: 72px;
+    top: 88px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      rgba(120, 235, 233, 0.24),
+      rgba(120, 235, 233, 0.12),
+      rgba(111, 153, 255, 0.24)
+    );
+  }
+
+  .transition-lane::after {
+    top: 102px;
+    height: 1px;
+    opacity: 0.45;
+    background: linear-gradient(
+      90deg,
+      rgba(111, 153, 255, 0.1),
+      rgba(120, 235, 233, 0.3),
+      rgba(111, 153, 255, 0.1)
+    );
+  }
+
+  .signal-ribbon {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    height: 52px;
+    border-radius: 999px;
+    opacity: 0.75;
+    filter: blur(1px);
+    pointer-events: none;
+  }
+
+  .signal-ribbon-1 {
+    top: 60px;
+    background:
+      radial-gradient(
+        circle at 0% 50%,
+        rgba(120, 235, 233, 0.22),
+        transparent 22%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(120, 235, 233, 0),
+        rgba(120, 235, 233, 0.38),
+        rgba(111, 153, 255, 0)
+      );
+    animation: braidRibbonForward 6s linear infinite;
+  }
+
+  .signal-ribbon-2 {
+    top: 96px;
+    background:
+      radial-gradient(
+        circle at 100% 50%,
+        rgba(111, 153, 255, 0.2),
+        transparent 22%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(111, 153, 255, 0),
+        rgba(111, 153, 255, 0.28),
+        rgba(120, 235, 233, 0)
+      );
+    animation: braidRibbonReverse 7.2s linear infinite;
+  }
+
+  @keyframes braidRibbonForward {
+    0% {
+      transform: translateX(-2%);
+      opacity: 0.22;
+    }
+
+    40% {
+      opacity: 0.75;
+    }
+
+    100% {
+      transform: translateX(2%);
+      opacity: 0.22;
+    }
+  }
+
+  @keyframes braidRibbonReverse {
+    0% {
+      transform: translateX(2%);
+      opacity: 0.22;
+    }
+
+    45% {
+      opacity: 0.72;
+    }
+
+    100% {
+      transform: translateX(-2%);
+      opacity: 0.22;
+    }
+  }
+
+  .phase-cluster {
+    position: absolute;
+    top: 14px;
+    width: 116px;
+    padding: 14px 12px 12px;
+    text-align: center;
+    border: 1px solid rgba(145, 218, 225, 0.12);
+    border-radius: 18px;
+    background: rgba(8, 14, 19, 0.78);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  }
+
+  .phase-origin {
+    left: 76px;
+    animation: braidClusterOrigin 5.6s ease-in-out infinite;
+  }
+
+  .phase-middle {
+    left: 50%;
+    transform: translateX(-50%);
+    animation: braidClusterMiddle 5.6s ease-in-out infinite;
+  }
+
+  .phase-final {
+    right: 76px;
+    animation: braidClusterFinal 5.6s ease-in-out infinite;
+  }
+
+  .phase-cluster b {
+    display: block;
+    margin-top: 11px;
+    color: #cfe9ee;
+    font: 760 10px ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .phase-cluster small {
+    display: block;
+    margin-top: 4px;
+    color: #62717d;
+    font: 700 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  @keyframes braidClusterOrigin {
+    0%,
+    18%,
+    100% {
+      border-color: rgba(145, 218, 225, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    }
+
+    8%,
+    15% {
+      border-color: rgba(120, 235, 233, 0.4);
+      box-shadow: 0 0 22px rgba(120, 235, 233, 0.16);
+    }
+  }
+
+  @keyframes braidClusterMiddle {
+    0%,
+    32%,
+    100% {
+      border-color: rgba(145, 218, 225, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    }
+
+    40%,
+    55% {
+      border-color: rgba(120, 235, 233, 0.4);
+      box-shadow: 0 0 22px rgba(120, 235, 233, 0.16);
+    }
+  }
+
+  @keyframes braidClusterFinal {
+    0%,
+    64%,
+    100% {
+      border-color: rgba(145, 218, 225, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    }
+
+    72%,
+    88% {
+      border-color: rgba(120, 235, 233, 0.4);
+      box-shadow: 0 0 22px rgba(120, 235, 233, 0.16);
+    }
+  }
+
+  .cluster-visual {
+    position: relative;
+    height: 58px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: rgba(13, 22, 28, 0.88);
+  }
+
+  .vector-cloud::before,
+  .signed-frame::before,
+  .signed-frame::after,
+  .accepted-state::before,
+  .accepted-state::after {
+    content: "";
+    position: absolute;
+  }
+
+  .vector-cloud::before {
+    inset: 10px 14px 12px;
+    border: 1px solid rgba(120, 235, 233, 0.1);
+    border-radius: 10px;
+  }
+
+  .vector-cloud span {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(120, 235, 233, 0.84);
+    box-shadow: 0 0 10px rgba(120, 235, 233, 0.32);
+    animation: braidTwinkle 2.8s ease-in-out infinite;
+  }
+
+  .vector-cloud span:nth-child(1) {
+    left: 14px;
+    top: 17px;
+  }
+
+  .vector-cloud span:nth-child(2) {
+    left: 24px;
+    top: 10px;
+    animation-delay: 0.2s;
+  }
+
+  .vector-cloud span:nth-child(3) {
+    left: 39px;
+    top: 18px;
+    animation-delay: 0.45s;
+  }
+
+  .vector-cloud span:nth-child(4) {
+    left: 53px;
+    top: 11px;
+    animation-delay: 0.6s;
+  }
+
+  .vector-cloud span:nth-child(5) {
+    left: 68px;
+    top: 19px;
+    animation-delay: 0.15s;
+  }
+
+  .vector-cloud span:nth-child(6) {
+    left: 82px;
+    top: 13px;
+    animation-delay: 0.5s;
+  }
+
+  .vector-cloud span:nth-child(7) {
+    left: 21px;
+    top: 34px;
+    animation-delay: 0.35s;
+  }
+
+  .vector-cloud span:nth-child(8) {
+    left: 36px;
+    top: 41px;
+    animation-delay: 0.65s;
+  }
+
+  .vector-cloud span:nth-child(9) {
+    left: 51px;
+    top: 33px;
+    animation-delay: 0.1s;
+  }
+
+  .vector-cloud span:nth-child(10) {
+    left: 67px;
+    top: 40px;
+    animation-delay: 0.3s;
+  }
+
+  .vector-cloud span:nth-child(11) {
+    left: 83px;
+    top: 31px;
+    animation-delay: 0.75s;
+  }
+
+  @keyframes braidTwinkle {
+    50% {
+      transform: scale(1.45);
+      opacity: 0.48;
+    }
+  }
+
+  .signed-frame::before {
+    left: 10px;
+    right: 10px;
+    top: 13px;
+    height: 30px;
+    border: 1px solid rgba(120, 235, 233, 0.28);
+    border-radius: 10px;
+    background: linear-gradient(
+      90deg,
+      rgba(120, 235, 233, 0.1),
+      rgba(120, 235, 233, 0.03)
+    );
+    box-shadow: 0 0 18px rgba(120, 235, 233, 0.08);
+  }
+
+  .signed-frame::after {
+    left: 18px;
+    right: 18px;
+    top: 25px;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      rgba(120, 235, 233, 0.48),
+      rgba(111, 153, 255, 0.52)
+    );
+    animation: braidFrameScan 2.4s ease-in-out infinite;
+  }
+
+  .signed-frame i {
+    position: absolute;
+    bottom: 11px;
+    width: 4px;
+    border-radius: 3px;
+    background: rgba(120, 235, 233, 0.28);
+    animation: braidFrameBars 1.8s ease-in-out infinite;
+  }
+
+  .signed-frame i:nth-child(1) {
+    left: 17px;
+    height: 9px;
+  }
+
+  .signed-frame i:nth-child(2) {
+    left: 25px;
+    height: 14px;
+    animation-delay: 0.14s;
+  }
+
+  .signed-frame i:nth-child(3) {
+    left: 33px;
+    height: 7px;
+    animation-delay: 0.28s;
+  }
+
+  .signed-frame i:nth-child(4) {
+    left: 41px;
+    height: 17px;
+    animation-delay: 0.42s;
+  }
+
+  .signed-frame i:nth-child(5) {
+    left: 49px;
+    height: 12px;
+    animation-delay: 0.56s;
+  }
+
+  .signed-frame i:nth-child(6) {
+    left: 57px;
+    height: 20px;
+    animation-delay: 0.2s;
+  }
+
+  .signed-frame i:nth-child(7) {
+    left: 65px;
+    height: 10px;
+    animation-delay: 0.34s;
+  }
+
+  .signed-frame i:nth-child(8) {
+    left: 73px;
+    height: 15px;
+    animation-delay: 0.48s;
+  }
+
+  .signed-frame i:nth-child(9) {
+    left: 81px;
+    height: 8px;
+    animation-delay: 0.62s;
+  }
+
+  @keyframes braidFrameScan {
+    0%,
+    100% {
+      transform: scaleX(0.76);
+      opacity: 0.5;
+    }
+
+    50% {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes braidFrameBars {
+    50% {
+      transform: scaleY(1.38);
+      background: rgba(120, 235, 233, 0.75);
+    }
+  }
+
+  .accepted-state::before {
+    left: 50%;
+    top: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(120, 235, 233, 0.95),
+      rgba(120, 235, 233, 0.16) 58%,
+      transparent 68%
+    );
+    box-shadow: 0 0 20px rgba(120, 235, 233, 0.22);
+  }
+
+  .accepted-state::after {
+    left: 50%;
+    top: 50%;
+    width: 48px;
+    height: 48px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(120, 235, 233, 0.3);
+    border-radius: 50%;
+    animation: braidAcceptPulse 2.8s ease-out infinite;
+  }
+
+  .accepted-state i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    width: 16px;
+    height: 9px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    border-left: 3px solid rgba(5, 16, 17, 0.8);
+    border-bottom: 3px solid rgba(5, 16, 17, 0.8);
+  }
+
+  @keyframes braidAcceptPulse {
+    to {
+      transform: translate(-50%, -50%) scale(1.3);
+      opacity: 0;
+    }
+  }
+
+  .state-capsule {
+    position: absolute;
+    left: 82px;
+    top: 90px;
+    z-index: 5;
+    width: 108px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(120, 235, 233, 0.45);
+    border-radius: 999px;
+    color: #dbfcff;
+    background: linear-gradient(
+      90deg,
+      rgba(120, 235, 233, 0.16),
+      rgba(111, 153, 255, 0.16)
+    );
+    box-shadow: 0 0 20px rgba(120, 235, 233, 0.18);
+    font: 800 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    animation: braidStateShift 5.6s cubic-bezier(0.55, 0.03, 0.45, 0.97)
+      infinite;
+  }
+
+  .state-capsule::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 1px solid rgba(120, 235, 233, 0.18);
+    border-radius: 999px;
+    animation: braidCapsuleEcho 1.5s ease-out infinite;
+  }
+
+  @keyframes braidCapsuleEcho {
+    to {
+      transform: scale(1.14);
+      opacity: 0;
+    }
+  }
+
+  @keyframes braidStateShift {
+    0% {
+      left: 82px;
+      opacity: 0;
+      transform: scale(0.92);
+    }
+
+    10% {
+      opacity: 1;
+    }
+
+    34% {
+      left: calc(50% - 54px);
+      transform: scale(1);
+    }
+
+    60% {
+      left: calc(50% - 54px);
+      transform: scale(1.06);
+    }
+
+    88% {
+      left: calc(100% - 190px);
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    100% {
+      left: calc(100% - 190px);
+      opacity: 0;
+      transform: scale(0.92);
+    }
+  }
+
+  .path-stage .mini-frame {
+    top: 278px;
+    width: min(88%, 418px);
+  }
+
+  .gate-track {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 8px;
+    z-index: 6;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .gate-track .gate {
+    position: relative;
+    top: auto;
+    left: auto !important;
+    right: auto;
+    width: 100%;
+    padding: 10px 8px 8px;
+    transform: none;
+    text-align: center;
+    border: 1px solid rgba(120, 235, 233, 0.1);
+    border-radius: 14px;
+    background: rgba(7, 13, 18, 0.56);
+  }
+
+  .gate-track .gate.active {
+    border-color: rgba(120, 235, 233, 0.28);
+    background: rgba(8, 17, 22, 0.85);
+  }
+
+  @media (max-width: 760px) {
+    .path-card {
+      min-height: 720px;
+      padding: 22px 18px;
+    }
+
+    .path-stage {
+      height: 392px;
+    }
+
+    .transition-lane {
+      top: 70px;
+      height: 214px;
+    }
+
+    .transition-lane::before,
+    .transition-lane::after {
+      left: 42px;
+      right: 42px;
+    }
+
+    .signal-ribbon {
+      left: 34px;
+      right: 34px;
+    }
+
+    .phase-cluster {
+      width: 92px;
+      padding: 12px 8px 10px;
+    }
+
+    .phase-origin {
+      left: 30px;
+    }
+
+    .phase-middle {
+      left: 50%;
+    }
+
+    .phase-final {
+      right: 30px;
+    }
+
+    .phase-cluster b {
+      font-size: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .phase-cluster small {
+      font-size: 7px;
+      letter-spacing: 0;
+    }
+
+    .cluster-visual {
+      height: 52px;
+    }
+
+    .vector-cloud span:nth-child(6),
+    .vector-cloud span:nth-child(11) {
+      display: none;
+    }
+
+    .state-capsule {
+      left: 40px;
+      top: 96px;
+      width: 90px;
+      height: 26px;
+      font-size: 8px;
+    }
+
+    @keyframes braidStateShift {
+      0% {
+        left: 40px;
+        opacity: 0;
+        transform: scale(0.92);
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      34% {
+        left: calc(50% - 45px);
+        transform: scale(1);
+      }
+
+      60% {
+        left: calc(50% - 45px);
+        transform: scale(1.05);
+      }
+
+      88% {
+        left: calc(100% - 130px);
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      100% {
+        left: calc(100% - 130px);
+        opacity: 0;
+        transform: scale(0.92);
+      }
+    }
+
+    .path-stage .mini-frame {
+      top: 296px;
+      height: 50px;
+      padding: 0 12px;
+      font-size: 9px;
+    }
+
+    .gate-track {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      gap: 8px;
+    }
+
+    .gate-track .gate {
+      padding: 9px 4px 7px;
+    }
+
+    .gate-track .gate-icon {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 6px;
+      font-size: 10px;
+    }
+
+    .gate-track .gate span {
+      font-size: 8px;
+      letter-spacing: 0.03em;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const installPathway = () => {
+      const stage = document.querySelector(".path-stage");
+      if (!stage) return;
+
+      stage.innerHTML = `
+        <div class="node-box node-a" aria-label="Sender node A">A</div>
+        <div class="node-box node-b" aria-label="Receiver node B">B</div>
+
+        <div class="transition-lane" aria-hidden="true">
+          <div class="signal-ribbon signal-ribbon-1"></div>
+          <div class="signal-ribbon signal-ribbon-2"></div>
+
+          <div class="phase-cluster phase-origin">
+            <div class="cluster-visual vector-cloud">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <b>384D vector</b>
+            <small>origin state</small>
+          </div>
+
+          <div class="phase-cluster phase-middle">
+            <div class="cluster-visual signed-frame">
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+            <b>signed frame</b>
+            <small>policy-bound</small>
+          </div>
+
+          <div class="phase-cluster phase-final">
+            <div class="cluster-visual accepted-state">
+              <i></i>
+            </div>
+            <b>local admission</b>
+            <small>receiver state</small>
+          </div>
+
+          <div class="state-capsule">state shift</div>
+        </div>
+
+        <div class="mini-frame" aria-hidden="true">
+          <span>BRAD1</span>
+
+          <div class="bars">
+            <i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i>
+          </div>
+
+          <span>384D</span>
+        </div>
+
+        <div class="gate-track">
+          <div class="gate" data-gate="1">
+            <div class="gate-icon">G1</div>
+            <span>Integrity</span>
+          </div>
+
+          <div class="gate" data-gate="2">
+            <div class="gate-icon">G2</div>
+            <span>Representation</span>
+          </div>
+
+          <div class="gate" data-gate="3">
+            <div class="gate-icon">G3</div>
+            <span>Anomaly</span>
+          </div>
+        </div>
+      `;
+
+      const gates = [...stage.querySelectorAll(".gate")];
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      if (reduceMotion) {
+        gates.forEach((gate) => gate.classList.add("active"));
+        return;
+      }
+
+      const cycle = 5600;
+      const startedAt = performance.now();
+
+      const animateGates = (now) => {
+        const progress = ((now - startedAt) % cycle) / cycle;
+
+        gates[0]?.classList.toggle(
+          "active",
+          progress > 0.22 && progress < 0.96
+        );
+
+        gates[1]?.classList.toggle(
+          "active",
+          progress > 0.42 && progress < 0.96
+        );
+
+        gates[2]?.classList.toggle(
+          "active",
+          progress > 0.62 && progress < 0.96
+        );
+
+        requestAnimationFrame(animateGates);
+      };
+
+      requestAnimationFrame(animateGates);
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", installPathway, {
+        once: true
+      });
+    } else {
+      installPathway();
+    }
+  })();
+</script>
 </body>
 </html>
