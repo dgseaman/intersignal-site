@@ -1,1046 +1,1003 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#05070a">
-  <meta name="description" content="Intersignal designs local-first AI infrastructure, private agent workflows, sovereign edge nodes, and the Braid research line.">
-  <title>Intersignal // Local AI Infrastructure</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#05090c" />
+  <meta name="description" content="Intersignal builds local-first AI infrastructure and Braid, an open-source state transport client for signed, inspectable machine-state handoff." />
+  <title>Intersignal — Build the AI substrate first</title>
   <style>
     :root {
-      --bg: #05070a;
-      --bg-soft: #090c11;
-      --panel: rgba(12, 16, 22, 0.82);
-      --panel-solid: #0c1016;
-      --panel-deep: #07090d;
-      --text: #d9e2ea;
-      --text-strong: #f7fbff;
-      --muted: #84909c;
-      --dim: #56616c;
-      --line: rgba(143, 173, 194, 0.16);
-      --line-strong: rgba(109, 237, 232, 0.32);
-      --cyan: #6dede8;
-      --cyan-soft: #9bf5ef;
-      --blue: #7ba9ff;
-      --green: #9ce8b2;
-      --shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
-      --radius: 18px;
-      --max: 1180px;
+      --bg: #05090c;
+      --bg-2: #091017;
+      --panel: rgba(10, 16, 22, 0.76);
+      --panel-strong: rgba(8, 13, 18, 0.94);
+      --line: rgba(137, 238, 239, 0.18);
+      --line-strong: rgba(137, 238, 239, 0.34);
+      --text: #f3f7fb;
+      --muted: #9caab8;
+      --muted-2: #657381;
+      --cyan: #78ebe9;
+      --cyan-2: #36cbd3;
+      --blue: #6f99ff;
+      --green: #92efb0;
+      --danger: #ff9b9b;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --max: 1480px;
     }
 
     * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      background: var(--bg);
-    }
-
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       color: var(--text);
       background:
-        radial-gradient(circle at 15% 8%, rgba(42, 91, 106, 0.16), transparent 30%),
-        radial-gradient(circle at 88% 15%, rgba(45, 65, 119, 0.12), transparent 28%),
-        linear-gradient(180deg, #05070a 0%, #070a0f 52%, #05070a 100%);
+        radial-gradient(circle at 73% 12%, rgba(55, 160, 172, 0.09), transparent 27%),
+        radial-gradient(circle at 18% 72%, rgba(95, 122, 255, 0.07), transparent 24%),
+        var(--bg);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
       overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.18;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-      background-size: 54px 54px;
-      mask-image: linear-gradient(to bottom, black, transparent 85%);
-      z-index: 0;
     }
 
     a { color: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
+    ::selection { background: rgba(120, 235, 233, .24); color: #fff; }
 
-    .container {
-      width: min(calc(100% - 40px), var(--max));
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      pointer-events: none;
+      opacity: .15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
     }
 
-    .site-header {
+    #nodeField {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      opacity: .7;
+      pointer-events: none;
+    }
+
+    .site-shell {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+
+    .topbar {
       position: sticky;
       top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: rgba(5, 7, 10, 0.72);
-      border-bottom: 1px solid rgba(153, 185, 204, 0.10);
+      z-index: 50;
+      border-bottom: 1px solid rgba(139, 205, 212, .11);
+      backdrop-filter: blur(20px) saturate(130%);
+      background: rgba(4, 8, 11, .76);
     }
 
-    .header-inner {
-      min-height: 72px;
+    .nav {
+      min-height: 88px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 28px;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
-      letter-spacing: 0.16em;
-      font-size: 13px;
       font-weight: 800;
-      color: var(--text-strong);
+      letter-spacing: .18em;
+      font-size: 15px;
     }
 
     .brand-mark {
-      width: 30px;
-      height: 30px;
-      border: 1px solid rgba(109, 237, 232, 0.48);
-      border-radius: 9px;
-      position: relative;
-      box-shadow: 0 0 28px rgba(109, 237, 232, 0.12), inset 0 0 18px rgba(109, 237, 232, 0.06);
+      width: 43px;
+      height: 43px;
+      border: 1px solid rgba(120, 235, 233, .48);
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
       transform: rotate(45deg);
+      background: linear-gradient(145deg, rgba(120,235,233,.09), transparent 62%);
+      box-shadow: inset 0 0 28px rgba(120,235,233,.07), 0 0 24px rgba(54,203,211,.05);
     }
 
-    .brand-mark::before,
-    .brand-mark::after {
+    .brand-mark::before {
       content: "";
-      position: absolute;
-      border-radius: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
       background: var(--cyan);
-      box-shadow: 0 0 12px rgba(109, 237, 232, 0.9);
+      box-shadow: 0 0 14px var(--cyan);
+      transform: rotate(-45deg);
     }
 
-    .brand-mark::before { width: 5px; height: 5px; top: 6px; left: 6px; }
-    .brand-mark::after { width: 4px; height: 4px; right: 6px; bottom: 6px; }
-
-    .nav {
+    .nav-links {
       display: flex;
       align-items: center;
-      gap: 22px;
-      font-size: 13px;
-      color: var(--muted);
+      gap: 30px;
+      color: #8f9ba8;
+      font-weight: 650;
+      font-size: 15px;
     }
 
-    .nav a {
+    .nav-links a {
       text-decoration: none;
-      transition: color 160ms ease;
+      transition: color .2s ease;
     }
+    .nav-links a:hover { color: var(--text); }
 
-    .nav a:hover,
-    .nav a:focus-visible { color: var(--cyan-soft); }
-
-    .nav .nav-cta {
-      color: var(--text-strong);
-      border: 1px solid rgba(109, 237, 232, 0.28);
-      border-radius: 999px;
-      padding: 9px 14px;
-      background: rgba(109, 237, 232, 0.04);
-    }
-
-    .hero {
-      min-height: 760px;
-      display: grid;
+    .button {
+      display: inline-flex;
       align-items: center;
-      padding: 96px 0 78px;
-      position: relative;
-      isolation: isolate;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 24px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid rgba(120,235,233,.22);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
     }
 
-    .hero-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      opacity: 0.72;
-      pointer-events: none;
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(120,235,233,.48);
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background:
-        linear-gradient(90deg, rgba(5,7,10,0.98) 0%, rgba(5,7,10,0.80) 45%, rgba(5,7,10,0.20) 78%, rgba(5,7,10,0.75) 100%),
-        linear-gradient(180deg, transparent 0%, rgba(5,7,10,0.14) 70%, var(--bg) 100%);
-      pointer-events: none;
+    .button.primary {
+      color: #021011;
+      background: linear-gradient(135deg, #8df4ef 0%, #5ddde0 100%);
+      box-shadow: 0 12px 34px rgba(58, 213, 219, .16);
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.65fr);
-      align-items: end;
-      gap: 68px;
+    .button.primary:hover { box-shadow: 0 18px 42px rgba(58, 213, 219, .24); }
+
+    .button.secondary {
+      color: #f5f8fb;
+      background: rgba(9, 14, 19, .72);
+    }
+
+    .button.compact {
+      min-height: 43px;
+      border-radius: 999px;
+      padding-inline: 20px;
+      font-size: 14px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      color: var(--cyan-soft);
-      letter-spacing: 0.13em;
+      gap: 11px;
+      color: #9af0ee;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .15em;
       text-transform: uppercase;
-      font: 700 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      margin-bottom: 22px;
     }
 
-    .eyebrow::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
       background: var(--cyan);
-      box-shadow: 0 0 16px rgba(109, 237, 232, 0.9);
-      animation: statusPulse 2.4s ease-in-out infinite;
+      box-shadow: 0 0 16px rgba(120,235,233,.82);
     }
 
-    h1, h2, h3, p { margin-top: 0; }
+    .hero {
+      min-height: calc(100vh - 88px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(370px, .82fr);
+      align-items: center;
+      gap: clamp(48px, 7vw, 116px);
+      padding: 92px 0 78px;
+    }
 
     .hero h1 {
-      margin-bottom: 26px;
-      max-width: 920px;
-      font-size: clamp(52px, 8.2vw, 112px);
-      line-height: 0.91;
-      letter-spacing: -0.067em;
-      color: var(--text-strong);
-      text-wrap: balance;
+      margin: 34px 0 25px;
+      max-width: 930px;
+      font-size: clamp(58px, 7.8vw, 112px);
+      line-height: .98;
+      letter-spacing: -.066em;
+      font-weight: 850;
     }
 
-    .hero h1 span {
+    .gradient-text {
       display: block;
-      color: transparent;
-      background: linear-gradient(92deg, #f8fcff 0%, #a7e3e2 42%, #7ba9ff 86%);
+      background: linear-gradient(100deg, #eefcff 0%, #a8edec 43%, #78a0ff 92%);
       -webkit-background-clip: text;
       background-clip: text;
+      color: transparent;
     }
 
-    .hero-lede {
-      max-width: 770px;
-      margin-bottom: 34px;
-      color: #aab6c1;
-      font-size: clamp(18px, 2vw, 23px);
-      line-height: 1.55;
-      text-wrap: pretty;
+    .hero-copy {
+      max-width: 900px;
+      color: #aab6c2;
+      font-size: clamp(19px, 1.65vw, 27px);
+      line-height: 1.62;
+      letter-spacing: -.015em;
     }
 
-    .button-row {
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
+      margin-top: 38px;
     }
 
-    .button {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 9px;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 11px;
-      border: 1px solid var(--line);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 700;
-      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
-    }
-
-    .button:hover,
-    .button:focus-visible { transform: translateY(-2px); border-color: var(--line-strong); }
-
-    .button-primary {
-      color: #031011;
-      background: linear-gradient(135deg, var(--cyan-soft), var(--cyan));
-      border-color: transparent;
-      box-shadow: 0 14px 40px rgba(109, 237, 232, 0.15);
-    }
-
-    .button-secondary { background: rgba(255,255,255,0.025); color: var(--text-strong); }
-
-    .hero-console {
-      align-self: end;
-      border: 1px solid rgba(130, 164, 184, 0.17);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(12,16,22,0.89), rgba(7,9,13,0.92));
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.035);
+    .status-card {
+      position: relative;
       overflow: hidden;
+      border: 1px solid rgba(145, 218, 225, .17);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(9,15,20,.9), rgba(5,9,13,.78));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.025);
     }
 
-    .console-head {
+    .status-card::before {
+      content: "";
+      position: absolute;
+      inset: -70% auto auto -28%;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(120,235,233,.13), transparent 68%);
+      pointer-events: none;
+    }
+
+    .status-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 15px 17px;
-      border-bottom: 1px solid var(--line);
-      color: var(--muted);
-      font: 700 11px/1.3 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      letter-spacing: 0.1em;
+      min-height: 58px;
+      padding: 0 22px;
+      border-bottom: 1px solid rgba(145, 218, 225, .13);
+      color: #748392;
+      font: 800 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .14em;
       text-transform: uppercase;
     }
 
-    .console-lights { display: flex; gap: 6px; }
-    .console-lights i { width: 7px; height: 7px; border-radius: 50%; background: #35404a; }
-    .console-lights i:nth-child(2) { background: var(--cyan); box-shadow: 0 0 10px rgba(109,237,232,0.75); }
+    .dots { display: flex; gap: 7px; }
+    .dots i { width: 8px; height: 8px; border-radius: 50%; background: #31404c; }
+    .dots i:nth-child(2) { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
 
-    .console-body { padding: 19px; }
-
-    .console-line {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.055);
-      font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: var(--muted);
+    .status-body { padding: 26px 24px 28px; }
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(145, 218, 225, .09);
+      font: 760 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
+    .status-row:last-child { border-bottom: 0; }
+    .status-row span:first-child { color: #788797; }
+    .status-row b { color: #eff5f7; }
+    .status-row b.good { color: var(--green); }
+    .status-row b.cyan { color: var(--cyan); }
 
-    .console-line:last-child { border-bottom: 0; }
-    .console-line strong { color: var(--text-strong); font-weight: 700; }
-    .console-line .ok { color: var(--green); }
-    .console-line .active { color: var(--cyan-soft); }
+    section { scroll-margin-top: 108px; }
 
-    .section {
-      padding: 94px 0;
-      position: relative;
-      z-index: 2;
-    }
-
-    .section + .section { border-top: 1px solid rgba(153,185,204,0.08); }
-
-    .section-kicker {
-      margin-bottom: 14px;
-      color: var(--cyan);
-      font: 700 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.68fr);
-      gap: 52px;
-      align-items: end;
-      margin-bottom: 38px;
-    }
-
-    .section-head h2 {
-      margin-bottom: 0;
-      color: var(--text-strong);
-      font-size: clamp(34px, 5vw, 64px);
-      line-height: 1.02;
-      letter-spacing: -0.045em;
-      text-wrap: balance;
-    }
-
-    .section-head p {
-      margin-bottom: 4px;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 16px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      min-height: 248px;
-      padding: 24px;
+    .braid-wrap { padding: 48px 0 110px; }
+    .braid-panel {
       position: relative;
       overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(420px, .76fr);
+      gap: 42px;
+      padding: clamp(42px, 5vw, 72px);
+      border: 1px solid rgba(120,235,233,.29);
+      border-radius: var(--radius-xl);
       background:
-        radial-gradient(circle at 100% 0, rgba(109,237,232,0.08), transparent 38%),
-        linear-gradient(180deg, rgba(13,17,23,0.9), rgba(8,11,15,0.94));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.028);
+        linear-gradient(115deg, rgba(10,26,28,.8) 0%, rgba(7,12,17,.94) 42%, rgba(8,17,28,.92) 100%);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.03);
     }
 
-    .card::after {
+    .braid-panel::before {
       content: "";
       position: absolute;
-      width: 130px;
-      height: 130px;
-      right: -80px;
-      bottom: -88px;
-      border: 1px solid rgba(109,237,232,0.18);
-      border-radius: 50%;
-      box-shadow: 0 0 0 22px rgba(109,237,232,0.025), 0 0 0 46px rgba(109,237,232,0.014);
+      inset: 0;
+      background: linear-gradient(90deg, rgba(80, 219, 216, .035), transparent 42%);
+      pointer-events: none;
     }
 
-    .card-index {
-      margin-bottom: 56px;
-      color: var(--dim);
-      font: 700 11px/1.3 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      letter-spacing: 0.12em;
-    }
-
-    .card h3 {
-      margin-bottom: 12px;
-      color: var(--text-strong);
-      font-size: 21px;
-      letter-spacing: -0.02em;
-    }
-
-    .card p {
-      margin-bottom: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .braid-wrap {
-      position: relative;
-      border: 1px solid rgba(109,237,232,0.26);
-      border-radius: 24px;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 8% 0%, rgba(109,237,232,0.12), transparent 30%),
-        radial-gradient(circle at 95% 100%, rgba(123,169,255,0.11), transparent 36%),
-        #080b10;
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.045);
-    }
-
-    .braid-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
-      gap: 28px;
-      padding: 40px;
-    }
-
-    .braid-badge {
+    .research-chip {
       display: inline-flex;
-      gap: 9px;
       align-items: center;
-      margin-bottom: 18px;
-      padding: 8px 10px;
+      gap: 10px;
+      width: max-content;
       border-radius: 999px;
-      background: rgba(109,237,232,0.06);
-      border: 1px solid rgba(109,237,232,0.18);
-      color: var(--cyan-soft);
-      font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      letter-spacing: 0.09em;
+      border: 1px solid rgba(120,235,233,.28);
+      background: rgba(74, 211, 211, .08);
+      padding: 10px 17px;
+      color: #94efec;
+      font: 800 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .13em;
       text-transform: uppercase;
     }
 
     .braid-copy h2 {
-      margin-bottom: 18px;
-      color: var(--text-strong);
-      font-size: clamp(36px, 5.5vw, 72px);
-      line-height: 0.98;
-      letter-spacing: -0.05em;
+      margin: 28px 0 18px;
+      font-size: clamp(61px, 7vw, 94px);
+      line-height: .95;
+      letter-spacing: -.06em;
     }
 
-    .braid-copy > p {
-      max-width: 760px;
-      color: #aab6c1;
-      font-size: 17px;
-      line-height: 1.7;
-      margin-bottom: 28px;
+    .braid-intro {
+      max-width: 880px;
+      color: #a6b3c0;
+      font-size: clamp(18px, 1.5vw, 24px);
+      line-height: 1.66;
     }
 
-    .braid-facts {
+    .feature-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      gap: 14px;
+      margin-top: 34px;
     }
 
-    .fact {
-      padding: 16px;
-      border-radius: 13px;
-      border: 1px solid rgba(255,255,255,0.065);
-      background: rgba(255,255,255,0.022);
+    .feature-card {
+      min-height: 132px;
+      padding: 22px 22px 20px;
+      border: 1px solid rgba(153, 177, 196, .14);
+      border-radius: 15px;
+      background: rgba(12, 16, 21, .72);
+      transition: border-color .2s ease, transform .2s ease, background .2s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(120,235,233,.32);
+      background: rgba(13, 20, 26, .85);
+    }
+    .feature-card h3 { margin: 0 0 9px; font-size: 17px; }
+    .feature-card p { margin: 0; color: #8392a1; line-height: 1.55; }
+
+    .release-strip {
+      margin-top: 18px;
+      padding: 20px 22px;
+      border: 1px solid rgba(120,235,233,.2);
+      border-radius: 16px;
+      background: linear-gradient(120deg, rgba(67, 214, 213, .08), rgba(24, 35, 48, .48));
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+    .release-strip strong { display: block; font-size: 17px; margin-bottom: 6px; }
+    .release-strip p { margin: 0; color: #8fa0af; line-height: 1.5; }
+
+    .braid-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+
+    .path-card {
+      position: relative;
+      min-height: 690px;
+      overflow: hidden;
+      border: 1px solid rgba(145, 218, 225, .14);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 28%, rgba(48, 207, 211, .07), transparent 28%),
+        rgba(3, 7, 10, .76);
+      padding: 30px;
     }
 
-    .fact strong {
-      display: block;
-      color: var(--text-strong);
-      font-size: 13px;
-      margin-bottom: 6px;
-    }
-
-    .fact span {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .braid-side {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 22px;
-      border-radius: 17px;
-      border: 1px solid rgba(255,255,255,0.075);
-      background: rgba(2,4,7,0.55);
-      min-height: 100%;
-    }
-
-    .braid-side-label {
-      color: var(--dim);
-      font: 700 10px/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      letter-spacing: 0.13em;
+    .path-card h3 {
+      margin: 0;
+      color: #687784;
+      font: 800 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .15em;
       text-transform: uppercase;
     }
 
-    .pathway {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 12px;
-      margin-top: 16px;
+    .path-stage {
+      position: relative;
+      height: 335px;
+      margin-top: 22px;
+      border-bottom: 1px solid rgba(145,218,225,.11);
     }
 
-    .path-node {
-      width: 46px;
-      height: 46px;
+    .node-box {
+      position: absolute;
+      top: 22px;
+      width: 64px;
+      height: 64px;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(109,237,232,0.28);
-      border-radius: 14px;
-      color: var(--cyan-soft);
-      font: 800 12px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      background: rgba(109,237,232,0.045);
+      border-radius: 18px;
+      border: 1px solid rgba(120,235,233,.36);
+      background: rgba(9, 24, 28, .72);
+      color: var(--cyan);
+      font: 900 18px ui-monospace, SFMono-Regular, Menlo, monospace;
+      box-shadow: inset 0 0 28px rgba(120,235,233,.04);
+      z-index: 3;
+    }
+    .node-a { left: 0; }
+    .node-b { right: 0; }
+
+    .node-box::after {
+      content: "";
+      position: absolute;
+      inset: -9px;
+      border: 1px solid rgba(120,235,233,.08);
+      border-radius: 23px;
+      opacity: 0;
+      animation: nodePulse 3.2s ease-out infinite;
+    }
+    .node-b::after { animation-delay: 1.55s; }
+
+    @keyframes nodePulse {
+      0%, 28% { transform: scale(.82); opacity: 0; }
+      35% { opacity: .8; }
+      70%, 100% { transform: scale(1.38); opacity: 0; }
     }
 
-    .path-line {
-      height: 1px;
-      position: relative;
-      background: linear-gradient(90deg, rgba(109,237,232,0.18), rgba(109,237,232,0.7), rgba(123,169,255,0.18));
+    .route-svg {
+      position: absolute;
+      left: 50px;
+      right: 50px;
+      top: 14px;
+      width: calc(100% - 100px);
+      height: 250px;
       overflow: visible;
     }
 
-    .path-line::after {
+    .route-base {
+      fill: none;
+      stroke: rgba(120,235,233,.17);
+      stroke-width: 1.2;
+    }
+    .route-glow {
+      fill: none;
+      stroke: url(#routeGradient);
+      stroke-width: 2.3;
+      stroke-linecap: round;
+      filter: url(#glow);
+      stroke-dasharray: 10 13;
+      animation: routeFlow 2.8s linear infinite;
+    }
+    .route-side {
+      fill: none;
+      stroke: rgba(111,153,255,.18);
+      stroke-width: 1.15;
+      stroke-dasharray: 3 10;
+      animation: routeFlowReverse 4.5s linear infinite;
+    }
+    @keyframes routeFlow { to { stroke-dashoffset: -92; } }
+    @keyframes routeFlowReverse { to { stroke-dashoffset: 96; } }
+
+    .packet {
+      position: absolute;
+      left: 66px;
+      top: 47px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #c7ffff;
+      box-shadow: 0 0 8px #c7ffff, 0 0 22px var(--cyan), 0 0 42px rgba(120,235,233,.6);
+      z-index: 6;
+      animation: packetTravel 5.6s cubic-bezier(.55,.03,.45,.97) infinite;
+    }
+
+    .packet::before,
+    .packet::after {
       content: "";
       position: absolute;
-      top: -3px;
-      left: 0;
-      width: 7px;
-      height: 7px;
+      inset: -7px;
       border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 13px rgba(109,237,232,0.9);
-      animation: packetTravel 2.8s ease-in-out infinite;
+      border: 1px solid rgba(120,235,233,.5);
+      animation: packetRing 1.25s ease-out infinite;
     }
-
-    .mono-stack {
-      display: grid;
-      gap: 8px;
-      font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-
-    .mono-stack div {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      color: var(--muted);
-      padding-top: 8px;
-      border-top: 1px solid rgba(255,255,255,0.055);
-    }
-
-    .mono-stack strong { color: var(--text-strong); }
-    .mono-stack .cyan { color: var(--cyan-soft); }
-
-    .process {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: rgba(10,13,18,0.74);
-    }
-
-    .process-step {
-      min-height: 220px;
-      padding: 24px;
-      border-right: 1px solid var(--line);
-    }
-
-    .process-step:last-child { border-right: 0; }
-
-    .process-number {
-      color: var(--cyan);
-      font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      margin-bottom: 56px;
-    }
-
-    .process-step h3 {
-      color: var(--text-strong);
-      font-size: 17px;
-      margin-bottom: 10px;
-    }
-
-    .process-step p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.65;
-      margin-bottom: 0;
-    }
-
-    .contact-panel {
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.65fr);
-      gap: 28px;
-      padding: 42px;
-      border-radius: 24px;
-      border: 1px solid var(--line);
-      background: linear-gradient(135deg, rgba(16,21,29,0.95), rgba(7,10,14,0.96));
-      box-shadow: var(--shadow);
-    }
-
-    .contact-panel h2 {
-      color: var(--text-strong);
-      font-size: clamp(36px, 5vw, 64px);
-      line-height: 1;
-      letter-spacing: -0.045em;
-      margin-bottom: 18px;
-    }
-
-    .contact-panel p {
-      max-width: 720px;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 26px;
-    }
-
-    .contact-list {
-      display: grid;
-      align-content: center;
-      gap: 10px;
-    }
-
-    .contact-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .contact-row:last-child { border-bottom: 0; }
-    .contact-row span { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
-    .contact-row a { color: var(--text-strong); text-decoration: none; font-size: 14px; font-weight: 700; text-align: right; }
-    .contact-row a:hover, .contact-row a:focus-visible { color: var(--cyan-soft); }
-
-    footer {
-      padding: 38px 0 48px;
-      border-top: 1px solid rgba(153,185,204,0.08);
-      position: relative;
-      z-index: 2;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 30px;
-      align-items: end;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 18px;
-    }
-
-    .footer-links a { text-decoration: none; }
-    .footer-links a:hover, .footer-links a:focus-visible { color: var(--cyan-soft); }
-
-    .signal-rain {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: 0.22;
-      mask-image: linear-gradient(to bottom, transparent 0, black 10%, black 82%, transparent 100%);
-    }
-
-    .rain-dot {
-      position: absolute;
-      top: -30px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 12px rgba(109,237,232,0.75);
-      animation-name: descendAndBounce;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      will-change: transform, opacity;
-    }
-
-    @keyframes descendAndBounce {
-      0% { transform: translate3d(0, -8vh, 0) scale(0.65); opacity: 0; }
-      8% { opacity: 0.85; }
-      52% { transform: translate3d(18px, 54vh, 0) scale(1); opacity: 0.65; }
-      78% { transform: translate3d(-10px, 86vh, 0) scale(0.9); opacity: 0.48; }
-      88% { transform: translate3d(8px, 78vh, 0) scale(0.82); opacity: 0.42; }
-      100% { transform: translate3d(0, 112vh, 0) scale(0.6); opacity: 0; }
-    }
+    .packet::after { animation-delay: .44s; }
+    @keyframes packetRing { to { transform: scale(2.2); opacity: 0; } }
 
     @keyframes packetTravel {
-      0%, 8% { transform: translateX(0); opacity: 0; }
-      16% { opacity: 1; }
-      82% { opacity: 1; }
-      100% { transform: translateX(calc(100% - 7px)); opacity: 0; }
+      0%   { left: 65px; top: 47px; transform: scale(.72); opacity: 0; }
+      5%   { opacity: 1; }
+      18%  { left: 24%; top: 119px; transform: scale(1); }
+      36%  { left: 42%; top: 73px; }
+      50%  { left: 50%; top: 131px; transform: scale(1.15); }
+      66%  { left: 65%; top: 72px; }
+      84%  { left: 80%; top: 119px; transform: scale(1); }
+      95%  { opacity: 1; }
+      100% { left: calc(100% - 79px); top: 47px; transform: scale(.72); opacity: 0; }
     }
 
-    @keyframes statusPulse {
-      0%, 100% { transform: scale(0.85); opacity: 0.55; }
-      50% { transform: scale(1.15); opacity: 1; }
+    .gate {
+      position: absolute;
+      top: 128px;
+      width: 78px;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 4;
+    }
+    .gate:nth-of-type(1) { left: 31%; }
+    .gate:nth-of-type(2) { left: 50%; }
+    .gate:nth-of-type(3) { left: 69%; }
+    .gate-icon {
+      width: 37px;
+      height: 37px;
+      margin: 0 auto 8px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(120,235,233,.25);
+      background: rgba(8,18,23,.88);
+      color: #78909c;
+      font: 800 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+      transition: color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+    }
+    .gate span {
+      color: #61717f;
+      font: 760 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .gate.active .gate-icon {
+      color: var(--cyan);
+      border-color: rgba(120,235,233,.65);
+      box-shadow: 0 0 22px rgba(120,235,233,.23);
+      transform: translateY(-2px);
+    }
+    .gate.active span { color: #9ae8e7; }
+
+    .mini-frame {
+      position: absolute;
+      left: 50%;
+      top: 232px;
+      transform: translateX(-50%);
+      width: min(86%, 390px);
+      height: 54px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 16px;
+      border: 1px solid rgba(145,218,225,.13);
+      border-radius: 13px;
+      background: rgba(8, 14, 19, .82);
+      color: #647380;
+      font: 760 10px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .05em;
+    }
+    .mini-frame .bars { flex: 1; display: flex; gap: 3px; align-items: center; }
+    .mini-frame .bars i {
+      width: 3px;
+      height: 8px;
+      border-radius: 2px;
+      background: rgba(120,235,233,.27);
+      animation: barSignal 1.7s ease-in-out infinite;
+    }
+    .mini-frame .bars i:nth-child(3n) { animation-delay: .25s; height: 16px; }
+    .mini-frame .bars i:nth-child(4n) { animation-delay: .5s; height: 23px; }
+    .mini-frame .bars i:nth-child(5n) { animation-delay: .75s; height: 13px; }
+    @keyframes barSignal { 50% { transform: scaleY(1.7); background: rgba(120,235,233,.8); } }
+
+    .path-audit { padding-top: 8px; }
+    .audit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(145,218,225,.09);
+      font: 760 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .audit-row:last-of-type { border-bottom: 0; }
+    .audit-row span { color: #7a8996; }
+    .audit-row b { color: #eef5f7; }
+    .audit-row b.cyan { color: var(--cyan); }
+    .audit-row b.green { color: var(--green); }
+
+    .phase-readout {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(120,235,233,.14);
+      background: rgba(10,18,23,.65);
+    }
+    .phase-label {
+      display: flex;
+      justify-content: space-between;
+      color: #71808d;
+      font: 780 10px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .phase-bar {
+      position: relative;
+      height: 7px;
+      margin-top: 13px;
+      border-radius: 999px;
+      background: rgba(135,166,181,.13);
+      overflow: hidden;
+    }
+    .phase-bar i {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan-2), var(--cyan), var(--blue));
+      box-shadow: 0 0 20px rgba(120,235,233,.35);
+      animation: phaseFill 5.6s ease-in-out infinite;
+    }
+    @keyframes phaseFill {
+      0%, 4% { width: 2%; opacity: .3; }
+      90% { width: 100%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
     }
 
-    @media (max-width: 980px) {
-      .hero-grid,
-      .section-head,
-      .braid-grid,
-      .contact-panel { grid-template-columns: 1fr; }
-      .hero { min-height: auto; }
-      .hero-console { max-width: 620px; }
-      .cards { grid-template-columns: 1fr 1fr; }
-      .process { grid-template-columns: 1fr 1fr; }
-      .process-step:nth-child(2) { border-right: 0; }
-      .process-step:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .path-note {
+      margin-top: 24px;
+      color: #667684;
+      font-size: 13px;
+      line-height: 1.6;
     }
 
-    @media (max-width: 720px) {
-      .container { width: min(calc(100% - 28px), var(--max)); }
-      .site-header { position: relative; }
-      .header-inner { min-height: 66px; }
-      .nav a:not(.nav-cta) { display: none; }
+    .openness {
+      margin-top: 32px;
+      padding: 20px 22px;
+      border-left: 2px solid rgba(120,235,233,.42);
+      background: rgba(7,13,17,.45);
+      color: #81909d;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .openness strong { color: #b9c8d0; }
+
+    .approach {
+      padding: 18px 0 118px;
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 54px;
+      align-items: start;
+    }
+    .approach h2 {
+      margin: 18px 0 16px;
+      font-size: clamp(44px, 5vw, 72px);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+    .approach p { color: #8e9daa; line-height: 1.7; font-size: 18px; }
+    .approach-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .approach-item {
+      padding: 26px;
+      border-radius: 18px;
+      border: 1px solid rgba(145,218,225,.13);
+      background: rgba(8,13,18,.72);
+    }
+    .approach-item b { display: block; margin-bottom: 9px; font-size: 17px; }
+    .approach-item span { color: #7f8e9c; line-height: 1.55; }
+
+    footer {
+      border-top: 1px solid rgba(145,218,225,.11);
+      padding: 40px 0 54px;
+      color: #697784;
+      font-size: 13px;
+    }
+    .footer-grid { display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+    .footer-grid a { color: #97a6b2; text-decoration: none; }
+
+    @media (max-width: 1120px) {
+      .hero, .braid-panel, .approach { grid-template-columns: 1fr; }
+      .status-card { max-width: 680px; }
+      .path-card { min-height: 650px; }
+      .braid-panel { padding: 44px; }
+    }
+
+    @media (max-width: 760px) {
+      .site-shell { width: min(calc(100% - 24px), var(--max)); }
+      .nav { min-height: 72px; }
+      .nav-links a:not(.button) { display: none; }
+      .brand { font-size: 13px; }
+      .brand-mark { width: 38px; height: 38px; }
       .hero { padding: 72px 0 64px; }
-      .hero-grid { gap: 42px; }
-      .hero h1 { font-size: clamp(48px, 16vw, 78px); }
-      .cards,
-      .braid-facts,
-      .process { grid-template-columns: 1fr; }
-      .process-step { border-right: 0; border-bottom: 1px solid var(--line); }
-      .process-step:last-child { border-bottom: 0; }
-      .braid-grid,
-      .contact-panel { padding: 24px; }
-      .section { padding: 72px 0; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-links { justify-content: flex-start; }
-      .contact-row { align-items: flex-start; flex-direction: column; gap: 7px; }
-      .contact-row a { text-align: left; }
+      .hero h1 { font-size: clamp(52px, 18vw, 78px); }
+      .hero-copy { font-size: 18px; }
+      .feature-grid, .approach-list { grid-template-columns: 1fr; }
+      .braid-panel { padding: 26px 18px; border-radius: 22px; }
+      .path-card { min-height: 635px; padding: 22px 18px; }
+      .release-strip { grid-template-columns: 1fr; }
+      .release-strip .button { width: 100%; }
+      .gate:nth-of-type(1) { left: 28%; }
+      .gate:nth-of-type(3) { left: 72%; }
+      .gate { width: 66px; }
+      .gate span { font-size: 8px; }
+      .footer-grid { align-items: flex-start; flex-direction: column; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .rain-dot,
-      .eyebrow::before,
-      .path-line::after { animation: none !important; }
-      .signal-rain { display: none; }
-      .button { transition: none; }
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
 <body>
-  <div class="signal-rain" id="signalRain" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <canvas id="nodeField" aria-hidden="true"></canvas>
 
-  <header class="site-header">
-    <div class="container header-inner">
+  <header class="topbar">
+    <nav class="nav site-shell" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Intersignal home">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>INTERSIGNAL</span>
       </a>
-      <nav class="nav" aria-label="Primary navigation">
+      <div class="nav-links">
         <a href="#work">Work</a>
         <a href="#braid">Braid</a>
         <a href="#approach">Approach</a>
-        <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener">X / @intersignal_ai</a>
-        <a class="nav-cta" href="#contact">Contact</a>
-      </nav>
-    </div>
+        <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">X / @intersignal_ai</a>
+        <a class="button secondary compact" href="mailto:missy@intersignal.ai">Contact</a>
+      </div>
+    </nav>
   </header>
 
   <main id="top">
-    <section class="hero">
-      <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">Local AI Infrastructure // Private Consulting</div>
-          <h1>Build the AI <span>substrate first.</span></h1>
-          <p class="hero-lede">
-            Intersignal helps serious teams design local-first AI systems: private agent workflows, sovereign edge nodes, model-adjacent tooling, and practical infrastructure for organizations that cannot afford to treat AI as a toy chatbot layer.
+    <section class="hero site-shell" id="work">
+      <div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span> Local AI infrastructure // private consulting</div>
+        <h1>Build the AI <span class="gradient-text">substrate first.</span></h1>
+        <p class="hero-copy">
+          Intersignal helps serious teams design local-first AI systems: private agent workflows,
+          sovereign edge nodes, model-adjacent tooling, and practical infrastructure for organizations
+          that cannot afford to treat AI as a toy chatbot layer.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="mailto:missy@intersignal.ai?subject=Intersignal%20conversation">Start a conversation <span aria-hidden="true">↗</span></a>
+          <a class="button secondary" href="#braid">Explore Braid research</a>
+        </div>
+      </div>
+
+      <aside class="status-card" aria-label="Substrate status">
+        <div class="status-head">
+          <span>Substrate status</span>
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        </div>
+        <div class="status-body">
+          <div class="status-row"><span>LOCAL COMPUTE</span><b class="good">PREFERRED</b></div>
+          <div class="status-row"><span>PRIVATE CONTEXT</span><b class="good">PRESERVED</b></div>
+          <div class="status-row"><span>AGENT ROUTING</span><b class="cyan">DESIGNED</b></div>
+          <div class="status-row"><span>STATE PORTABILITY</span><b class="cyan">RELEASED</b></div>
+          <div class="status-row"><span>CLOUD DEPENDENCY</span><b>OPTIONAL</b></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="braid-wrap site-shell" id="braid">
+      <div class="braid-panel">
+        <div class="braid-copy">
+          <div class="research-chip"><span class="eyebrow-dot"></span> Open developer release</div>
+          <h2>Braid</h2>
+          <p class="braid-intro">
+            Braid gives independently operated AI systems a bounded way to preserve and exchange compact,
+            policy-gated state without replaying an entire human transcript. Signed state objects cross files,
+            local APIs, or optical channels; admission and authority remain with the receiving node.
           </p>
-          <div class="button-row">
-            <a class="button button-primary" href="mailto:hello@intersignal.ai?subject=Intersignal%20engagement%20inquiry">Start a conversation <span aria-hidden="true">↗</span></a>
-            <a class="button button-secondary" href="#braid">Explore Braid research</a>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <h3>State before transcript</h3>
+              <p>Compact 384-dimensional representations preserve operational continuity without dragging full chat history between systems.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Receiver-local trust</h3>
+              <p>Every handoff can be independently inspected, constrained, accepted, or rejected under local policy.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Signed machine-state frames</h3>
+              <p>Canonical manifests, payload binding, persistent Ed25519 identity, and whole-frame object digests.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Optical and air-gapped paths</h3>
+              <p>BRAD1 QR reels move state as visible light between devices without requiring a shared cloud service.</p>
+            </article>
+          </div>
+
+          <div class="release-strip">
+            <div>
+              <strong>Braid Light Client v1.4.4</strong>
+              <p>MIT-licensed public bundle with source, wheel, documentation, test evidence, press materials, and checksums.</p>
+            </div>
+            <a class="button primary" href="https://drive.google.com/uc?export=download&id=1BkHJHhsL4bDLUSZUBNoORs8TpwoLAhZ9" target="_blank" rel="noopener noreferrer">Download tarball <span aria-hidden="true">↓</span></a>
+          </div>
+
+          <div class="braid-actions">
+            <a class="button primary" href="https://drive.google.com/file/d/1BkHJHhsL4bDLUSZUBNoORs8TpwoLAhZ9/view?usp=sharing" target="_blank" rel="noopener noreferrer">View release on Drive <span aria-hidden="true">↗</span></a>
+            <a class="button secondary" href="mailto:missy@intersignal.ai?subject=Braid%20discussion">Discuss Braid</a>
+          </div>
+
+          <div class="openness">
+            <strong>Open-source lineage.</strong> Animated QR and screen-to-camera transfer are established, openly explored ideas. Braid sits in that broader lineage while focusing its own contribution on signed machine-state frames, receiver-controlled authority, and state-specific validation. The public bundle includes acknowledgments and third-party notices.
           </div>
         </div>
 
-        <aside class="hero-console" aria-label="Intersignal operating focus">
-          <div class="console-head">
-            <span>Substrate status</span>
-            <span class="console-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+        <aside class="path-card" aria-label="Animated illustrative state pathway">
+          <h3>Illustrative state pathway</h3>
+          <div class="path-stage">
+            <div class="node-box node-a" aria-label="Sender node A">A</div>
+            <div class="node-box node-b" aria-label="Receiver node B">B</div>
+
+            <svg class="route-svg" viewBox="0 0 600 250" role="img" aria-label="Braided state route from node A to node B">
+              <defs>
+                <linearGradient id="routeGradient" x1="0" x2="1">
+                  <stop offset="0" stop-color="#78ebe9" />
+                  <stop offset=".53" stop-color="#5ddfe3" />
+                  <stop offset="1" stop-color="#6f99ff" />
+                </linearGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <path class="route-base" d="M20 40 C135 40 150 180 285 112 C400 54 435 40 580 40" />
+              <path class="route-glow" d="M20 40 C135 40 150 180 285 112 C400 54 435 40 580 40" />
+              <path class="route-side" d="M20 40 C140 40 160 80 285 112 C410 144 440 40 580 40" />
+              <path class="route-side" d="M20 40 C115 40 175 160 285 112 C405 60 470 130 580 40" style="animation-delay:-1.8s" />
+            </svg>
+
+            <div class="packet" aria-hidden="true"></div>
+
+            <div class="gate" data-gate="1"><div class="gate-icon">G1</div><span>Integrity</span></div>
+            <div class="gate" data-gate="2"><div class="gate-icon">G2</div><span>Representation</span></div>
+            <div class="gate" data-gate="3"><div class="gate-icon">G3</div><span>Anomaly</span></div>
+
+            <div class="mini-frame" aria-hidden="true">
+              <span>BRAD1</span>
+              <div class="bars">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <span>384D</span>
+            </div>
           </div>
-          <div class="console-body">
-            <div class="console-line"><span>LOCAL COMPUTE</span><strong class="ok">PREFERRED</strong></div>
-            <div class="console-line"><span>PRIVATE CONTEXT</span><strong class="ok">PRESERVED</strong></div>
-            <div class="console-line"><span>AGENT ROUTING</span><strong class="active">DESIGNED</strong></div>
-            <div class="console-line"><span>STATE PORTABILITY</span><strong>RESEARCHING</strong></div>
-            <div class="console-line"><span>CLOUD DEPENDENCY</span><strong>OPTIONAL</strong></div>
+
+          <div class="path-audit">
+            <div class="audit-row"><span>STATE OBJECT</span><b>BOUNDED</b></div>
+            <div class="audit-row"><span>IDENTITY</span><b>SIGNED</b></div>
+            <div class="audit-row"><span>ADMISSION</span><b>LOCAL</b></div>
+            <div class="audit-row"><span>TRANSFER</span><b class="cyan">POLICY-GATED</b></div>
+            <div class="audit-row"><span>PHASE</span><b class="green" id="phaseState">PRE-VALIDATING</b></div>
           </div>
+
+          <div class="phase-readout">
+            <div class="phase-label"><span>Frame traversal</span><span id="phasePercent">0%</span></div>
+            <div class="phase-bar"><i></i></div>
+          </div>
+
+          <p class="path-note">
+            The animation is illustrative. Braid v1.4.4 performs Phase A non-locking pre-validation; production replay-safe finality requires persistent ReplayLedger commitment and route-specific trained anomaly artifacts.
+          </p>
         </aside>
       </div>
     </section>
 
-    <section class="section" id="work">
-      <div class="container">
-        <div class="section-kicker">01 // What we build</div>
-        <div class="section-head">
-          <h2>Infrastructure for AI that has to survive contact with reality.</h2>
-          <p>
-            The difficult questions are no longer only which model to use. They are questions of context ownership, local state, privacy boundaries, coordination, routing, verification, and human adoption.
-          </p>
-        </div>
-
-        <div class="cards">
-          <article class="card">
-            <div class="card-index">MODULE_01</div>
-            <h3>Local-first architecture</h3>
-            <p>Private compute, private context, edge-node workflows, and deployment plans that preserve control without turning every system into a science project.</p>
-          </article>
-          <article class="card">
-            <div class="card-index">MODULE_02</div>
-            <h3>Agent infrastructure</h3>
-            <p>Memory, routing, adapters, evaluation, permission boundaries, and operational visibility for agents expected to perform real work.</p>
-          </article>
-          <article class="card">
-            <div class="card-index">MODULE_03</div>
-            <h3>Prototype direction</h3>
-            <p>Rapid but sober plans for local model tooling, internal pilots, sovereign nodes, and interfaces that operators can actually understand.</p>
-          </article>
-          <article class="card">
-            <div class="card-index">MODULE_04</div>
-            <h3>Context architecture</h3>
-            <p>Durable memory, retrieval, state management, and transfer mechanisms designed around ownership and continuity rather than transcript sprawl.</p>
-          </article>
-          <article class="card">
-            <div class="card-index">MODULE_05</div>
-            <h3>Infrastructure review</h3>
-            <p>Assessment of current AI tools, data flows, risks, adoption bottlenecks, and where local-first systems create real leverage.</p>
-          </article>
-          <article class="card">
-            <div class="card-index">MODULE_06</div>
-            <h3>Protocol narrative</h3>
-            <p>Technical storytelling for serious products: legible claims, verifiable releases, and interface culture that makes infrastructure feel alive.</p>
-          </article>
-        </div>
+    <section class="approach site-shell" id="approach">
+      <div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span> Approach</div>
+        <h2>Local control.<br />Useful motion.</h2>
+        <p>
+          We build around explicit identities, inspectable paths, narrow interfaces, and receiver sovereignty—so advanced AI systems remain useful without becoming opaque infrastructure someone else controls.
+        </p>
       </div>
-    </section>
-
-    <section class="section" id="braid">
-      <div class="container">
-        <div class="braid-wrap">
-          <div class="braid-grid">
-            <div class="braid-copy">
-              <div class="braid-badge"><span aria-hidden="true">◉</span> Active research line</div>
-              <h2>Braid</h2>
-              <p>
-                Braid explores how independently operated AI systems can preserve and exchange compact, policy-gated state without replaying an entire human transcript. The research line spans private node identity, signed state objects, local adapters, peer presence, relay-aware routing, and bounded machine-native transfer.
-              </p>
-              <div class="braid-facts">
-                <div class="fact"><strong>State before transcript</strong><span>Compact representations intended to preserve operational continuity.</span></div>
-                <div class="fact"><strong>Receiver-local trust</strong><span>Admission and policy remain under the receiving node’s control.</span></div>
-                <div class="fact"><strong>Model-adjacent adapters</strong><span>Research into useful transfer across distinct local model spaces.</span></div>
-                <div class="fact"><strong>Sovereign deployment</strong><span>Built around local machines, explicit identities, and inspectable paths.</span></div>
-              </div>
-              <div class="button-row" style="margin-top: 24px;">
-                <a class="button button-primary" href="https://x.com/intersignal_ai" target="_blank" rel="noopener">Follow public updates on X <span aria-hidden="true">↗</span></a>
-                <a class="button button-secondary" href="mailto:hello@intersignal.ai?subject=Braid%20research%20inquiry">Discuss Braid</a>
-              </div>
-            </div>
-
-            <aside class="braid-side" aria-label="Braid state pathway">
-              <div>
-                <div class="braid-side-label">Illustrative state pathway</div>
-                <div class="pathway">
-                  <div class="path-node">A</div>
-                  <div class="path-line" aria-hidden="true"></div>
-                  <div class="path-node">B</div>
-                </div>
-              </div>
-              <div class="mono-stack">
-                <div><span>STATE OBJECT</span><strong>BOUNDED</strong></div>
-                <div><span>IDENTITY</span><strong>SIGNED</strong></div>
-                <div><span>ADMISSION</span><strong>LOCAL</strong></div>
-                <div><span>TRANSFER</span><strong class="cyan">POLICY-GATED</strong></div>
-              </div>
-              <p style="margin:0;color:var(--dim);font-size:11px;line-height:1.55;">
-                Public downloads are temporarily paused while the next release candidate is hardened. Research claims remain intentionally bounded to demonstrated behavior.
-              </p>
-            </aside>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="approach">
-      <div class="container">
-        <div class="section-kicker">03 // Engagement model</div>
-        <div class="section-head">
-          <h2>High-context work, not generic AI theater.</h2>
-          <p>
-            Intersignal works best with founders, operators, research groups, and businesses that want a serious technical and strategic partner. Engagements remain selective so the work stays useful.
-          </p>
-        </div>
-        <div class="process">
-          <article class="process-step"><div class="process-number">01</div><h3>Map the real system</h3><p>Understand the workflows, data boundaries, operators, and constraints before choosing a model or stack.</p></article>
-          <article class="process-step"><div class="process-number">02</div><h3>Locate leverage</h3><p>Identify where local compute, private context, durable memory, or agent coordination actually changes the outcome.</p></article>
-          <article class="process-step"><div class="process-number">03</div><h3>Design the substrate</h3><p>Define architecture, permissions, evaluation, observability, and the smallest prototype that can answer the important question.</p></article>
-          <article class="process-step"><div class="process-number">04</div><h3>Make it legible</h3><p>Produce an operator-ready plan and narrative that can survive technical scrutiny, organizational adoption, and public explanation.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="container">
-        <div class="contact-panel">
-          <div>
-            <div class="section-kicker">04 // Start a conversation</div>
-            <h2>Tell us what you are building.</h2>
-            <p>
-              Describe the infrastructure problem, why local-first or private-agent design matters, and what a useful outcome would look like. Trust, policy, and responsible-deployment questions have a dedicated contact path.
-            </p>
-            <a class="button button-primary" href="mailto:hello@intersignal.ai?subject=Intersignal%20project%20inquiry">hello@intersignal.ai <span aria-hidden="true">↗</span></a>
-          </div>
-          <div class="contact-list">
-            <div class="contact-row"><span>Projects & consulting</span><a href="mailto:hello@intersignal.ai">hello@intersignal.ai</a></div>
-            <div class="contact-row"><span>Trust & policy</span><a href="mailto:missy@intersignal.ai">missy@intersignal.ai</a></div>
-            <div class="contact-row"><span>Public updates</span><a href="https://x.com/intersignal_ai" target="_blank" rel="noopener">@intersignal_ai</a></div>
-          </div>
-        </div>
+      <div class="approach-list">
+        <div class="approach-item"><b>Design from the substrate</b><span>Start with compute, context, identity, and transport—not the chatbot chrome.</span></div>
+        <div class="approach-item"><b>Keep trust local</b><span>Senders may request capabilities; receivers determine effective authority.</span></div>
+        <div class="approach-item"><b>Prefer inspectable primitives</b><span>Small, testable, composable mechanisms beat vague agent theater.</span></div>
+        <div class="approach-item"><b>Open what should become infrastructure</b><span>Braid Light Client is released under the MIT License for inspection, forks, and integration.</span></div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container footer-grid">
-      <div>
-        <strong style="color:var(--text-strong);letter-spacing:.11em;">INTERSIGNAL</strong><br>
-        Local AI infrastructure, private agent workflows, and sovereign substrate research.
-      </div>
-      <div class="footer-links">
-        <a href="mailto:hello@intersignal.ai">General contact</a>
-        <a href="mailto:missy@intersignal.ai">Trust & policy</a>
-        <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener">X / @intersignal_ai</a>
-      </div>
+    <div class="footer-grid site-shell">
+      <div>© 2026 Intersignal LLC. Braid Light Client is released under the MIT License.</div>
+      <div><a href="mailto:missy@intersignal.ai">missy@intersignal.ai</a> &nbsp;·&nbsp; <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">@intersignal_ai</a></div>
     </div>
   </footer>
 
   <script>
-    (function () {
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const rain = document.getElementById('signalRain');
-
-      if (!reducedMotion && rain) {
-        const count = Math.min(58, Math.max(26, Math.floor(window.innerWidth / 22)));
-        for (let i = 0; i < count; i += 1) {
-          const dot = document.createElement('span');
-          dot.className = 'rain-dot';
-          const size = (Math.random() * 3.2 + 1.2).toFixed(2);
-          dot.style.width = size + 'px';
-          dot.style.height = size + 'px';
-          dot.style.left = (Math.random() * 100).toFixed(2) + '%';
-          dot.style.animationDuration = (Math.random() * 9 + 8).toFixed(2) + 's';
-          dot.style.animationDelay = (-Math.random() * 18).toFixed(2) + 's';
-          dot.style.opacity = (Math.random() * 0.5 + 0.2).toFixed(2);
-          rain.appendChild(dot);
-        }
-      }
-
-      const canvas = document.getElementById('heroCanvas');
-      if (!canvas || reducedMotion) return;
-
+    (() => {
+      const canvas = document.getElementById('nodeField');
       const ctx = canvas.getContext('2d');
-      let width = 0;
-      let height = 0;
-      let dpr = 1;
-      let particles = [];
-      let raf = 0;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let width = 0, height = 0, dpr = 1, points = [], raf = null;
 
       function resize() {
-        const rect = canvas.getBoundingClientRect();
-        width = Math.max(1, rect.width);
-        height = Math.max(1, rect.height);
         dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
         canvas.width = Math.floor(width * dpr);
         canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        const target = Math.min(76, Math.max(34, Math.floor(width / 18)));
-        particles = Array.from({ length: target }, function () {
-          return {
-            x: width * (0.42 + Math.random() * 0.58),
-            y: Math.random() * height,
-            vx: (Math.random() - 0.5) * 0.34,
-            vy: (Math.random() - 0.5) * 0.34,
-            r: Math.random() * 1.6 + 0.8,
-            a: Math.random() * 0.52 + 0.18
-          };
-        });
+        const count = Math.max(42, Math.min(94, Math.floor(width / 18)));
+        points = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - .5) * .11,
+          vy: (Math.random() - .5) * .11,
+          r: Math.random() * 1.4 + .45,
+          a: Math.random() * .33 + .08
+        }));
       }
 
       function draw() {
         ctx.clearRect(0, 0, width, height);
+        for (const p of points) {
+          if (!reduceMotion) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < -10) p.x = width + 10;
+            if (p.x > width + 10) p.x = -10;
+            if (p.y < -10) p.y = height + 10;
+            if (p.y > height + 10) p.y = -10;
+          }
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(88, 220, 223, ${p.a})`;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
 
-        for (let i = 0; i < particles.length; i += 1) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < width * 0.38 || p.x > width) p.vx *= -1;
-          if (p.y < 0 || p.y > height) p.vy *= -1;
-
-          for (let j = i + 1; j < particles.length; j += 1) {
-            const q = particles[j];
-            const dx = p.x - q.x;
-            const dy = p.y - q.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 112) {
-              ctx.strokeStyle = 'rgba(109, 237, 232,' + ((1 - dist / 112) * 0.12).toFixed(3) + ')';
-              ctx.lineWidth = 0.7;
+        for (let i = 0; i < points.length; i++) {
+          for (let j = i + 1; j < points.length; j++) {
+            const a = points[i], b = points[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 118) {
+              ctx.strokeStyle = `rgba(76, 170, 180, ${(1 - dist / 118) * .075})`;
+              ctx.lineWidth = .7;
               ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(q.x, q.y);
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
               ctx.stroke();
             }
           }
-
-          ctx.fillStyle = 'rgba(141, 240, 236,' + p.a.toFixed(2) + ')';
-          ctx.shadowColor = 'rgba(109,237,232,0.5)';
-          ctx.shadowBlur = 7;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.shadowBlur = 0;
         }
-
-        raf = window.requestAnimationFrame(draw);
+        if (!reduceMotion) raf = requestAnimationFrame(draw);
       }
 
-      resize();
-      draw();
-      window.addEventListener('resize', resize, { passive: true });
-      window.addEventListener('pagehide', function () { window.cancelAnimationFrame(raf); }, { once: true });
-    }());
+      resize(); draw();
+      window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); draw(); }, { passive: true });
+    })();
+
+    (() => {
+      const gates = [...document.querySelectorAll('.gate')];
+      const percent = document.getElementById('phasePercent');
+      const phaseState = document.getElementById('phaseState');
+      const cycle = 5600;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion) {
+        gates.forEach(g => g.classList.add('active'));
+        percent.textContent = '100%';
+        phaseState.textContent = 'PHASE A PASS';
+        return;
+      }
+
+      const start = performance.now();
+      function tick(now) {
+        const p = ((now - start) % cycle) / cycle;
+        const shown = Math.min(100, Math.round(p * 112));
+        percent.textContent = `${shown}%`;
+        gates[0].classList.toggle('active', p > .22 && p < .96);
+        gates[1].classList.toggle('active', p > .42 && p < .96);
+        gates[2].classList.toggle('active', p > .62 && p < .96);
+        phaseState.textContent = p > .84 ? 'PHASE A PASS' : 'PRE-VALIDATING';
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
   </script>
 </body>
 </html>
