@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Intersignal builds Braid: an open transport layer for signed AI state across optical QR reels, LAN, and operator-controlled Internet paths." />
+  <meta name="description" content="Intersignal builds Braid Light Client v1.4.8: one field for signed 384D AI state across optical QR reels, LAN, and operator-controlled Internet paths, with receiver-owned Phase B acceptance." />
   <meta name="theme-color" content="#07090d" />
-  <title>Intersignal — Braid Light Client v1.4.5</title>
+  <title>Intersignal — Braid Light Client v1.4.8</title>
   <style>
     :root {
       --bg: #07090d;
@@ -741,16 +741,16 @@
   <main id="top">
     <section class="wrap hero">
       <div>
-        <div class="eyebrow"><span class="pulse"></span>Braid Light Client v1.4.5 transport candidate</div>
+        <div class="eyebrow"><span class="pulse"></span>Braid Light Client v1.4.8 release candidate</div>
         <h1>Build the AI substrate first.</h1>
         <p class="hero-lede">
-          Braid moves signed AI state across machines without forcing every exchange through a cloud intermediary. <strong>QR reels remain intact.</strong> Version 1.4.5 adds direct LAN transfer and explicit Internet host:port transport behind the same receiver-owned validation boundary.
+          Braid moves signed 384D AI state across machines without forcing every exchange through a cloud intermediary. <strong>One field. Any path.</strong> Optical QR, LAN, and explicit Internet transport now converge on the same automated receiver-owned flow: quarantine, validate, Phase B commit, then emit local state.
         </p>
         <div class="actions">
-          <a class="btn btn-primary" href="https://drive.google.com/file/d/1v0FPCQpUR3gJrb_Og8CT76k3aTEnM9fD/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download v1.4.5 candidate ↗</a>
+          <a class="btn btn-primary" href="https://drive.google.com/file/d/1B0i8CBzeAAI4O0PPPOBjFh2DxcgvJP9K/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download v1.4.8 candidate ↗</a>
           <a class="btn btn-secondary" href="#release">Read release facts</a>
         </div>
-        <div class="release-note">Developer candidate · optical + LAN + operator-controlled Internet paths · 19/19 test suite</div>
+        <div class="release-note">Developer release candidate · optical + LAN + explicit Internet + local sensing · 68/68 regression gate</div>
       </div>
 
       <div class="transport-visual" aria-label="Diagram showing Braid state moving through optical QR, LAN, and Internet transports">
@@ -765,9 +765,9 @@
           <span>Optical transport retained</span>
         </div>
         <div class="endpoint ep2">
-          <small>Local</small>
+          <small>Nearby / Local</small>
           <strong>LAN Direct</strong>
-          <span>Private-address transfer</span>
+          <span>Private path + sensing hint</span>
         </div>
         <div class="endpoint ep3">
           <small>Remote</small>
@@ -780,10 +780,10 @@
     <section id="architecture" class="section">
       <div class="wrap">
         <div class="section-head">
-          <div class="kicker">One signed object, multiple paths</div>
+          <div class="kicker">One field. Any path.</div>
           <div>
-            <h2>Transport is a choice. Trust stays local.</h2>
-            <p class="section-copy">The transport layer carries the exact signed <code>.brad</code> bytes. It does not reinterpret, re-sign, or silently admit them. The receiving machine quarantines the object first, then applies its own validator and policy.</p>
+            <h2>Transport is a choice. Acceptance stays local.</h2>
+            <p class="section-copy">The transport layer carries the exact signed <code>.brad</code> bytes. It does not reinterpret, re-sign, or silently admit them. Every path converges on the same automated receiver: quarantine first, Phase A validation, then replay-safe Phase B commit. Only committed state is accepted.</p>
           </div>
         </div>
 
@@ -796,12 +796,12 @@
           <article class="card">
             <div class="card-num">TRANSPORT_02</div>
             <h3>LAN direct</h3>
-            <p>Signed state can move between machines on a private network, with optional discovery and explicit receiver ownership of quarantine and validation.</p>
+            <p>Signed state can move directly between machines on a private network. Optional local sensing can suggest nearby peers, but proximity remains an untrusted discovery hint; identity, validation, and acceptance stay receiver-owned.</p>
           </article>
           <article class="card">
             <div class="card-num">TRANSPORT_03</div>
             <h3>Internet host:port</h3>
-            <p>Operators can expose an intentional TCP endpoint for remote transfer. Public routes require TLS 1.3 by default; there is no silent router mutation or hidden relay.</p>
+            <p>Operators can expose an intentional TCP endpoint for remote transfer. Public routes require TLS 1.3 by default and feed the same quarantine-and-commit receiver; there is no silent router mutation or hidden relay.</p>
           </article>
         </div>
       </div>
@@ -811,16 +811,16 @@
       <div class="wrap facts">
         <div class="fact-panel fact-main">
           <div class="kicker">Release facts</div>
-          <h2 style="margin-top:12px;font-size:clamp(28px,3.7vw,44px)">Braid Light Client v1.4.5</h2>
-          <p class="section-copy">A tested transport-sidecar candidate for integrating network punch-through paths beside the established optical reel workflow.</p>
+          <h2 style="margin-top:12px;font-size:clamp(28px,3.7vw,44px)">Braid Light Client v1.4.8</h2>
+          <p class="section-copy">A unified, hardened Light Client that brings optical, local, and explicit Internet paths into one automated 384D receiver surface with a single acceptance boundary.</p>
 
           <div class="fact-grid">
-            <div class="fact"><label>Status</label><strong>Developer transport candidate</strong></div>
-            <div class="fact"><label>Primary object</label><strong>Opaque signed .brad bytes</strong></div>
-            <div class="fact"><label>Network paths</label><strong>LAN + explicit Internet TCP</strong></div>
-            <div class="fact"><label>Public security</label><strong>TLS 1.3 required by default</strong></div>
-            <div class="fact"><label>Receiver flow</label><strong>Quarantine → validate → route</strong></div>
-            <div class="fact"><label>Optical path</label><strong>QR reels preserved</strong></div>
+            <div class="fact"><label>Status</label><strong>Developer release candidate</strong></div>
+            <div class="fact"><label>Primary state</label><strong>Signed 384D .brad frames</strong></div>
+            <div class="fact"><label>Paths</label><strong>QR + LAN + explicit Internet</strong></div>
+            <div class="fact"><label>Acceptance</label><strong>Only Phase B committed = accepted</strong></div>
+            <div class="fact"><label>Receiver flow</label><strong>Quarantine → Phase A → Phase B → emit</strong></div>
+            <div class="fact"><label>Local sensing</label><strong>Optional proximity discovery hint</strong></div>
           </div>
         </div>
 
@@ -829,17 +829,17 @@
             <div class="kicker">Acceptance</div>
             <h3 style="margin-top:10px">Verified candidate behavior</h3>
             <ul>
-              <li>19/19 source tests passed</li>
-              <li>19/19 clean-wheel tests passed</li>
-              <li>TLS 1.3 transfer path passed</li>
-              <li>Validator accept, reject, and timeout paths passed</li>
-              <li>Corruption, oversize, exposure, and plaintext-public negatives passed</li>
-              <li>Duplicate transfers receive unique quarantine filenames</li>
+              <li>68/68 clean-process regression tests passed</li>
+              <li>Clean wheel and source-distribution install + doctor + optical/384D smoke passed</li>
+              <li>Phase A validates; only replay-safe Phase B commit reports accepted</li>
+              <li>Concurrent replay stress: one commit, seven rejects, durable receipt for every intake</li>
+              <li>TLS 1.3 transport and public-exposure fail-closed paths passed</li>
+              <li>Field UI parse, archive traversal, packaging, and static hardening checks passed</li>
             </ul>
           </div>
           <div>
-            <div class="checksum">SHA-256 · 0aa05de420b74ac576b95ab50474090f1f72e33885953df3d1f396e4fb51df09</div>
-            <a class="btn btn-primary" style="width:100%;margin-top:14px" href="https://drive.google.com/file/d/1v0FPCQpUR3gJrb_Og8CT76k3aTEnM9fD/view?usp=sharing" target="_blank" rel="noopener noreferrer">Open release archive ↗</a>
+            <div class="checksum">DRIVE ARCHIVE SHA-256 · 64051b8f4d711287108dbeb9e8339e623a8c7f9bc9c27c6a061fcdf403729fdd</div>
+            <a class="btn btn-primary" style="width:100%;margin-top:14px" href="https://drive.google.com/file/d/1B0i8CBzeAAI4O0PPPOBjFh2DxcgvJP9K/view?usp=sharing" target="_blank" rel="noopener noreferrer">Open v1.4.8 archive ↗</a>
           </div>
         </aside>
       </div>
@@ -849,7 +849,7 @@
       <div class="wrap manifesto">
         <div class="kicker">The Intersignal thesis</div>
         <blockquote>AI systems should be able to exchange useful state without surrendering identity, provenance, or operator control.</blockquote>
-        <p>Braid is being built as an open coordination primitive for local and sovereign AI systems: compact state, signed envelopes, receiver-owned policy, and transport flexibility from a camera lens to an open Internet port.</p>
+        <p>Braid is being built as an open coordination primitive for local and sovereign AI systems: compact 384D state, signed envelopes, receiver-owned policy, automated commit semantics, and transport flexibility from a camera lens to an open Internet port.</p>
         <div class="status-row">
           <span>Intersignal · Fort Lauderdale · 2026</span>
           <span>MIT-licensed development work · inspect before deployment</span>
@@ -864,7 +864,7 @@
       <div class="footer-links">
         <a href="mailto:missy@intersignal.ai">Contact</a>
         <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">@intersignal_ai</a>
-        <a href="https://drive.google.com/file/d/1v0FPCQpUR3gJrb_Og8CT76k3aTEnM9fD/view?usp=sharing" target="_blank" rel="noopener noreferrer">v1.4.5 archive</a>
+        <a href="https://drive.google.com/file/d/1B0i8CBzeAAI4O0PPPOBjFh2DxcgvJP9K/view?usp=sharing" target="_blank" rel="noopener noreferrer">v1.4.8 archive</a>
       </div>
     </div>
   </footer>
