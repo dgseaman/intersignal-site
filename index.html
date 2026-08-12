@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Intersignal builds Braid: a local-first transport and acceptance layer for signed AI state across optical, LAN, and explicit Internet paths.">
   <meta name="theme-color" content="#06090c">
-  <title>Intersignal — Braid Light Client v1.4.9</title>
+  <title>Intersignal — Braid Light Client v1.5.0rc2</title>
   <style>
     :root {
       --bg: #06090c;
@@ -531,16 +531,16 @@
 
   <main id="top">
     <section class="shell hero">
-      <p class="eyebrow">Braid Light Client v1.4.9 · receiver-hardening candidate</p>
+      <p class="eyebrow">Braid Light Client v1.5.0rc2 · Ollama + signed Legend candidate</p>
       <h1>Build the AI substrate first.</h1>
       <p class="hero-copy">
-        Braid moves signed AI state across machines without forcing every exchange through a cloud intermediary. QR reels remain intact. <strong>Version 1.4.9 hardens the receiver-owned acceptance boundary</strong> across optical, LAN, and explicit Internet paths, with scoped replay/session state and auditable receiver-local provenance.
+        Braid moves signed AI state across machines without forcing every exchange through a cloud intermediary. QR reels remain intact. <strong>Version 1.5.0rc2 adds a bounded signed Legend and a loopback-only Ollama adapter</strong> for receiver-local model continuation after Phase B finality, with exact model-digest binding and no native hidden-state injection claim.
       </p>
       <div class="actions">
-        <a class="button primary" href="https://drive.google.com/file/d/1KFEzm7x2KmZpDDdyrWBE3qy29f0mQGJT/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Download v1.4.9 candidate ↗</a>
+        <a class="button primary" href="https://drive.google.com/file/d/19WmU3AIeIciSI4TVs0SKTFe99EomEdiD/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download v1.5.0rc2 candidate ↗</a>
         <a class="button" href="#release">Read release facts</a>
       </div>
-      <div class="release-line">Developer release candidate · optical + LAN + operator-controlled Internet paths · 83/83 conformance tests</div>
+      <div class="release-line">Developer release candidate · signed Legend + local Ollama adapter · optical + LAN + explicit Internet paths · 100/100 conformance tests</div>
     </section>
 
     <section class="shell transport-strip" aria-label="Braid transport paths">
@@ -594,9 +594,9 @@
       <div class="facts">
         <div>
           <div class="section-kicker">Release facts</div>
-          <h2>Braid Light Client v1.4.9</h2>
+          <h2>Braid Light Client v1.5.0rc2</h2>
           <p class="lead" style="font-size:16px; margin-bottom:34px;">
-            A finality-hardened developer candidate that preserves the established optical and network paths while tightening the boundary between evidence, validation, and receiver-owned authority.
+            An Ollama + signed Legend developer candidate that preserves the established receiver-owned finality boundary while adding exact local-model identity binding and post-commit semantic continuity.
           </p>
 
           <dl class="fact-table">
@@ -606,7 +606,7 @@
             </div>
             <div class="fact-row">
               <dt>Primary object</dt>
-              <dd>Opaque signed <code>.brad</code> bytes</dd>
+              <dd>Signed <code>.brad</code> bytes with bounded braid.legend.v1 context</dd>
             </div>
             <div class="fact-row">
               <dt>Network paths</dt>
@@ -625,12 +625,12 @@
               <dd><code>accepted == (finality == "committed")</code></dd>
             </div>
             <div class="fact-row">
-              <dt>Optical path</dt>
-              <dd>QR reels preserved</dd>
+              <dt>Legend authority</dt>
+              <dd>signed_sender_context_only; never an acceptance signal</dd>
             </div>
             <div class="fact-row">
-              <dt>Local derivation</dt>
-              <dd>Receiver-generated state is lineage-bound and explicitly non-authoritative</dd>
+              <dt>Local continuation</dt>
+              <dd>Loopback Ollama only after committed Phase B; generative_vector_injection=false</dd>
             </div>
           </dl>
         </div>
@@ -639,18 +639,18 @@
           <div class="section-kicker">Acceptance</div>
           <h3 style="margin:0 0 16px;color:#fff;font-size:19px;">Verified candidate behavior</h3>
           <ul class="checks">
-            <li>83/83 tests pass with ResourceWarning promoted to error</li>
+            <li>100/100 tests pass with ResourceWarning promoted to error</li>
             <li>Clean wheel and source-distribution install gates pass</li>
-            <li>Transport cannot acknowledge acceptance without committed Phase B finality</li>
-            <li>Legacy external validators remain prevalidation evidence only</li>
-            <li>Replay/session heads are scoped by receiver + signer + route + session</li>
-            <li>Concurrent duplicate Phase-B commits yield exactly one winner</li>
-            <li>RFC 8785 UTF-16 ordering and numeric regression vectors pass</li>
-            <li>Receiver-local 384D artifacts emit explicit lineage sidecars</li>
+            <li>Ollama endpoints are loopback-only and HTTP redirects are rejected</li>
+            <li>Legend digest and completion-model provenance are verified before Phase B</li>
+            <li>Same-space 384D routes require exact embedding model tag + digest identity</li>
+            <li>Post-commit Ollama failure degrades delivery without rewriting finality</li>
+            <li>Measured heterogeneous routes remain available; research-only routes fail closed</li>
+            <li>Real Mistral-to-Mistral continuation remains gated on the physical two-node UAT</li>
           </ul>
-          <div class="hash"><strong>SHA-256 · release-candidate TAR</strong><br>1148e303c36917747849c9097b46d83735e76f3a51a65d74c9d69da0afb72f90</div>
+          <div class="hash"><strong>SHA-256 · release-candidate TAR</strong><br>3843b779a9544ceeeee3e4fdcc8ea3c5093e1ac35ed603419a0655abae99ab03</div>
           <div class="actions" style="margin-top:16px;">
-            <a class="button" href="https://drive.google.com/file/d/1KFEzm7x2KmZpDDdyrWBE3qy29f0mQGJT/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Open release archive ↗</a>
+            <a class="button" href="https://drive.google.com/file/d/19WmU3AIeIciSI4TVs0SKTFe99EomEdiD/view?usp=sharing" target="_blank" rel="noopener noreferrer">Open release archive ↗</a>
           </div>
         </div>
       </div>
@@ -660,7 +660,7 @@
       <div class="section-kicker">The Intersignal thesis</div>
       <blockquote>AI systems should be able to exchange useful state without surrendering identity, provenance, or operator control.</blockquote>
       <p>
-        Braid is being built as an open coordination primitive for local and sovereign AI systems: compact state, signed envelopes, receiver-owned policy, and transport flexibility from a camera lens to an open Internet port. Version 1.4.9 keeps one rule deliberately simple: evidence may travel; authority remains local.
+        Braid is being built as an open coordination primitive for local and sovereign AI systems: compact state, signed envelopes, receiver-owned policy, and transport flexibility from a camera lens to an open Internet port. Version 1.5.0rc2 extends that rule: signed semantic context may travel; model execution and authority remain local.
       </p>
     </section>
   </main>
@@ -672,7 +672,7 @@
         © 2026 Intersignal LLC. Experimental developer software.<br>
         <a href="mailto:missy@intersignal.ai">Contact</a>
         <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">@intersignal_ai</a>
-        <a href="https://drive.google.com/file/d/1KFEzm7x2KmZpDDdyrWBE3qy29f0mQGJT/view?usp=drive_link" target="_blank" rel="noopener noreferrer">v1.4.9 archive</a>
+        <a href="https://drive.google.com/file/d/19WmU3AIeIciSI4TVs0SKTFe99EomEdiD/view?usp=sharing" target="_blank" rel="noopener noreferrer">v1.5.0rc2 archive</a>
       </div>
     </div>
   </footer>
