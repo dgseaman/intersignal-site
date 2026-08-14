@@ -4,8 +4,8 @@ IFS=$'\n\t'
 
 readonly BRAID_VERSION="1.5.2"
 readonly DEFAULT_RELEASE_BASE_URL="https://intersignal.org/releases/braid/v${BRAID_VERSION}"
-readonly SHA256_AMD64="__BRAID_AMD64_SHA256__"
-readonly SHA256_ARM64="__BRAID_ARM64_SHA256__"
+readonly SHA256_AMD64="1c8f70e36bd8197a6a6b67207808a0dd2e02925ae2d1147c2f4a9d93533c7a2d"
+readonly SHA256_ARM64="1c8f70e36bd8197a6a6b67207808a0dd2e02925ae2d1147c2f4a9d93533c7a2d"
 
 PROGRAM_NAME="${0##*/}"
 TMP_DIR=""
@@ -70,10 +70,10 @@ if [[ ! "${EXPECTED_SHA256}" =~ ^[0-9a-f]{64}$ ]]; then
   die "release checksum for ${ARCH} has not been configured; refusing an unverified install"
 fi
 
-command -v python3 >/dev/null 2>&1 || die "Python 3.9 or newer is required"
+command -v python3 >/dev/null 2>&1 || die "Python 3.10 or newer is required"
 PYTHON_VERSION="$(python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])')" || die "cannot determine Python version"
-python3 -c 'import sys; raise SystemExit(sys.version_info < (3, 9))' \
-  || die "Python 3.9 or newer is required (found ${PYTHON_VERSION})"
+python3 -c 'import sys; raise SystemExit(sys.version_info < (3, 10))' \
+  || die "Python 3.10 or newer is required (found ${PYTHON_VERSION})"
 python3 -c 'import venv' >/dev/null 2>&1 \
   || die "Python venv support is required (on Debian/Ubuntu, install python3-venv)"
 command -v tar >/dev/null 2>&1 || die "tar is required"
@@ -90,7 +90,8 @@ else
 fi
 
 RELEASES_DIR="${INSTALL_ROOT}/releases"
-FINAL_RELEASE="${RELEASES_DIR}/${BRAID_VERSION}"
+RELEASE_ID="${BRAID_VERSION}-${EXPECTED_SHA256:0:12}-$(date +%s)-$$"
+FINAL_RELEASE="${RELEASES_DIR}/${RELEASE_ID}"
 ARTIFACT="braid-${BRAID_VERSION}-linux-${ARCH}.tar.gz"
 RELEASE_BASE_URL="${BRAID_RELEASE_BASE_URL:-${DEFAULT_RELEASE_BASE_URL}}"
 ARTIFACT_URL="${RELEASE_BASE_URL%/}/${ARTIFACT}"
@@ -102,6 +103,15 @@ fi
 mkdir -p -- "${RELEASES_DIR}" "${BIN_DIR}"
 if [[ -e "${INSTALL_ROOT}/current" && ! -L "${INSTALL_ROOT}/current" ]]; then
   die "${INSTALL_ROOT}/current exists but is not a symbolic link; refusing to replace it"
+fi
+OLD_RELEASE=""
+if [[ -L "${INSTALL_ROOT}/current" ]]; then
+  OLD_CURRENT_TARGET="$(readlink "${INSTALL_ROOT}/current")"
+  if [[ "${OLD_CURRENT_TARGET}" =~ ^releases/[A-Za-z0-9._-]+$ ]]; then
+    OLD_RELEASE="${INSTALL_ROOT}/${OLD_CURRENT_TARGET}"
+  else
+    die "current points outside the managed releases directory; refusing to replace it"
+  fi
 fi
 LOCK_DIR="${INSTALL_ROOT}/.install.lock"
 mkdir -- "${LOCK_DIR}" 2>/dev/null \
@@ -143,8 +153,8 @@ fi
   || die "SHA-256 mismatch for ${ARTIFACT}; refusing to extract it"
 log "verified SHA-256: ${ACTUAL_SHA256}"
 
-STAGING_DIR="$(mktemp -d "${RELEASES_DIR}/.staging-${BRAID_VERSION}.XXXXXXXX")" \
-  || die "cannot create release staging directory"
+STAGING_DIR="${FINAL_RELEASE}"
+mkdir -- "${STAGING_DIR}" || die "cannot create the immutable release directory"
 mkdir -p -- "${STAGING_DIR}/app"
 
 # Extract regular files and directories only. Reject links, devices, absolute
@@ -209,43 +219,46 @@ log "verifying braid-client --version"
   || die "braid-client --version verification failed"
 
 HELP_OUTPUT="$("${CLIENT}" --help 2>&1 || true)"
-if grep -Eq '(^|[[:space:]])keygen([[:space:]]|$)' <<<"${HELP_OUTPUT}"; then
-  KEYGEN_DIR="${TMP_DIR}/keygen-smoke"
-  mkdir -p -- "${KEYGEN_DIR}/home" "${KEYGEN_DIR}/config" "${KEYGEN_DIR}/data"
-  log "running temporary keygen verification"
+if grep -Eq '(^|[[:space:]])generate([[:space:]]|$)' <<<"${HELP_OUTPUT}"; then
+  CRYPTO_DIR="${TMP_DIR}/crypto-smoke"
+  mkdir -p -- "${CRYPTO_DIR}/home" "${CRYPTO_DIR}/config" "${CRYPTO_DIR}/data"
+  log "running temporary signed-object and key generation verification"
   (
-    cd "${KEYGEN_DIR}"
-    HOME="${KEYGEN_DIR}/home" \
-    XDG_CONFIG_HOME="${KEYGEN_DIR}/config" \
-    XDG_DATA_HOME="${KEYGEN_DIR}/data" \
-      "${CLIENT}" keygen </dev/null >/dev/null
-  ) || die "temporary keygen verification failed"
+    cd "${CRYPTO_DIR}"
+    HOME="${CRYPTO_DIR}/home" \
+    XDG_CONFIG_HOME="${CRYPTO_DIR}/config" \
+    XDG_DATA_HOME="${CRYPTO_DIR}/data" \
+      "${CLIENT}" generate \
+        --output "${CRYPTO_DIR}/smoke.brad" \
+        --signing-key "${CRYPTO_DIR}/smoke.key" \
+        </dev/null >/dev/null
+    [[ -s "${CRYPTO_DIR}/smoke.brad" ]]
+    [[ -s "${CRYPTO_DIR}/smoke.key" ]]
+    [[ -s "${CRYPTO_DIR}/smoke.pub" ]]
+  ) || die "temporary signed-object and key generation verification failed"
 else
-  log "keygen command not advertised by this build; skipping keygen verification"
+  die "installed package does not advertise the required generate command"
 fi
 
-OLD_RELEASE=""
-if [[ -e "${FINAL_RELEASE}" ]]; then
-  OLD_RELEASE="${RELEASES_DIR}/.previous-${BRAID_VERSION}.$$"
-  mv -- "${FINAL_RELEASE}" "${OLD_RELEASE}"
-fi
-if ! mv -- "${STAGING_DIR}" "${FINAL_RELEASE}"; then
-  [[ -n "${OLD_RELEASE}" ]] && mv -- "${OLD_RELEASE}" "${FINAL_RELEASE}"
-  die "failed to publish the staged release"
-fi
+# Virtual environments embed absolute interpreter paths, so this verified
+# directory is never renamed. Activation is the atomic current-symlink swap.
 STAGING_DIR=""
 
 CURRENT_TMP="${INSTALL_ROOT}/.current.$$"
-ln -s -- "releases/${BRAID_VERSION}" "${CURRENT_TMP}"
-mv -Tf -- "${CURRENT_TMP}" "${INSTALL_ROOT}/current" \
-  || die "failed to activate Braid v${BRAID_VERSION}"
+ln -s -- "releases/${RELEASE_ID}" "${CURRENT_TMP}"
+python3 - "${CURRENT_TMP}" "${INSTALL_ROOT}/current" <<'PY' \
+  || die "failed to activate the verified Braid release"
+import os
+import sys
+os.replace(sys.argv[1], sys.argv[2])
+PY
 
 write_launcher() {
   local destination="$1"
   local temporary="${destination}.tmp.$$"
   {
     printf '%s\n' '#!/usr/bin/env bash'
-    printf 'exec %q "$@"\n' "${INSTALL_ROOT}/current/venv/bin/braid-client"
+    printf 'exec %q -m braid_client.cli "$@"\n' "${INSTALL_ROOT}/current/venv/bin/python"
   } >"${temporary}"
   chmod 0755 "${temporary}"
   mv -f -- "${temporary}" "${destination}"
