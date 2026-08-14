@@ -1,680 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Intersignal builds Braid: a local-first transport and acceptance layer for signed AI state across optical, LAN, and explicit Internet paths.">
-  <meta name="theme-color" content="#06090c">
-  <title>Intersignal — Braid Light Client v1.5.0rc2</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#07090c" />
+  <meta name="description" content="Intersignal Braid v1.5.2 — signed semantic state for local and sovereign AI systems, with optical QR, LAN, and receiver-local model handoff." />
+  <title>Intersignal — Braid v1.5.2</title>
   <style>
-    :root {
-      --bg: #06090c;
-      --bg-soft: #0a1015;
-      --panel: rgba(10, 16, 21, 0.78);
-      --panel-solid: #0a1015;
-      --text: #e7f1f4;
-      --muted: #81939a;
-      --dim: #4d6067;
-      --line: #18262c;
-      --line-strong: #24414a;
-      --accent: #74f6d8;
-      --accent-soft: rgba(116, 246, 216, 0.10);
-      --amber: #f4c96b;
-      --max: 1120px;
-      --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    :root{
+      --bg:#07090c;
+      --panel:#0d1117;
+      --panel2:#0a0d12;
+      --line:#1b2430;
+      --text:#eaf0f6;
+      --muted:#8b98a8;
+      --dim:#586575;
+      --cyan:#68f7dc;
+      --blue:#72a7ff;
+      --violet:#b28cff;
+      --amber:#ffc46b;
+      --red:#ff7b83;
+      --ok:#80f0aa;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
-
-    * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      background: var(--bg);
-    }
-
-    body {
-      margin: 0;
-      min-width: 320px;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 72% -8%, rgba(77, 210, 185, 0.10), transparent 34rem),
-        radial-gradient(circle at -6% 36%, rgba(54, 124, 145, 0.08), transparent 30rem),
-        var(--bg);
-      font-family: var(--sans);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    a { color: inherit; }
-
-    .ambient-grid {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.20;
-      background-image:
-        linear-gradient(rgba(116, 246, 216, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(116, 246, 216, 0.035) 1px, transparent 1px);
-      background-size: 54px 54px;
-      mask-image: linear-gradient(to bottom, #000, transparent 78%);
-      -webkit-mask-image: linear-gradient(to bottom, #000, transparent 78%);
-    }
-
-    .ambient-scan {
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: -18vh;
-      height: 18vh;
-      pointer-events: none;
-      z-index: 0;
-      background: linear-gradient(to bottom, transparent, rgba(116, 246, 216, 0.028), transparent);
-      animation: scan 13s linear infinite;
-    }
-
-    @keyframes scan {
-      from { transform: translateY(0); }
-      to { transform: translateY(136vh); }
-    }
-
-    .shell {
-      position: relative;
-      z-index: 2;
-      width: min(var(--max), calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(6, 9, 12, 0.86);
-      border-bottom: 1px solid rgba(36, 65, 74, 0.72);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .nav {
-      min-height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .brand {
-      text-decoration: none;
-      font: 800 12px/1 var(--mono);
-      letter-spacing: 0.20em;
-      color: #fff;
-      white-space: nowrap;
-    }
-
-    .brand::before {
-      content: "";
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      margin-right: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 14px rgba(116, 246, 216, 0.85);
-      vertical-align: 1px;
-    }
-
-    nav a {
-      margin-left: 22px;
-      color: var(--muted);
-      text-decoration: none;
-      font: 700 10px/1 var(--mono);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 140ms ease;
-    }
-
-    nav a:hover,
-    nav a:focus { color: var(--accent); }
-
-    .hero {
-      padding: 96px 0 72px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .eyebrow {
-      margin: 0 0 20px;
-      color: var(--accent);
-      font: 700 11px/1.4 var(--mono);
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      max-width: 850px;
-      margin: 0;
-      color: #fff;
-      font-size: clamp(50px, 8vw, 96px);
-      line-height: 0.93;
-      letter-spacing: -0.055em;
-      font-weight: 850;
-    }
-
-    .hero-copy {
-      max-width: 780px;
-      margin: 32px 0 0;
-      color: #aebdc2;
-      font-size: clamp(17px, 2vw, 21px);
-      line-height: 1.72;
-    }
-
-    .hero-copy strong { color: var(--text); font-weight: 650; }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 18px;
-      border: 1px solid var(--line-strong);
-      border-radius: 8px;
-      background: rgba(10, 16, 21, 0.72);
-      color: var(--text);
-      text-decoration: none;
-      font: 800 11px/1 var(--mono);
-      letter-spacing: 0.055em;
-      text-transform: uppercase;
-      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
-    }
-
-    .button:hover,
-    .button:focus {
-      transform: translateY(-1px);
-      border-color: #49717c;
-      background: #0d171c;
-    }
-
-    .button.primary {
-      border-color: rgba(116, 246, 216, 0.64);
-      background: var(--accent);
-      color: #03110e;
-    }
-
-    .button.primary:hover,
-    .button.primary:focus { background: #9dffe8; }
-
-    .release-line {
-      margin-top: 26px;
-      color: var(--dim);
-      font: 600 10px/1.6 var(--mono);
-      letter-spacing: 0.025em;
-    }
-
-    .transport-strip {
-      position: relative;
-      padding: 54px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .braid-mark {
-      margin-bottom: 30px;
-      color: var(--dim);
-      font: 800 10px/1 var(--mono);
-      letter-spacing: 0.30em;
-    }
-
-    .path-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--line);
-    }
-
-    .path {
-      min-height: 142px;
-      padding: 24px;
-      background: var(--panel-solid);
-    }
-
-    .path small {
-      display: block;
-      margin-bottom: 30px;
-      color: var(--accent);
-      font: 700 9px/1 var(--mono);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .path b {
-      display: block;
-      margin-bottom: 7px;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .path span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .section {
-      padding: 82px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .section-kicker {
-      margin-bottom: 12px;
-      color: var(--accent);
-      font: 700 10px/1.4 var(--mono);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    h2 {
-      max-width: 800px;
-      margin: 0 0 22px;
-      color: #fff;
-      font-size: clamp(31px, 4vw, 51px);
-      line-height: 1.04;
-      letter-spacing: -0.035em;
-    }
-
-    .lead {
-      max-width: 820px;
-      margin: 0;
-      color: #a2b2b7;
-      font-size: 17px;
-      line-height: 1.8;
-    }
-
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 42px;
-    }
-
-    .card {
-      min-height: 240px;
-      padding: 26px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: linear-gradient(145deg, rgba(12, 20, 25, 0.86), rgba(7, 12, 15, 0.72));
-    }
-
-    .card-num {
-      margin-bottom: 38px;
-      color: var(--accent);
-      font: 700 9px/1 var(--mono);
-      letter-spacing: 0.08em;
-    }
-
-    .card h3 {
-      margin: 0 0 12px;
-      color: #fff;
-      font-size: 18px;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.75;
-    }
-
-    .facts {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 54px;
-      align-items: start;
-    }
-
-    .fact-table {
-      border-top: 1px solid var(--line);
-    }
-
-    .fact-row {
-      display: grid;
-      grid-template-columns: 155px 1fr;
-      gap: 20px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .fact-row dt {
-      margin: 0;
-      color: var(--dim);
-      font: 650 10px/1.6 var(--mono);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .fact-row dd {
-      margin: 0;
-      color: #c7d4d8;
-      font-size: 13px;
-    }
-
-    .checks {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--panel);
-    }
-
-    .checks li {
-      position: relative;
-      padding: 13px 16px 13px 42px;
-      border-bottom: 1px solid var(--line);
-      color: #acbcc1;
-      font-size: 13px;
-    }
-
-    .checks li:last-child { border-bottom: 0; }
-
-    .checks li::before {
-      content: "✓";
-      position: absolute;
-      left: 17px;
-      top: 13px;
-      color: var(--accent);
-      font-family: var(--mono);
-      font-weight: 800;
-    }
-
-    .hash {
-      margin-top: 16px;
-      padding: 15px 16px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #05090b;
-      color: #6e858d;
-      font: 10px/1.7 var(--mono);
-      overflow-wrap: anywhere;
-    }
-
-    .hash strong {
-      color: var(--muted);
-      font-weight: 650;
-    }
-
-    .thesis {
-      padding: 86px 0 92px;
-    }
-
-    blockquote {
-      max-width: 900px;
-      margin: 0;
-      color: #edf7f8;
-      font-size: clamp(27px, 4.3vw, 50px);
-      line-height: 1.18;
-      letter-spacing: -0.035em;
-      font-weight: 650;
-    }
-
-    .thesis p {
-      max-width: 800px;
-      margin: 30px 0 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    footer {
-      position: relative;
-      z-index: 2;
-      padding: 34px 0 48px;
-      border-top: 1px solid var(--line);
-      color: var(--dim);
-      font-size: 11px;
-    }
-
-    .footer-grid {
-      display: flex;
-      justify-content: space-between;
-      gap: 30px;
-      align-items: flex-start;
-    }
-
-    .footer-grid a {
-      color: var(--muted);
-      text-decoration: none;
-      margin-left: 16px;
-    }
-
-    .footer-grid a:hover { color: var(--accent); }
-
-    .pulse {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      margin-right: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px rgba(116, 246, 216, 0.7);
-      animation: pulse 2.6s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.40; transform: scale(0.82); }
-      50% { opacity: 1; transform: scale(1.08); }
-    }
-
-    @media (max-width: 820px) {
-      .shell { width: min(100% - 28px, var(--max)); }
-      .nav { min-height: 62px; }
-      nav a { margin-left: 13px; }
-      nav a:first-child { display: none; }
-      .hero { padding-top: 76px; }
-      .path-grid,
-      .card-grid,
-      .facts { grid-template-columns: 1fr; }
-      .path { min-height: auto; }
-      .path small { margin-bottom: 18px; }
-      .fact-row { grid-template-columns: 125px 1fr; }
-      .facts { gap: 34px; }
-      .footer-grid { display: block; }
-      .footer-grid > div:last-child { margin-top: 15px; }
-      .footer-grid a { margin-left: 0; margin-right: 14px; }
-    }
-
-    @media (max-width: 520px) {
-      nav a:nth-child(2) { display: none; }
-      .hero { padding: 62px 0 54px; }
-      .section { padding: 64px 0; }
-      .transport-strip { padding: 44px 0; }
-      .button { width: 100%; }
-      .fact-row { grid-template-columns: 1fr; gap: 4px; }
-      blockquote { font-size: 29px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-      }
-      .ambient-scan { display: none; }
-    }
+    *{box-sizing:border-box}
+    html{background:var(--bg);color:var(--text);scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:var(--sans);background:
+      radial-gradient(900px 560px at 74% -8%,rgba(104,247,220,.075),transparent 64%),
+      radial-gradient(760px 520px at -5% 62%,rgba(114,167,255,.055),transparent 66%),
+      var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.12;background-image:radial-gradient(circle at center,rgba(255,255,255,.4) 0 1px,transparent 1.2px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 84%)}
+    .scan{position:fixed;z-index:2;left:0;right:0;top:-22vh;height:22vh;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(104,247,220,.045),rgba(104,247,220,.018),transparent);animation:scan 13s linear infinite;mix-blend-mode:screen}
+    @keyframes scan{to{transform:translateY(132vh)}}
+
+    .vectors{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;font:10px/1.75 var(--mono);letter-spacing:.035em;color:rgba(104,247,220,.09);user-select:none}
+    .vector-column{position:absolute;white-space:pre;animation:drift linear infinite}
+    .v1{left:2.5%;top:9%;animation-duration:31s}.v2{right:3%;top:28%;animation-duration:37s;color:rgba(114,167,255,.075)}.v3{left:7%;bottom:3%;animation-duration:43s;color:rgba(178,140,255,.06)}
+    @keyframes drift{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(-42px);opacity:1}}
+
+    .shell{position:relative;z-index:3;max-width:1120px;margin:auto;padding:0 clamp(18px,4vw,44px)}
+    header{border-bottom:1px solid var(--line);background:rgba(7,9,12,.72);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}
+    .topbar{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{font-size:12px;font-weight:900;letter-spacing:.28em;color:var(--text);text-decoration:none}
+    nav{display:flex;gap:20px;flex-wrap:wrap;justify-content:flex-end}
+    nav a{font:10px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+    nav a:hover{color:var(--cyan)}
+
+    .hero{padding:78px 0 56px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:42px;align-items:end}
+    .eyebrow{font:11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:15px}
+    h1{font-size:clamp(46px,8vw,88px);line-height:.92;letter-spacing:-.057em;margin:0 0 24px;max-width:800px}
+    .lede{font-size:17px;line-height:1.75;color:#b1bdc9;max-width:760px;margin:0}
+    .hero-aside{border-left:1px solid var(--line);padding-left:24px;color:var(--muted);font-size:13px}
+    .hero-aside strong{color:var(--text)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}
+    .chip{font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line);padding:8px 10px;border-radius:999px;color:var(--muted);background:rgba(10,13,18,.7)}
+    .chip.live{color:var(--cyan);border-color:rgba(104,247,220,.3)}
+
+    .download{margin:42px 0 0;background:linear-gradient(180deg,rgba(14,18,24,.98),rgba(9,12,17,.98));border:1px solid rgba(104,247,220,.24);border-radius:18px;padding:24px;box-shadow:0 0 50px rgba(104,247,220,.035)}
+    .download-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
+    .download h2{margin:0;font-size:20px;letter-spacing:-.02em}.download p{margin:7px 0 0;color:var(--muted);font-size:13px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:9px;padding:12px 16px;text-decoration:none;font:700 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line)}
+    .btn.primary{background:var(--cyan);border-color:var(--cyan);color:#06100e}.btn.primary:hover{background:white;border-color:white}.btn.secondary{color:var(--text)}.btn.secondary:hover{border-color:var(--cyan)}
+    .hash{margin-top:16px;padding:12px 14px;border:1px solid #151d27;border-radius:10px;background:#080b0f;font:10px/1.6 var(--mono);color:var(--dim);overflow-wrap:anywhere}.hash b{color:var(--muted);font-weight:600}
+
+    section.block{padding:58px 0;border-bottom:1px solid var(--line)}
+    .section-tag{font:10px var(--mono);color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+    h2.section-title{font-size:29px;line-height:1.15;letter-spacing:-.035em;margin:0 0 18px}
+    .copy{color:#aeb8c4;font-size:15px;max-width:830px;margin:0}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+    .card{background:linear-gradient(180deg,rgba(14,18,24,.94),rgba(9,12,17,.94));border:1px solid var(--line);border-radius:14px;padding:20px}
+    .card .n{font:10px var(--mono);color:var(--cyan)}.card h3{font-size:14px;margin:8px 0 9px}.card p{font-size:12px;color:var(--muted);margin:0;line-height:1.65}
+
+    .flow{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#090c10}
+    .flow-row{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}.flow-row:last-child{border-bottom:0}
+    .flow-node{font:12px var(--mono);color:var(--text)}.flow-node small{display:block;color:var(--dim);margin-top:5px;line-height:1.5}.arrow{color:var(--cyan);font:16px var(--mono)}
+
+    .security{margin-top:28px;border:1px solid rgba(255,196,107,.25);border-radius:16px;padding:22px;background:rgba(255,196,107,.035)}
+    .security-top{display:flex;gap:13px;align-items:flex-start}.security-icon{font-size:20px;line-height:1}.security h3{margin:0 0 6px;font-size:15px}.security p{margin:0;color:#abb5c0;font-size:13px}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;counter-reset:step}
+    .step{position:relative;padding:15px 14px 14px;border:1px solid rgba(255,196,107,.15);border-radius:11px;background:#0a0d11;min-height:112px}.step:before{counter-increment:step;content:counter(step);display:block;font:10px var(--mono);color:var(--amber);margin-bottom:8px}.step b{display:block;font-size:12px;margin-bottom:5px}.step span{font-size:11px;color:var(--muted);line-height:1.55}
+    .security-note{margin-top:14px;font:10px/1.55 var(--mono);color:var(--dim)}
+
+    .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:26px}.fact{background:#0a0d12;padding:17px}.fact span{display:block;font:9px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:6px}.fact b{font-size:13px;font-weight:620}
+    .quote{font-size:22px;line-height:1.55;color:var(--text);max-width:850px;margin:0;border-left:2px solid var(--cyan);padding-left:22px}
+    footer{padding:40px 0 54px;color:var(--dim);font:10px/1.8 var(--mono)}
+
+    @media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:54px}.hero-aside{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}.grid3,.steps{grid-template-columns:1fr 1fr}.facts{grid-template-columns:1fr}.flow-row{grid-template-columns:1fr}.arrow{transform:rotate(90deg);width:max-content}.vectors{opacity:.6}}
+    @media(max-width:560px){nav{gap:12px}.grid3,.steps{grid-template-columns:1fr}.download{padding:19px}h1{font-size:48px}.topbar{align-items:flex-start;padding:20px 0;flex-direction:column;gap:10px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scan,.vector-column{animation:none}}
   </style>
 </head>
 <body>
-  <div class="ambient-grid" aria-hidden="true"></div>
-  <div class="ambient-scan" aria-hidden="true"></div>
+  <div class="scan" aria-hidden="true"></div>
+  <div class="vectors" aria-hidden="true">
+    <div class="vector-column v1">v[003]  +0.041718  v[017]  -0.128906  v[044]  +0.006321\nv[091]  +0.284180  v[118]  -0.032227  v[143]  +0.117432\n384D · fp16-le · payload_digest 80bae445831f…\nsource model digest 1b226e2802db…\nphase_a → evidence → phase_b</div>
+    <div class="vector-column v2">receiver.native[011] +0.015941\nreceiver.native[172] -0.098811\nreceiver.native[431] +0.204627\nreceiver.native[767] -0.004203\n768D · receiver-local\nbridge_semantic_invention=false</div>
+    <div class="vector-column v3">BRAD1 · signed object · exact bytes\noptical_qr  01/30  02/30  …  30/30\ntransport_sha256 ee9fa419…\nEd25519 ✓  payload binding ✓  local authority ✓</div>
+  </div>
 
   <header>
-    <div class="shell nav">
-      <a class="brand" href="#top">Intersignal</a>
-      <nav aria-label="Primary navigation">
+    <div class="shell topbar">
+      <a class="brand" href="/">INTERSIGNAL</a>
+      <nav aria-label="Primary">
         <a href="#release">Release</a>
         <a href="#architecture">Architecture</a>
-        <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        <a href="#install">Mac install</a>
+        <a href="https://x.com/intersignal_ai" rel="noopener">X / Twitter</a>
       </nav>
     </div>
   </header>
 
-  <main id="top">
-    <section class="shell hero">
-      <p class="eyebrow">Braid Light Client v1.5.0rc2 · Ollama + signed Legend candidate</p>
-      <h1>Build the AI substrate first.</h1>
-      <p class="hero-copy">
-        Braid moves signed AI state across machines without forcing every exchange through a cloud intermediary. QR reels remain intact. <strong>Version 1.5.0rc2 adds a bounded signed Legend and a loopback-only Ollama adapter</strong> for receiver-local model continuation after Phase B finality, with exact model-digest binding and no native hidden-state injection claim.
-      </p>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Braid v1.5.2 · local-first research release</div>
+        <h1>Build the AI substrate first.</h1>
+        <p class="lede">Braid moves signed AI state across machines without forcing every exchange through a cloud intermediary. A sender can bind explicit semantic material to its local model provenance; a receiver verifies that evidence and, when model spaces differ, re-embeds the meaning locally in its own native space.</p>
+        <div class="chips">
+          <span class="chip live">macOS arm64</span><span class="chip">Optical QR</span><span class="chip">LAN direct</span><span class="chip">Semantic Capsule</span><span class="chip">Receiver-owned finality</span>
+        </div>
+      </div>
+      <aside class="hero-aside"><strong>Not telepathy.</strong><br />Portable semantic continuity with explicit provenance, signed transport, and receiver-local authority. Raw vector coordinates remain machine-space coordinates—not invented human-readable concepts.</aside>
+    </section>
+
+    <section id="release" class="download" aria-labelledby="download-title">
+      <div class="download-head">
+        <div><div class="section-tag">Current Mac build</div><h2 id="download-title">Braid v1.5.2 for Apple Silicon</h2><p>Standalone macOS app in a drag-to-Applications DMG. Local research build; see the Gatekeeper note below before launch.</p></div>
+        <span class="chip live">63.6 MB · arm64</span>
+      </div>
       <div class="actions">
-        <a class="button primary" href="https://drive.google.com/file/d/19WmU3AIeIciSI4TVs0SKTFe99EomEdiD/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download v1.5.0rc2 candidate ↗</a>
-        <a class="button" href="#release">Read release facts</a>
+        <a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=1Zh7wOY-r2s5Dp1_-2F48Iw8JcFri_RTp">Download Mac installer ↗</a>
+        <a class="btn secondary" href="#install">Mac security steps</a>
       </div>
-      <div class="release-line">Developer release candidate · signed Legend + local Ollama adapter · optical + LAN + explicit Internet paths · 100/100 conformance tests</div>
+      <div class="hash"><b>SHA-256 · Braid-1.5.2-macOS-arm64.dmg</b><br />29318d416d15b32fbfe968135cb021d0aa43cd4893f686e0d9a847545f752a2e</div>
     </section>
 
-    <section class="shell transport-strip" aria-label="Braid transport paths">
-      <div class="braid-mark">BRAID</div>
-      <div class="path-grid">
-        <div class="path">
-          <small>Air-gapped</small>
-          <b>QR Reels</b>
-          <span>Optical transport retained</span>
-        </div>
-        <div class="path">
-          <small>Local</small>
-          <b>LAN Direct</b>
-          <span>Private-address transfer</span>
-        </div>
-        <div class="path">
-          <small>Remote</small>
-          <b>Internet Port</b>
-          <span>Explicit host:port + TLS</span>
-        </div>
+    <section id="architecture" class="block">
+      <div class="section-tag">One signed object · multiple paths</div>
+      <h2 class="section-title">Transport is a choice. Trust stays local.</h2>
+      <p class="copy">The transport layer carries the exact signed <code>.brad</code> bytes. It does not reinterpret, re-sign, or silently admit them. The receiving machine quarantines the object, evaluates Phase A evidence, and only marks acceptance after its own Phase B transaction commits finality.</p>
+      <div class="grid3">
+        <article class="card"><div class="n">TRANSPORT_01</div><h3>Optical QR reels</h3><p>Camera-readable chunks carry the signed object itself. Physical Mac-to-Mac optical acquisition has been verified at 30/30 chunks; QR is transport, not semantic reinterpretation.</p></article>
+        <article class="card"><div class="n">TRANSPORT_02</div><h3>LAN direct</h3><p>Signed state can move directly between private-network peers while the receiver retains quarantine, replay protection, validation, and finality authority.</p></article>
+        <article class="card"><div class="n">SEMANTIC_03</div><h3>Cross-model handoff</h3><p>Different embedding-model digests trigger receiver-local re-embedding of explicit signed semantic material. No opaque vector-to-text guessing and no invented semantic bridge.</p></article>
+      </div>
+
+      <div class="flow" aria-label="Semantic Capsule flow">
+        <div class="flow-row"><div class="flow-node">NODE A · local Ollama<small>Explicit semantic material → source embedding → signed Braid object</small></div><div class="arrow">→</div><div class="flow-node">BRAID TRANSPORT<small>Exact signed bytes over LAN, optical QR, or operator-selected path</small></div></div>
+        <div class="flow-row"><div class="flow-node">SIGNED SEMANTIC CAPSULE<small>Content + source model digest + payload binding + provenance</small></div><div class="arrow">→</div><div class="flow-node">NODE B · local Ollama<small>Verify → compare model digests → receiver-local native re-embed when heterogeneous</small></div></div>
       </div>
     </section>
 
-    <section class="shell section" id="architecture">
-      <div class="section-kicker">One signed object, multiple paths</div>
-      <h2>Transport is a choice. Trust stays local.</h2>
-      <p class="lead">
-        The transport layer carries the exact signed <code>.brad</code> bytes. It does not reinterpret, re-sign, or silently admit them. The receiving machine quarantines the object first, evaluates Phase A evidence, and only marks acceptance after the receiver-owned Phase B transaction commits finality.
-      </p>
-
-      <div class="card-grid">
-        <article class="card">
-          <div class="card-num">TRANSPORT_01</div>
-          <h3>Optical QR reels</h3>
-          <p>The air-gapped path remains a first-class option for camera-based transfer, demonstrations, and environments where network access is undesirable or unavailable.</p>
-        </article>
-        <article class="card">
-          <div class="card-num">TRANSPORT_02</div>
-          <h3>LAN direct</h3>
-          <p>Signed state can move between machines on a private network, with optional discovery and explicit receiver ownership of quarantine, evidence, and finality.</p>
-        </article>
-        <article class="card">
-          <div class="card-num">TRANSPORT_03</div>
-          <h3>Internet host:port</h3>
-          <p>Operators can expose an intentional TCP endpoint for remote transfer. Public routes require TLS 1.3 by default; there is no silent router mutation or hidden relay.</p>
-        </article>
+    <section id="install" class="block">
+      <div class="section-tag">Mac install · read this first</div>
+      <h2 class="section-title">macOS may block the first launch. That is expected for this research build.</h2>
+      <p class="copy">This downloadable v1.5.2 DMG is not yet distributed through Apple's Developer ID notarization pipeline. Gatekeeper can therefore show “Braid was blocked to protect your Mac.” You do not need to disable macOS security.</p>
+      <div class="security">
+        <div class="security-top"><div class="security-icon">⌾</div><div><h3>If you see the Apple security warning</h3><p>Use the one-app exception built into macOS. The wording can vary slightly by macOS version.</p></div></div>
+        <div class="steps">
+          <div class="step"><b>Open the DMG</b><span>Drag <strong>Braid.app</strong> into the Applications folder, then try opening Braid once.</span></div>
+          <div class="step"><b>Open Privacy &amp; Security</b><span>Go to <strong>System Settings → Privacy &amp; Security</strong> after macOS blocks the launch.</span></div>
+          <div class="step"><b>Click “Open Anyway”</b><span>Scroll to the Security section and use <strong>Open Anyway</strong> next to the Braid warning.</span></div>
+          <div class="step"><b>Confirm once</b><span>Authenticate if requested, then choose <strong>Open</strong>. Future launches should proceed normally for that app copy.</span></div>
+        </div>
+        <div class="security-note">Do not disable Gatekeeper globally. If the expected “Open Anyway” entry is not present, stop and contact us rather than changing system-wide security settings.</div>
       </div>
     </section>
 
-    <section class="shell section" id="release">
+    <section class="block">
+      <div class="section-tag">Release facts</div>
+      <h2 class="section-title">Braid v1.5.2</h2>
+      <p class="copy">A local-first research client for signed state transport and explicit cross-model semantic handoff. Evidence may travel; authority remains local.</p>
       <div class="facts">
-        <div>
-          <div class="section-kicker">Release facts</div>
-          <h2>Braid Light Client v1.5.0rc2</h2>
-          <p class="lead" style="font-size:16px; margin-bottom:34px;">
-            An Ollama + signed Legend developer candidate that preserves the established receiver-owned finality boundary while adding exact local-model identity binding and post-commit semantic continuity.
-          </p>
-
-          <dl class="fact-table">
-            <div class="fact-row">
-              <dt>Status</dt>
-              <dd>Developer release candidate</dd>
-            </div>
-            <div class="fact-row">
-              <dt>Primary object</dt>
-              <dd>Signed <code>.brad</code> bytes with bounded braid.legend.v1 context</dd>
-            </div>
-            <div class="fact-row">
-              <dt>Network paths</dt>
-              <dd>LAN + explicit Internet TCP</dd>
-            </div>
-            <div class="fact-row">
-              <dt>Public security</dt>
-              <dd>TLS 1.3 required by default</dd>
-            </div>
-            <div class="fact-row">
-              <dt>Receiver flow</dt>
-              <dd>Quarantine → Phase A evidence → Phase B atomic commit → accepted finality</dd>
-            </div>
-            <div class="fact-row">
-              <dt>Finality invariant</dt>
-              <dd><code>accepted == (finality == "committed")</code></dd>
-            </div>
-            <div class="fact-row">
-              <dt>Legend authority</dt>
-              <dd>signed_sender_context_only; never an acceptance signal</dd>
-            </div>
-            <div class="fact-row">
-              <dt>Local continuation</dt>
-              <dd>Loopback Ollama only after committed Phase B; generative_vector_injection=false</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div>
-          <div class="section-kicker">Acceptance</div>
-          <h3 style="margin:0 0 16px;color:#fff;font-size:19px;">Verified candidate behavior</h3>
-          <ul class="checks">
-            <li>100/100 tests pass with ResourceWarning promoted to error</li>
-            <li>Clean wheel and source-distribution install gates pass</li>
-            <li>Ollama endpoints are loopback-only and HTTP redirects are rejected</li>
-            <li>Legend digest and completion-model provenance are verified before Phase B</li>
-            <li>Same-space 384D routes require exact embedding model tag + digest identity</li>
-            <li>Post-commit Ollama failure degrades delivery without rewriting finality</li>
-            <li>Measured heterogeneous routes remain available; research-only routes fail closed</li>
-            <li>Real Mistral-to-Mistral continuation remains gated on the physical two-node UAT</li>
-          </ul>
-          <div class="hash"><strong>SHA-256 · release-candidate TAR</strong><br>3843b779a9544ceeeee3e4fdcc8ea3c5093e1ac35ed603419a0655abae99ab03</div>
-          <div class="actions" style="margin-top:16px;">
-            <a class="button" href="https://drive.google.com/file/d/19WmU3AIeIciSI4TVs0SKTFe99EomEdiD/view?usp=sharing" target="_blank" rel="noopener noreferrer">Open release archive ↗</a>
-          </div>
-        </div>
+        <div class="fact"><span>Primary object</span><b>Signed <code>.brad</code> frame</b></div>
+        <div class="fact"><span>Semantic rule</span><b>Explicit capsule material; no vector-to-text invention</b></div>
+        <div class="fact"><span>Heterogeneous model path</span><b>Receiver-local native re-embedding</b></div>
+        <div class="fact"><span>Exact-space path</span><b>Authenticated 384D fast path when model digests match</b></div>
+        <div class="fact"><span>Receiver flow</span><b>Quarantine → Phase A → Phase B → committed finality</b></div>
+        <div class="fact"><span>Optical transport</span><b>Exact signed bytes reassembled from QR chunks</b></div>
+        <div class="fact"><span>Cloud policy</span><b>Local Ollama loopback path; explicit cloud markers rejected</b></div>
+        <div class="fact"><span>License / status</span><b>Experimental developer research software</b></div>
       </div>
     </section>
 
-    <section class="shell thesis">
-      <div class="section-kicker">The Intersignal thesis</div>
-      <blockquote>AI systems should be able to exchange useful state without surrendering identity, provenance, or operator control.</blockquote>
-      <p>
-        Braid is being built as an open coordination primitive for local and sovereign AI systems: compact state, signed envelopes, receiver-owned policy, and transport flexibility from a camera lens to an open Internet port. Version 1.5.0rc2 extends that rule: signed semantic context may travel; model execution and authority remain local.
-      </p>
+    <section class="block">
+      <div class="section-tag">The Intersignal thesis</div>
+      <blockquote class="quote">AI systems should be able to exchange useful state without surrendering identity, provenance, or operator control.</blockquote>
+      <p class="copy" style="margin-top:24px">Braid is being built as an open coordination primitive for local and sovereign AI systems: compact signed objects, receiver-owned policy, explicit semantic continuity, and transport flexibility from a camera lens to a private network. The design rule stays simple: evidence may travel; authority remains local.</p>
     </section>
   </main>
 
   <footer>
-    <div class="shell footer-grid">
-      <div><span class="pulse" aria-hidden="true"></span>Intersignal · Fort Lauderdale · 2026<br>MIT-licensed development work · inspect before deployment</div>
-      <div>
-        © 2026 Intersignal LLC. Experimental developer software.<br>
-        <a href="mailto:missy@intersignal.ai">Contact</a>
-        <a href="https://x.com/intersignal_ai" target="_blank" rel="noopener noreferrer">@intersignal_ai</a>
-        <a href="https://drive.google.com/file/d/19WmU3AIeIciSI4TVs0SKTFe99EomEdiD/view?usp=sharing" target="_blank" rel="noopener noreferrer">v1.5.0rc2 archive</a>
-      </div>
-    </div>
+    <div class="shell">Intersignal · Fort Lauderdale · 2026<br />Experimental developer software · inspect before deployment · <a style="color:var(--muted)" href="https://x.com/intersignal_ai">@intersignal_ai</a></div>
   </footer>
 </body>
 </html>
