@@ -1,0 +1,26 @@
+Intersignal Braid v1.5.2 — Linux production release
+
+Promoted from Linux RC1 after physical UAT on two independent Linux hardware classes.
+
+Production packaging includes:
+- reliable Braid Client double-click launcher;
+- visualizer-first UX plus persistent receiver terminal;
+- separate Braid Visualizer desktop entry;
+- absolute launcher paths independent of shell PATH;
+- braid + braid-client CLI aliases under ~/.local/bin;
+- Braid Trust enrollment using exact frozen route + sender public key;
+- Braid-Trust.braidtrust bundle verification and SHA-256 manifest;
+- sender private signing key explicitly excluded from trust bundles;
+- backward compatibility for RC1 braid-pair-* commands and .braidpair bundles;
+- migration of existing v1.5.2 pairing/manual-UAT trust state into ~/.braid/trust;
+- receiver embedding model selected from trust metadata with all-minilm:latest fallback;
+- automatic local model request through Ollama when needed;
+- receiver artifacts persisted under ~/.braid/inbox;
+- clean PATH setup/output.
+
+Physical UAT:
+- ASUS Ascent Linux upgrade/migration path: Braid Client opened visualizer + secure receiver, reached LISTENING, fresh macOS→Linux signed Semantic Capsule returned accepted=true, destination=accepted, reason=RECEIVER_ACCEPTED, stored=true, validated=true.
+- Lenovo ThinkPad fresh-install path: correct untrusted/pre-enrollment UX, Braid Trust material imported, receiver reached LISTENING on 172.25.13.17:8745 with all-minilm:latest, fresh macOS→Linux signed Semantic Capsule returned accepted=true, destination=accepted, reason=RECEIVER_ACCEPTED, stored=true, validated=true; transport SHA-256 b0dac138ba2a99afda46225d670be73405e0f608d7eb2a2720fb4f3b8a866c1b.
+
+Network caveat:
+LAN multicast discovery remains access-point/subnet dependent. Direct-IP transport is the physically validated portability path and an empty `braid discover` result is not evidence of semantic transport failure when direct reachability works.
