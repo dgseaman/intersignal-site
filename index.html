@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#07090c" />
-  <meta name="description" content="Intersignal Braid v1.5.2 — signed semantic state for local and sovereign AI systems, with optical QR, LAN, and receiver-local model handoff." />
+  <meta name="description" content="Download Intersignal Braid v1.5.2 for Windows, macOS, and Linux. Braid lets local AI systems exchange signed, verifiable state while each receiving computer keeps control." />
   <title>Intersignal — Braid v1.5.2</title>
   <style>
     :root{
@@ -57,8 +57,12 @@
     .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}
     .chip{font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line);padding:8px 10px;border-radius:999px;color:var(--muted);background:rgba(10,13,18,.7)}
     .chip.live{color:var(--cyan);border-color:rgba(104,247,220,.3)}
+    .chip.pending{color:var(--amber);border-color:rgba(255,196,107,.3)}
 
     .download{margin:42px 0 0;background:linear-gradient(180deg,rgba(14,18,24,.98),rgba(9,12,17,.98));border:1px solid rgba(104,247,220,.24);border-radius:18px;padding:24px;box-shadow:0 0 50px rgba(104,247,220,.035)}
+    .download + .download{margin-top:14px}
+    .download.windows{border-color:rgba(178,140,255,.27);box-shadow:0 0 50px rgba(178,140,255,.03)}
+    .download.windows .btn.primary{background:var(--violet);border-color:var(--violet);color:#0b0712}
     .download-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
     .download h2{margin:0;font-size:20px;letter-spacing:-.02em}.download p{margin:7px 0 0;color:var(--muted);font-size:13px}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
@@ -105,9 +109,9 @@
     <div class="shell topbar">
       <a class="brand" href="/">INTERSIGNAL</a>
       <nav aria-label="Primary">
-        <a href="#release">Release</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#linux-release">Linux</a>
+        <a href="#downloads">Downloads</a>
+        <a href="#proof">Proof</a>
+        <a href="#architecture">How it works</a>
         <a href="#install">Mac install</a>
         <a href="https://x.com/intersignal_ai" rel="noopener">X / Twitter</a>
       </nav>
@@ -118,25 +122,38 @@
     <section class="hero">
       <div>
         <div class="eyebrow">Braid v1.5.2 · local-first research release</div>
-        <h1>Build the AI substrate first.</h1>
-        <p class="lede">Braid moves signed AI state across machines without forcing every exchange through a cloud intermediary. A sender can bind explicit semantic material to its local model provenance; a receiver verifies that evidence and, when model spaces differ, re-embeds the meaning locally in its own native space.</p>
+        <h1>Let local AI systems recognize each other.</h1>
+        <p class="lede">Braid gives computers a way to pass useful AI state directly, with a signed record of where it came from and no cloud account in the middle. The receiving machine checks the evidence, decides what to trust, and keeps final control over what becomes part of its own local state.</p>
         <div class="chips">
-          <span class="chip live">macOS arm64</span><span class="chip live">Linux validated</span><span class="chip">Optical QR</span><span class="chip">LAN direct</span><span class="chip">Semantic Capsule</span><span class="chip">Receiver-owned finality</span>
+          <span class="chip live">Windows x64</span><span class="chip live">macOS arm64</span><span class="chip live">Linux validated</span><span class="chip">Direct LAN</span><span class="chip">Optical QR</span><span class="chip">Braid Trust</span>
         </div>
       </div>
-      <aside class="hero-aside"><strong>Not telepathy.</strong><br />Portable semantic continuity with explicit provenance, signed transport, and receiver-local authority. Raw vector coordinates remain machine-space coordinates—not invented human-readable concepts.</aside>
+      <aside class="hero-aside"><strong>A small step toward portable AI continuity.</strong><br />Your tools should be able to carry useful context from one machine to another without giving up identity, provenance, or operator control. Braid is an early, inspectable implementation of that idea—not a claim that models share thoughts or understand one another automatically.</aside>
     </section>
 
+    <div id="downloads"></div>
     <section id="release" class="download" aria-labelledby="download-title">
       <div class="download-head">
         <div><div class="section-tag">Current Mac build</div><h2 id="download-title">Braid v1.5.2 for Apple Silicon</h2><p>Standalone macOS app in a drag-to-Applications DMG. Local research build; see the Gatekeeper note below before launch.</p></div>
-        <span class="chip live">63.6 MB · arm64</span>
+        <span class="chip live">62.6 MB · arm64</span>
       </div>
       <div class="actions">
         <a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=1Zh7wOY-r2s5Dp1_-2F48Iw8JcFri_RTp">Download Mac installer ↗</a>
         <a class="btn secondary" href="#install">Mac security steps</a>
       </div>
-      <div class="hash"><b>SHA-256 · Braid-1.5.2-macOS-arm64.dmg</b><br />29318d416d15b32fbfe968135cb021d0aa43cd4893f686e0d9a847545f752a2e</div>
+      <div class="hash"><b>SHA-256 · Braid-1.5.2-macOS-arm64.dmg</b><br />385d61ab993de9fa0b47548379818a5dc9e7a8f57f44b7d03ca9091392ed5397</div>
+    </section>
+
+    <section id="windows" class="download windows" aria-labelledby="windows-title">
+      <div class="download-head">
+        <div><div class="section-tag">Windows · offline package</div><h2 id="windows-title">Braid v1.5.2 for Windows x64</h2><p>Download the ZIP, extract the full folder, and run <code>Install-Braid.cmd</code>. The package includes its own Python runtime and dependencies, installs for your user account, and does not require administrator access for the normal install.</p></div>
+        <span class="chip live">43.7 MB · x64</span>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=1YV__Hm3tOftZtp_veJnIyer91PCHab7W">Download Windows package ↗</a>
+      </div>
+      <p><strong>Research-build note:</strong> Windows may show an unfamiliar-app or reputation warning because this release is not code-signed. Verify the SHA-256 below; do not disable Windows security globally.</p>
+      <div class="hash"><b>SHA-256 · Braid-1.5.2-Windows-x64.zip</b><br />656bc264dd821af1edac966b982acf6e96275effffc6470a049de8b9111864ff</div>
     </section>
 
     <section id="linux-release" class="download" aria-labelledby="linux-download-title">
@@ -151,10 +168,22 @@
       <div class="hash"><b>SHA-256 · Braid-1.5.2-Linux.tar.gz</b><br />47952e20fa78382b712caa1fbe81afb7525349099db952eae645d1ee916af853</div>
     </section>
 
+    <section id="proof" class="block">
+      <div class="section-tag">Recent cross-OS proof</div>
+      <h2 class="section-title">Tested as a conversation between computers—not three isolated demos.</h2>
+      <p class="copy">The current v1.5.2 releases completed physical handoffs across operating-system boundaries. In every case, the receiving machine checked the signed evidence and owned the final decision and receipt.</p>
+      <p class="copy" style="margin-top:16px">This is a narrow, concrete proof—not a claim that every model, network, or machine combination is solved. It shows that the same trust and finality rules survived the three physical cross-OS paths tested so far.</p>
+      <div class="grid3">
+        <article class="card"><div class="n">PROOF_01</div><h3>macOS → Linux</h3><p>Signed Semantic Capsule acceptance was physically validated over direct LAN on ASUS Ascent and Lenovo ThinkPad Linux hardware.</p></article>
+        <article class="card"><div class="n">PROOF_02</div><h3>macOS → Windows</h3><p>A signed capsule crossed the local network. Windows verified the trusted sender and route, then owned the final commit and receipt.</p></article>
+        <article class="card"><div class="n">PROOF_03</div><h3>Windows → Linux</h3><p>Windows generated its own signed state. Linux accepted it only after importing the matching public Braid Trust and completing receiver-side finality.</p></article>
+      </div>
+    </section>
+
     <section id="architecture" class="block">
-      <div class="section-tag">One signed object · multiple paths</div>
+      <div class="section-tag">For technical readers</div>
       <h2 class="section-title">Transport is a choice. Trust stays local.</h2>
-      <p class="copy">The transport layer carries the exact signed <code>.brad</code> bytes. It does not reinterpret, re-sign, or silently admit them. The receiving machine quarantines the object, evaluates Phase A evidence, and only marks acceptance after its own Phase B transaction commits finality.</p>
+      <p class="copy">Braid carries the exact signed <code>.brad</code> object. It does not reinterpret, re-sign, or silently admit it along the way. The receiving machine quarantines the object, checks its Phase A evidence, and marks acceptance only after its own Phase B transaction commits finality.</p>
       <div class="grid3">
         <article class="card"><div class="n">TRANSPORT_01</div><h3>Optical QR reels</h3><p>Camera-readable chunks carry the signed object itself. Physical Mac-to-Mac optical acquisition has been verified at 30/30 chunks; QR is transport, not semantic reinterpretation.</p></article>
         <article class="card"><div class="n">TRANSPORT_02</div><h3>LAN direct</h3><p>Signed state can move directly between private-network peers while the receiver retains quarantine, replay protection, validation, and finality authority.</p></article>
@@ -190,8 +219,8 @@
 
     <section class="block">
       <div class="section-tag">Release facts</div>
-      <h2 class="section-title">Braid v1.5.2</h2>
-      <p class="copy">A local-first research client for signed state transport and explicit cross-model semantic handoff. Evidence may travel; authority remains local.</p>
+      <h2 class="section-title">What this release is—and is not</h2>
+      <p class="copy">Braid v1.5.2 is experimental research software for signed state transport and explicit cross-model semantic handoff. It is available for Windows x64, Apple Silicon Macs, and Linux. Evidence may travel; authority remains local.</p>
       <div class="facts">
         <div class="fact"><span>Primary object</span><b>Signed <code>.brad</code> frame</b></div>
         <div class="fact"><span>Semantic rule</span><b>Explicit capsule material; no vector-to-text invention</b></div>
@@ -201,6 +230,7 @@
         <div class="fact"><span>Optical transport</span><b>Exact signed bytes reassembled from QR chunks</b></div>
         <div class="fact"><span>Cloud policy</span><b>Local Ollama loopback path; explicit cloud markers rejected</b></div>
         <div class="fact"><span>Linux portability</span><b>Physical Mac → Linux acceptance validated on two Linux hardware classes</b></div>
+        <div class="fact"><span>Windows interoperability</span><b>Physical Mac → Windows and Windows → Linux Phase B finality validated</b></div>
         <div class="fact"><span>Trust bootstrap</span><b>Authorized public key + exact frozen route; private key stays local</b></div>
         <div class="fact"><span>License / status</span><b>Experimental developer research software</b></div>
       </div>
@@ -209,7 +239,8 @@
     <section class="block">
       <div class="section-tag">The Intersignal thesis</div>
       <blockquote class="quote">AI systems should be able to exchange useful state without surrendering identity, provenance, or operator control.</blockquote>
-      <p class="copy" style="margin-top:24px">Braid is being built as an open coordination primitive for local and sovereign AI systems: compact signed objects, receiver-owned policy, explicit semantic continuity, and transport flexibility from a camera lens to a private network. The design rule stays simple: evidence may travel; authority remains local.</p>
+      <p class="copy" style="margin-top:24px">Today, moving useful AI context often means copying text by hand or sending data back through a platform that sits between you and your machines. We think another path should exist: small, verifiable objects that can move directly, carry their provenance with them, and remain subject to the receiving operator's rules.</p>
+      <p class="copy" style="margin-top:16px">Braid is an early coordination layer for that future. The ambition is broad, but the present release is deliberately concrete: signed objects, local trust, visible receipts, and transport that can range from a camera lens to a private network. Evidence may travel; authority remains local.</p>
     </section>
   </main>
 
