@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#07090c" />
-  <meta name="description" content="Download Intersignal Braid v1.5.2 for Windows, macOS, and Linux. Braid lets local AI systems exchange signed, verifiable state while each receiving computer keeps control." />
+  <meta name="description" content="Download Intersignal Braid v1.5.2 and the Jump Kit WAN sidecar public-testing release. Braid lets local AI systems exchange signed, verifiable state while each receiving computer keeps control." />
   <title>Intersignal — Braid v1.5.2</title>
   <style>
     :root{
@@ -63,6 +63,9 @@
     .download + .download{margin-top:14px}
     .download.windows{border-color:rgba(178,140,255,.27);box-shadow:0 0 50px rgba(178,140,255,.03)}
     .download.windows .btn.primary{background:var(--violet);border-color:var(--violet);color:#0b0712}
+    .download.jump{border-color:rgba(114,167,255,.34);box-shadow:0 0 50px rgba(114,167,255,.045)}
+    .download.jump .section-tag{color:var(--blue)}
+    .download.jump .btn.primary{background:var(--blue);border-color:var(--blue);color:#07101d}
     .download-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
     .download h2{margin:0;font-size:20px;letter-spacing:-.02em}.download p{margin:7px 0 0;color:var(--muted);font-size:13px}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
@@ -110,6 +113,7 @@
       <a class="brand" href="/">INTERSIGNAL</a>
       <nav aria-label="Primary">
         <a href="#downloads">Downloads</a>
+        <a href="#jump-kit">Jump Kit</a>
         <a href="#proof">Proof</a>
         <a href="#architecture">How it works</a>
         <a href="#install">Mac install</a>
@@ -166,6 +170,24 @@
         <a class="btn secondary" href="#linux-trust">Braid Trust</a>
       </div>
       <div class="hash"><b>SHA-256 · Braid-1.5.2-Linux.tar.gz</b><br />47952e20fa78382b712caa1fbe81afb7525349099db952eae645d1ee916af853</div>
+    </section>
+
+    <section id="jump-kit" class="download jump" aria-labelledby="jump-kit-title">
+      <div class="download-head">
+        <div><div class="section-tag">WAN/NAT sidecar · public testing</div><h2 id="jump-kit-title">Braid Jump Kit 1.5.3rc2</h2><p>Jump Kit is an optional, developer-first sidecar that lets approved Braid devices reach one another across networks through an authenticated direct-first path with encrypted relay fallback. It transports exact signed Braid objects; the receiving Braid instance still validates, admits, stores, and returns finality.</p></div>
+        <span class="chip pending">Free experimental access</span>
+      </div>
+      <p>Jump Kit is free for everyone to use and experiment with during the public-testing period. A hosted premium offering is planned later because public relay capacity and VPS operation carry ongoing costs. Core Braid v1.5.2 remains available through the unchanged downloads above and does not require Jump Kit.</p>
+      <p><strong>Physical WAN result · August 26, 2026:</strong> a fresh signed Semantic Capsule traveled from macOS through a public VPS relay to the Windows Jump Kit agent and local Windows Braid receiver. The return receipt was <code>RELAYED</code> over <code>TLSv1.3</code>, with <code>validated=true</code>, <code>stored=true</code>, and <code>accepted=true</code>. This proves the tested relay-backed WAN path; it is not a claim of automatic direct NAT hole punching or universal network compatibility.</p>
+      <div class="actions">
+        <a class="btn primary" href="downloads/braid_jumpkit-1.5.3rc2-py3-none-any.whl">Download Python wheel</a>
+        <a class="btn secondary" href="downloads/braid_jumpkit-1.5.3rc2.tar.gz">Download source</a>
+        <a class="btn secondary" href="mailto:hello@intersignal.ai?subject=Braid%20Jump%20Kit%20testing%20access">Request relay access</a>
+        <a class="btn secondary" href="https://docs.google.com/forms/d/1IGL22mCIlwPTh82KB1Crc69fxrYh-lq1lEsL3lltrHA/" rel="noopener">Braid feedback form ↗</a>
+      </div>
+      <p><strong>Requirements:</strong> Python 3.12 and an installed Braid v1.5.2 receiver. This is an RC for technical testing, not a native signed installer or a production SLA. Do not publish relay enrollment tokens, private keys, Jump Codes, or sensitive <code>.brad</code> objects in reports.</p>
+      <p>Send compatibility reports, failure receipts, and security observations to <a href="mailto:hello@intersignal.ai">hello@intersignal.ai</a> or the <a href="https://docs.google.com/forms/d/1IGL22mCIlwPTh82KB1Crc69fxrYh-lq1lEsL3lltrHA/" rel="noopener">Braid feedback form</a>. Include OS, Python version, Jump Kit version, and redacted logs; never include secrets.</p>
+      <div class="hash"><b>SHA-256 · braid_jumpkit-1.5.3rc2-py3-none-any.whl</b><br />a1bf6a92bc1b44726e3c8720695a4b42ba53440d82871d2ce3128de83de7df24<br /><b>SHA-256 · braid_jumpkit-1.5.3rc2.tar.gz</b><br />9a2519d62c70739bb8f68af8390d9f27f9180423969aaf6502e09d27b99c37cd</div>
     </section>
 
     <section id="proof" class="block">
