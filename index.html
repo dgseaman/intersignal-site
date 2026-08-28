@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#07090c" />
-  <meta name="description" content="Download Intersignal Braid v1.5.2 and the Jump Kit WAN sidecar public-testing release. Braid lets local AI systems exchange signed, verifiable state while each receiving computer keeps control." />
-  <title>Intersignal — Braid v1.5.2</title>
+  <meta name="description" content="Braid 1.6 transfers authenticated, text-capable semantic meaning into receiver-owned state that remains queryable in fresh local inference sessions." />
+  <title>Intersignal — Braid 1.6</title>
   <style>
     :root{
       --bg:#07090c;
@@ -125,20 +125,35 @@
   <main class="shell">
     <section class="hero">
       <div>
-        <div class="eyebrow">Braid v1.5.2 · local-first research release</div>
-        <h1>Let local AI systems recognize each other.</h1>
-        <p class="lede">Braid gives computers a way to pass useful AI state directly, with a signed record of where it came from and no cloud account in the middle. The receiving machine checks the evidence, decides what to trust, and keeps final control over what becomes part of its own local state.</p>
+        <div class="eyebrow">Braid v1.6.0rc1 · text-capable meaning transfer</div>
+        <h1>Let a second AI node query what it receives.</h1>
+        <p class="lede">Braid carries explicit semantic material in a signed Semantic Capsule. The receiving machine verifies it, applies its own acceptance policy, persists accepted meaning as receiver-owned state, and can reconstruct that state in fresh local inference sessions.</p>
         <div class="chips">
           <span class="chip live">Windows x64</span><span class="chip live">macOS arm64</span><span class="chip live">Linux validated</span><span class="chip">Direct LAN</span><span class="chip">Optical QR</span><span class="chip">Braid Trust</span>
         </div>
       </div>
-      <aside class="hero-aside"><strong>A small step toward portable AI continuity.</strong><br />Your tools should be able to carry useful context from one machine to another without giving up identity, provenance, or operator control. Braid is an early, inspectable implementation of that idea—not a claim that models share thoughts or understand one another automatically.</aside>
+      <aside class="hero-aside"><strong>Meaning with provenance—not a transplanted mind.</strong><br />The sender chooses what explicit material becomes durable. The capsule authenticates that evidence. The receiver keeps final Phase B authority and, across heterogeneous models, re-embeds the material locally. Braid does not transfer hidden activations, model weights, or KV caches.</aside>
     </section>
 
     <div id="downloads"></div>
+    <section id="release-16" class="download" aria-labelledby="download-16-title">
+      <div class="download-head">
+        <div><div class="section-tag">Current source release candidate</div><h2 id="download-16-title">Braid v1.6.0rc1</h2><p>Python source and wheel for technical testing of durable, queryable Semantic Capsule state. Existing v1.5.2 native installers remain available below while 1.6 completes physical cross-node release validation.</p></div>
+        <span class="chip pending">Release candidate</span>
+      </div>
+      <p>After receiver-owned Phase B commitment, Braid stores canonical authenticated material with the receiver-local vector and lineage. <code>braid-client state</code> verifies that bundle; <code>braid-client query</code> creates a fresh local inference call and a separate provenance artifact. Material or vector tampering fails closed.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=14Ai1UM8KPv4sQSWLpjZ_skiQfiHzH1rL">Download Python wheel ↗</a>
+        <a class="btn secondary" href="https://drive.google.com/uc?export=download&amp;id=1l4c6PRbdUSC_LzN_fJeO1ESyr306h_k1">Download source ↗</a>
+        <a class="btn secondary" href="https://drive.google.com/file/d/1HEcbmReLKd3pQ4P6ol27DM6PydYDh8XW/view?usp=sharing" rel="noopener">Validation report ↗</a>
+        <a class="btn secondary" href="https://drive.google.com/file/d/1rIq63TThNMgZEkhaHfFHz97VqFd9uKDi/view?usp=sharing" rel="noopener">Site source patch ↗</a>
+      </div>
+      <div class="hash"><b>SHA-256 · braid_client-1.6.0rc1-py3-none-any.whl</b><br />ca0f29d546c2f6d17145b9adecf27845ee4e62957aeee4325d1a71e7acb4a3b7<br /><b>SHA-256 · braid_client-1.6.0rc1.tar.gz</b><br />6db34c575f6d1b7df70e282ddad0399512e4d1e4588bff74b3a43ebee0e3ceba</div>
+    </section>
+
     <section id="release" class="download" aria-labelledby="download-title">
       <div class="download-head">
-        <div><div class="section-tag">Current Mac build</div><h2 id="download-title">Braid v1.5.2 for Apple Silicon</h2><p>Standalone macOS app in a drag-to-Applications DMG. Local research build; see the Gatekeeper note below before launch.</p></div>
+        <div><div class="section-tag">v1.5.2 native installer · still available</div><h2 id="download-title">Braid v1.5.2 for Apple Silicon</h2><p>Standalone macOS app in a drag-to-Applications DMG. Local research build; see the Gatekeeper note below before launch.</p></div>
         <span class="chip live">62.6 MB · arm64</span>
       </div>
       <div class="actions">
@@ -205,11 +220,11 @@
     <section id="architecture" class="block">
       <div class="section-tag">For technical readers</div>
       <h2 class="section-title">Transport is a choice. Trust stays local.</h2>
-      <p class="copy">Braid carries the exact signed <code>.brad</code> object. It does not reinterpret, re-sign, or silently admit it along the way. The receiving machine quarantines the object, checks its Phase A evidence, and marks acceptance only after its own Phase B transaction commits finality.</p>
+      <p class="copy">Braid carries the exact signed <code>.brad</code> object. It does not reinterpret, re-sign, or silently admit it along the way. The receiving machine quarantines the object, checks its Phase A evidence, and marks acceptance only after its own Phase B transaction commits finality. In 1.6, accepted canonical semantic material then becomes durable, digest-bound receiver-local state that can be queried again later.</p>
       <div class="grid3">
         <article class="card"><div class="n">TRANSPORT_01</div><h3>Optical QR reels</h3><p>Camera-readable chunks carry the signed object itself. Physical Mac-to-Mac optical acquisition has been verified at 30/30 chunks; QR is transport, not semantic reinterpretation.</p></article>
         <article class="card"><div class="n">TRANSPORT_02</div><h3>LAN direct</h3><p>Signed state can move directly between private-network peers while the receiver retains quarantine, replay protection, validation, and finality authority.</p></article>
-        <article class="card"><div class="n">SEMANTIC_03</div><h3>Cross-model handoff</h3><p>Different embedding-model digests trigger receiver-local re-embedding of explicit signed semantic material. No opaque vector-to-text guessing and no invented semantic bridge.</p></article>
+        <article class="card"><div class="n">SEMANTIC_03</div><h3>Queryable received meaning</h3><p>Different embedding-model digests trigger receiver-local re-embedding of explicit signed material. Fresh queries reconstruct local context from the committed material—not from an opaque vector, hidden state, or a lingering chat session.</p></article>
       </div>
 
       <div id="linux-trust" class="security" style="margin-top:22px">
@@ -219,7 +234,7 @@
 
       <div class="flow" aria-label="Semantic Capsule flow">
         <div class="flow-row"><div class="flow-node">NODE A · local Ollama<small>Explicit semantic material → source embedding → signed Braid object</small></div><div class="arrow">→</div><div class="flow-node">BRAID TRANSPORT<small>Exact signed bytes over LAN, optical QR, or operator-selected path</small></div></div>
-        <div class="flow-row"><div class="flow-node">SIGNED SEMANTIC CAPSULE<small>Content + source model digest + payload binding + provenance</small></div><div class="arrow">→</div><div class="flow-node">NODE B · local Ollama<small>Verify → compare model digests → receiver-local native re-embed when heterogeneous</small></div></div>
+        <div class="flow-row"><div class="flow-node">SIGNED SEMANTIC CAPSULE<small>Content + source model digest + payload binding + provenance</small></div><div class="arrow">→</div><div class="flow-node">NODE B · local Ollama<small>Verify → Phase B commit → local re-embed if needed → durable state → fresh queries</small></div></div>
       </div>
     </section>
 
@@ -242,12 +257,14 @@
     <section class="block">
       <div class="section-tag">Release facts</div>
       <h2 class="section-title">What this release is—and is not</h2>
-      <p class="copy">Braid v1.5.2 is experimental research software for signed state transport and explicit cross-model semantic handoff. It is available for Windows x64, Apple Silicon Macs, and Linux. Evidence may travel; authority remains local.</p>
+      <p class="copy">Braid v1.6.0rc1 is experimental research software for signed, text-capable meaning transfer and queryable receiver-owned state. The 1.6 source candidate is available above; v1.5.2 native packages remain available for Windows x64, Apple Silicon Macs, and Linux. Evidence may travel; authority remains local.</p>
       <div class="facts">
         <div class="fact"><span>Primary object</span><b>Signed <code>.brad</code> frame</b></div>
         <div class="fact"><span>Semantic rule</span><b>Explicit capsule material; no vector-to-text invention</b></div>
         <div class="fact"><span>Heterogeneous model path</span><b>Receiver-local native re-embedding</b></div>
         <div class="fact"><span>Exact-space path</span><b>Authenticated 384D fast path when model digests match</b></div>
+        <div class="fact"><span>Durable query path</span><b>Canonical material + receiver vector + lineage → fresh local inference</b></div>
+        <div class="fact"><span>Not transferred</span><b>Hidden activations, KV cache, model weights, sender authority</b></div>
         <div class="fact"><span>Receiver flow</span><b>Quarantine → Phase A → Phase B → committed finality</b></div>
         <div class="fact"><span>Optical transport</span><b>Exact signed bytes reassembled from QR chunks</b></div>
         <div class="fact"><span>Cloud policy</span><b>Local Ollama loopback path; explicit cloud markers rejected</b></div>
