@@ -1,0 +1,386 @@
+--- /tmp/braid16src/intersignal-braid-light-client-v1.6.0rc1-source-candidate/braid_client/mcp_core/validation.py	2026-08-12 23:00:00.000000000 +0000
++++ /tmp/braid16rc2/braid_client/mcp_core/validation.py	2026-08-29 23:58:36.664030050 +0000
+@@ -192,7 +192,12 @@
+         self.ledger = ledger
+         self.local_node_id = local_node_id
+ 
+-    def validate_frame_phase_a(self, frame_bytes: bytes) -> ValidationResult:
++    def validate_frame_phase_a(
++        self,
++        frame_bytes: bytes,
++        *,
++        allow_exact_space_capsule_novelty: bool = False,
++    ) -> ValidationResult:
+         """
+         Phase A: Bounded non-locking validation (Header, JCS, Ed25519, Payload Digest, Artifacts, OOD, Authority).
+         Runs completely outside database write locks.
+@@ -277,25 +282,96 @@
+ 
+             mapped_vec = transport_map.apply(source_vec)
+ 
+-            # Subspace residual & Mahalanobis OOD checks
++            # Route anomaly artifacts measure whether a vector resembles the route's
++            # calibration distribution. That is authoritative for heterogeneous maps
++            # and opaque vectors, but semantic novelty is expected on an exact-space
++            # identity route. A receiver may therefore treat these measurements as
++            # advisory only when all of the following hold:
++            #   * the source and target spaces are identical;
++            #   * the sealed transport map is the exact identity map;
++            #   * a valid signed Semantic Capsule is present and route-bound; and
++            #   * the caller will perform strict receiver-local capsule/vector
++            #     coherence verification before Phase B.
++            # The final condition is represented by the explicit caller opt-in.
++            anomaly_policy = "enforced"
++            exact_space_capsule_novelty = False
++            if allow_exact_space_capsule_novelty:
++                same_space = (
++                    route_entry.source_space_digest == route_entry.target_space_digest
++                    and transport_map.source_space_digest == transport_map.target_space_digest
++                )
++                identity_map = bool(
++                    transport_map.algorithm == "procrustes"
++                    and transport_map.R.ndim == 2
++                    and transport_map.R.shape[0] == transport_map.R.shape[1]
++                    and transport_map.t.shape == (transport_map.R.shape[1],)
++                    and np.allclose(
++                        transport_map.R,
++                        np.eye(transport_map.R.shape[0]),
++                        rtol=0.0,
++                        atol=1e-12,
++                    )
++                    and np.allclose(transport_map.t, 0.0, rtol=0.0, atol=1e-12)
++                )
++                if same_space and identity_map:
++                    # Lazy import avoids coupling the core validator to optional
++                    # receiver-local model handling at module import time.
++                    from braid_client.semantic_capsule import (
++                        extract_semantic_capsule,
++                        validate_capsule_route_binding,
++                    )
++
++                    capsule, _ = extract_semantic_capsule(manifest, required=True)
++                    assert capsule is not None
++                    validate_capsule_route_binding(manifest, self.registry, capsule)
++                    exact_space_capsule_novelty = True
++                    anomaly_policy = "advisory_exact_space_capsule_pending_coherence"
++
++            # Subspace residual & Mahalanobis OOD checks. Measurements are still
++            # computed in advisory mode so receipts retain useful anomaly evidence.
++            subspace_residual = None
++            mahalanobis_ood = None
+             pca_model = self.registry.get_pca_model(route_entry.route_id)
+             if pca_model is not None:
+-                res = pca_model.compute_reconstruction_residual(mapped_vec)
+-                if res > route_entry.subspace_residual_ceiling:
+-                    return ValidationResult(False, "SubspaceResidualGate", f"ERR_SUBSPACE: Residual {res:.4f} > ceiling {route_entry.subspace_residual_ceiling:.4f}")
++                subspace_residual = float(pca_model.compute_reconstruction_residual(mapped_vec))
++                if (
++                    not exact_space_capsule_novelty
++                    and subspace_residual > route_entry.subspace_residual_ceiling
++                ):
++                    return ValidationResult(
++                        False,
++                        "SubspaceResidualGate",
++                        f"ERR_SUBSPACE: Residual {subspace_residual:.4f} > ceiling {route_entry.subspace_residual_ceiling:.4f}",
++                    )
+ 
+             cov_model = self.registry.get_covariance_model(route_entry.route_id)
+             if cov_model is not None:
+-                ood_dist = compute_regularized_mahalanobis_ood(mapped_vec, cov_model.mean_vector, cov_model.covariance_matrix)
+-                if ood_dist > route_entry.mahalanobis_ood_ceiling:
+-                    return ValidationResult(False, "MahalanobisOODGate", f"ERR_OOD: Mahalanobis distance {ood_dist:.4f} > ceiling {route_entry.mahalanobis_ood_ceiling:.4f}")
++                mahalanobis_ood = float(
++                    compute_regularized_mahalanobis_ood(
++                        mapped_vec, cov_model.mean_vector, cov_model.covariance_matrix
++                    )
++                )
++                if (
++                    not exact_space_capsule_novelty
++                    and mahalanobis_ood > route_entry.mahalanobis_ood_ceiling
++                ):
++                    return ValidationResult(
++                        False,
++                        "MahalanobisOODGate",
++                        f"ERR_OOD: Mahalanobis distance {mahalanobis_ood:.4f} > ceiling {route_entry.mahalanobis_ood_ceiling:.4f}",
++                    )
+ 
+             diagnostic_payload = {
+                 "frame": frame,
+                 "manifest": manifest,
+                 "object_digest": frame.object_digest,
+                 "effective_authority": effective_authority,
+-                "mapped_vector": mapped_vec.tolist()
++                "mapped_vector": mapped_vec.tolist(),
++                "route_anomaly_policy": anomaly_policy,
++                "subspace_residual": subspace_residual,
++                "subspace_residual_ceiling": route_entry.subspace_residual_ceiling,
++                "mahalanobis_ood": mahalanobis_ood,
++                "mahalanobis_ood_ceiling": route_entry.mahalanobis_ood_ceiling,
+             }
+ 
+             return ValidationResult(True, "PhaseANonLockingValidationGate", "Phase A pre-validation succeeded.", diagnostic_payload)
+--- /tmp/braid16src/intersignal-braid-light-client-v1.6.0rc1-source-candidate/braid_client/server.py	2026-08-12 23:00:00.000000000 +0000
++++ /tmp/braid16rc2/braid_client/server.py	2026-08-30 00:04:12.653265527 +0000
+@@ -222,6 +222,8 @@
+     trusted_vk: Optional[ed25519.Ed25519PublicKey] = None,
+     validator: Optional[BraidValidator] = None,
+     registry: Optional[TrustedRegistry] = None,
++    *,
++    allow_exact_space_capsule_novelty: bool = False,
+ ) -> Dict[str, Any]:
+     """Return truthful, independent per-gate evidence plus Phase A status."""
+     if trusted_vk is None:
+@@ -235,7 +237,10 @@
+         validator, registry, _ = create_authoritative_validator(vk_hex)
+ 
+     raw_bytes = frame.to_bytes()
+-    phase_a = validator.validate_frame_phase_a(raw_bytes)
++    phase_a = validator.validate_frame_phase_a(
++        raw_bytes,
++        allow_exact_space_capsule_novelty=allow_exact_space_capsule_novelty,
++    )
+     manifest = frame.manifest
+ 
+     # Gate 1: direct trusted-key signature verification and payload digest binding.
+@@ -289,14 +294,28 @@
+             mahalanobis = float(compute_regularized_mahalanobis_ood(
+                 mapped, cov_model.mean_vector, cov_model.covariance_matrix
+             ))
+-            gate3_passed = bool(
+-                residual <= residual_ceiling and mahalanobis <= mahalanobis_ceiling
++            anomaly_policy = (
++                phase_a.diagnostic_payload.get("route_anomaly_policy", "enforced")
++                if phase_a.diagnostic_payload
++                else "enforced"
+             )
+-            gate3_message = (
+-                "Receiver-local demo subspace and covariance checks passed."
+-                if gate3_passed
+-                else "ERR_OOD: Receiver-local subspace or Mahalanobis ceiling exceeded."
++            advisory = anomaly_policy == "advisory_exact_space_capsule_pending_coherence"
++            gate3_passed = bool(
++                advisory
++                or (residual <= residual_ceiling and mahalanobis <= mahalanobis_ceiling)
+             )
++            if advisory:
++                gate3_message = (
++                    "Route-distribution anomaly measurements retained as advisory "
++                    "for a signed exact-space Semantic Capsule pending strict "
++                    "receiver-local coherence verification."
++                )
++            else:
++                gate3_message = (
++                    "Receiver-local demo subspace and covariance checks passed."
++                    if gate3_passed
++                    else "ERR_OOD: Receiver-local subspace or Mahalanobis ceiling exceeded."
++                )
+ 
+     effective_authority = {}
+     if phase_a.diagnostic_payload:
+@@ -342,6 +361,11 @@
+         },
+         "gate3_anomaly": {
+             "passed": gate3_passed,
++            "policy": (
++                phase_a.diagnostic_payload.get("route_anomaly_policy", "enforced")
++                if phase_a.diagnostic_payload
++                else "enforced"
++            ),
+             "subspace_residual": residual,
+             "subspace_ceiling": residual_ceiling,
+             "mahalanobis_dist": mahalanobis,
+--- /tmp/braid16src/intersignal-braid-light-client-v1.6.0rc1-source-candidate/braid_client/receiver.py	2026-08-28 08:17:28.000000000 +0000
++++ /tmp/braid16rc2/braid_client/receiver.py	2026-08-30 00:04:12.653982667 +0000
+@@ -1,4 +1,4 @@
+-"""Unified automated receiver for Braid v1.6.0rc1.
++"""Unified automated receiver for Braid v1.6.0rc2.
+ 
+ All deliberate transport paths terminate here. The receiver owns quarantine,
+ 384D representation checks, receiver-local validation, replay-safe Phase B
+@@ -293,12 +293,20 @@
+             # Import lazily to avoid a module import cycle with braid_client.server.
+             from .server import evaluate_normative_receiver_gates, analyze_vector_stats
+ 
+-            phase_a = self.validator.validate_frame_phase_a(raw_bytes)
++            allow_exact_space_capsule_novelty = bool(
++                self.config.semantic_capsule_handoff is not None
++                and self.config.semantic_capsule_handoff.verify_exact_space_coherence
++            )
++            phase_a = self.validator.validate_frame_phase_a(
++                raw_bytes,
++                allow_exact_space_capsule_novelty=allow_exact_space_capsule_novelty,
++            )
+             gates = evaluate_normative_receiver_gates(
+                 frame,
+                 self.verification_key,
+                 self.validator,
+                 self.registry,
++                allow_exact_space_capsule_novelty=allow_exact_space_capsule_novelty,
+             )
+             report["gates"] = gates
+             report["stats"] = analyze_vector_stats(frame.vector)
+--- /tmp/braid16src/intersignal-braid-light-client-v1.6.0rc1-source-candidate/tests/test_v1_5_2_semantic_capsule.py	2026-08-28 08:17:28.000000000 +0000
++++ /tmp/braid16rc2/tests/test_v1_5_2_semantic_capsule.py	2026-08-30 00:02:10.395245206 +0000
+@@ -17,6 +17,7 @@
+     SemanticCapsuleHandoffConfig,
+     extract_semantic_capsule,
+     semantic_capsule_digest,
++    capsule_payload_digest_for_vector,
+     inspect_committed_semantic_state,
+     query_committed_semantic_state,
+ )
+@@ -166,10 +167,20 @@
+         )
+         return sk, frame, raw, vec, package
+ 
+-    def _receiver(self, sk, root: Path, model: str, completion: str | None = None, *, verify_fast: bool = False):
++    def _receiver(
++        self,
++        sk,
++        root: Path,
++        model: str,
++        completion: str | None = None,
++        *,
++        verify_fast: bool = False,
++        route_dir: Path | None = None,
++    ):
+         vk = sk.public_key()
++        route_dir = route_dir or self.route_dir
+         validator, registry, ledger, _ = create_validator_from_route_package(
+-            self.route_dir, get_raw_public_bytes(vk).hex(), root / "ledger.db"
++            route_dir, get_raw_public_bytes(vk).hex(), root / "ledger.db"
+         )
+         return AutomatedReceiver(
+             validator=validator,
+@@ -292,6 +303,131 @@
+         self.assertTrue(report["semantic_capsule"]["exact_space_coherence_verified"])
+         self.assertGreaterEqual(report["semantic_capsule"]["exact_space_coherence_cosine"], 0.999)
+ 
++
++    def test_exact_space_capsule_novelty_is_advisory_only_with_strict_coherence(self):
++        route_root = self.root / "narrow-route"
++        rows = build_conformance_corpus(768)
++        rng = np.random.default_rng(1602)
++        narrow = rng.normal(size=(len(rows), 64))
++        narrow /= np.linalg.norm(narrow, axis=1, keepdims=True)
++        raw = np.zeros((len(rows), 384), dtype=np.float64)
++        raw[:, :64] = narrow
++
++        report = calibrate_route(
++            rows=rows,
++            source_raw=raw,
++            target_raw=raw.copy(),
++            source_model=SOURCE,
++            target_model=SOURCE,
++            source_model_digest=SOURCE_DIGEST,
++            target_model_digest=SOURCE_DIGEST,
++            same_space_identity=True,
++            output_dir=route_root,
++            corpus_sha256="7" * 64,
++        )
++        self.assertTrue(report["promotion"]["passed"], report)
++
++        material = (
++            "Kestrel Run is Project Meridian's deployment protocol. "
++            "Node Finch is authoritative for thermal telemetry. "
++            "Launch requires two consecutive signed Finch readings below 73. "
++            "Vale has signed Finch readings of 68 and 70."
++        )
++
++        lax_root = self.root / "narrow-lax"
++        lax_sk, _, lax_raw, _, _ = self._frame(lax_root, material)
++        # Rebuild against the deliberately narrow route.
++        lax_frame, lax_bytes, _, _ = build_frame_from_text(
++            route_root, material, lax_sk, ollama_url=self.fake.url,
++            session_id="narrow-lax-session",
++        )
++        lax_receiver = self._receiver(
++            lax_sk, lax_root, SOURCE, verify_fast=False, route_dir=route_root
++        )
++        lax_report = lax_receiver.process_bytes(
++            lax_bytes, source_transport="network", source_name="narrow-lax.brad", peer="local"
++        )
++        self.assertFalse(lax_report["accepted"], lax_report)
++        self.assertRegex(lax_report["reason"], r"ERR_SUBSPACE|ERR_OOD")
++
++        strict_root = self.root / "narrow-strict"
++        strict_sk, _, _ = load_or_create_signing_key(str(strict_root / "sender.key"))
++        strict_frame, strict_bytes, _, _ = build_frame_from_text(
++            route_root, material, strict_sk, ollama_url=self.fake.url,
++            session_id="narrow-strict-session",
++        )
++        strict_receiver = self._receiver(
++            strict_sk, strict_root, SOURCE, verify_fast=True, route_dir=route_root
++        )
++        strict_report = strict_receiver.process_bytes(
++            strict_bytes, source_transport="network", source_name="narrow-strict.brad", peer="local"
++        )
++        self.assertTrue(strict_report["accepted"], strict_report)
++        self.assertTrue(strict_report["phase_b_committed"])
++        gate = strict_report["gates"]["gate3_anomaly"]
++        self.assertEqual(
++            gate["policy"],
++            "advisory_exact_space_capsule_pending_coherence",
++        )
++        self.assertGreater(gate["subspace_residual"], gate["subspace_ceiling"])
++        self.assertTrue(strict_report["semantic_capsule"]["exact_space_coherence_verified"])
++        self.assertGreaterEqual(
++            strict_report["semantic_capsule"]["exact_space_coherence_cosine"], 0.999
++        )
++        self.assertEqual(strict_frame.object_digest, strict_report["object_digest"])
++
++    def test_advisory_novelty_path_still_fails_closed_on_capsule_vector_mismatch(self):
++        route_root = self.root / "narrow-route-mismatch"
++        rows = build_conformance_corpus(768)
++        rng = np.random.default_rng(1603)
++        narrow = rng.normal(size=(len(rows), 64))
++        narrow /= np.linalg.norm(narrow, axis=1, keepdims=True)
++        raw = np.zeros((len(rows), 384), dtype=np.float64)
++        raw[:, :64] = narrow
++
++        route_report = calibrate_route(
++            rows=rows,
++            source_raw=raw,
++            target_raw=raw.copy(),
++            source_model=SOURCE,
++            target_model=SOURCE,
++            source_model_digest=SOURCE_DIGEST,
++            target_model_digest=SOURCE_DIGEST,
++            same_space_identity=True,
++            output_dir=route_root,
++            corpus_sha256="8" * 64,
++        )
++        self.assertTrue(route_report["promotion"]["passed"], route_report)
++
++        root = self.root / "narrow-mismatch"
++        sk, _, _ = load_or_create_signing_key(str(root / "sender.key"))
++        material = "Kestrel threshold is 73 and Finch is authoritative."
++        frame, _, _, _ = build_frame_from_text(
++            route_root, material, sk, ollama_url=self.fake.url,
++            session_id="narrow-mismatch-session",
++        )
++
++        forged_vector = np.asarray(frame.vector, dtype=np.float64).copy()
++        forged_vector = np.roll(forged_vector, 37)
++        forged_vector /= np.linalg.norm(forged_vector)
++        manifest = copy.deepcopy(frame.manifest)
++        payload_digest = capsule_payload_digest_for_vector(forged_vector)
++        manifest["payload_digest"] = payload_digest
++        capsule = manifest["extensions"]["braid_semantic_capsule"]
++        capsule["source_embedding"]["wire_payload_digest"] = payload_digest
++        manifest["extensions"]["braid_semantic_capsule_digest"] = semantic_capsule_digest(capsule)
++        forged = BraidFrame(manifest, forged_vector, signer_private_key=sk).to_bytes()
++
++        receiver = self._receiver(
++            sk, root, SOURCE, verify_fast=True, route_dir=route_root
++        )
++        report = receiver.process_bytes(
++            forged, source_transport="network", source_name="forged-novelty.brad", peer="local"
++        )
++        self.assertFalse(report["accepted"], report)
++        self.assertFalse(report["phase_b_committed"])
++        self.assertIn("ERR_CAPSULE_FAST_PATH_COHERENCE", report["reason"])
++
+     def test_completion_artifact_marks_generated_output_separately_from_bridge_semantics(self):
+         root = self.root / "completion-label"
+         sk, _, raw, _, _ = self._frame(root)
