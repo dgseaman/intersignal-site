@@ -1,0 +1,194 @@
+--- /mnt/data/intersignal_homepage_update/intersignal-index-live-checkout.html	2026-09-02 21:19:46.188176795 +0000
++++ /mnt/data/intersignal_homepage_update/intersignal-index-semantic-field-membership.html	2026-09-02 21:23:41.441024553 +0000
+@@ -5,8 +5,8 @@
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="color-scheme" content="dark" />
+   <meta name="theme-color" content="#07090c" />
+-  <meta name="description" content="Braid lets one AI node pass signed situational understanding to another across computers and locations, so the receiver can use it in fresh local inference." />
+-  <title>Intersignal - Braid 1.6</title>
++  <meta name="description" content="Braid lets one AI node pass signed situational state to another, where the receiver can retrieve relevant evidence, preserve conflicts, and reconstruct fresh local context without replaying an entire conversation." />
++  <title>Intersignal - Braid Semantic Field</title>
+   <style>
+     :root{
+       --bg:#07090c;
+@@ -124,9 +124,9 @@
+ <body>
+   <div class="scan" aria-hidden="true"></div>
+   <div class="vectors" aria-hidden="true">
+-    <div class="vector-column v1">NODE A  selected state\n384D  signed route vector\ncapsule  explicit meaning\nTLS 1.3  relay path\nreceiver commit  local authority</div>
+-    <div class="vector-column v2">NODE B  fresh inference\nmaterial.txt  digest-bound\nvector.npy  receiver state\nlineage.json  provenance\nquery  reconstruct context</div>
+-    <div class="vector-column v3">BEFORE  wrong decision\nTRANSFER  signed situation\nAFTER  correct rule application\nno shared chat session\nno KV cache transfer</div>
++    <div class="vector-column v1">NODE A  selected state\n384D  signed route vector\ncapsule  explicit meaning\nLAN or managed path\nreceiver commit  local authority</div>
++    <div class="vector-column v2">NODE B  receiver-local field\n5 atoms  committed\n4 relevant  retrieved\n1 unrelated  suppressed\nconflict  preserved</div>
++    <div class="vector-column v3">FRESH QUERY  local reconstruction\nWHOLE TRANSCRIPT  not replayed\nCOMPLETION MODEL  still fallible\nprovenance  retained\nno KV cache transfer</div>
+   </div>
+ 
+   <header>
+@@ -136,7 +136,7 @@
+         <a href="#proof">Core proof</a>
+         <a href="#why">Why Braid</a>
+         <a href="#compatibility">Reproduce</a>
+-        <a href="#founding">Founding access</a>
++        <a href="#founding">Membership</a>
+         <a href="#downloads">Downloads</a>
+         <a href="#relay">Managed Relay</a>
+         <a href="#architecture">How it works</a>
+@@ -149,24 +149,24 @@
+   <main class="shell">
+     <section class="hero">
+       <div>
+-        <div class="eyebrow">Braid v1.6.0rc2 - cross-node situational continuity</div>
++        <div class="eyebrow">Braid 1.7 engineering proof - receiver-local semantic field</div>
+         <h1>Let one AI node pass useful understanding to another.</h1>
+-        <p class="lede">If you run more than one LLM - on different computers or in different physical locations - each normally starts with only its own context. Braid lets one node package selected situational state, move it with provenance, and let the receiving node use it later under local control.</p>
++        <p class="lede">If you run more than one LLM - on different computers or in different physical locations - each normally starts with only its own context. Braid lets one node package selected situational state, move it with provenance, and let the receiving node retrieve what matters later under local control.</p>
+         <div class="chips">
+-          <span class="chip live">Kestrel core proof passed</span>
+-          <span class="chip live">Mac to Linux over WAN</span>
+-          <span class="chip live">Fresh-query recovery</span>
+-          <span class="chip">384D + signed meaning</span>
++          <span class="chip live">Mac to Linux field proof passed</span>
++          <span class="chip live">Relevant state retrieved locally</span>
++          <span class="chip live">Numeric conflict preserved</span>
++          <span class="chip live">No transcript replay</span>
+           <span class="chip">Receiver-owned acceptance</span>
+         </div>
+-        <div class="actions hero-actions"><a class="btn primary" href="#proof">See the Kestrel proof</a><a class="btn secondary" href="#founding">Founding access</a></div>
++        <div class="actions hero-actions"><a class="btn primary" href="#proof">See the behavioral proof</a><a class="btn secondary" href="#founding">Braid Membership</a></div>
+       </div>
+-      <aside class="hero-aside"><strong>A controlled kind of AI osmosis.</strong><br />Braid does not merge two models or copy a mind. It transfers a bounded, signed piece of situational meaning. The receiver decides whether to accept it, stores it locally, and can reconstruct that context in a new inference session.</aside>
++      <aside class="hero-aside"><strong>A controlled kind of AI osmosis.</strong><br />Braid does not merge models, copy a mind, or make a completion model infallible. It moves bounded signed state into a receiver-local field, where relevant evidence can be retrieved, conflicts can be preserved, and fresh context can be built without replaying an entire conversation.</aside>
+     </section>
+ 
+     <section id="proof" class="block">
+-      <div class="section-tag">Physical proof - August 2026</div>
+-      <h2 class="section-title">The second node changed its answer because it received the missing situation.</h2>
++      <div class="section-tag">Physical proofs - August and September 2026</div>
++      <h2 class="section-title">The second node gained usable state - and the September field test showed what the receiver chose.</h2>
+       <p class="copy">In the Kestrel run, a local model on a remote Linux node was asked a question about an invented operating protocol it had never seen. Before Braid, it confidently made the wrong decision. A Mac then sent the missing facts and rules through a public TLS 1.3 relay. After the receiving node accepted and committed that state, the same model answered new questions correctly in fresh inference calls.</p>
+ 
+       <div class="proof-panel">
+@@ -195,12 +195,42 @@
+         <article class="card"><div class="n">PROOF_03</div><h3>Meaning plus provenance</h3><p>The receiver retained the signed material, a 384D state vector, lineage, acceptance evidence, and separate query records.</p></article>
+       </div>
+       <p class="security-note">Object digest: <code>5f81e8a4578f4b766644e95c08a26f8e22e82b6ff03bcad87c71b2efd49e08cb</code>. This proves the core A-to-B contextual-hydration result from committed semantic state. It does not claim transfer of model weights, hidden activations, or KV cache; broader release-candidate negative testing remains ongoing.</p>
++
++      <div class="proof-panel">
++        <div class="proof-head">
++          <div><h3>Semantic Field behavioral proof: Mac to Linux, September 2, 2026</h3><p>A Mac sent three small signed objects to a Linux receiver: four statements relevant to Kestrel Run and one unrelated maintenance statement. The Linux node committed five exact semantic atoms into its own 384-dimensional field.</p></div>
++          <span class="chip live">Receiver-local retrieval passed</span>
++        </div>
++        <div class="before-after">
++          <div class="result after">
++            <div class="result-label">What the field did</div>
++            <strong>Selected four relevant statements and suppressed the unrelated fifth.</strong>
++            <p>It grouped threshold values 73 and 75, identified a numeric-value conflict, preserved both sources, and rebuilt a fresh 227-byte context on Linux without replaying the original conversation.</p>
++          </div>
++          <div class="middle-arrow">&ne;</div>
++          <div class="result before">
++            <div class="result-label">What the local model did</div>
++            <strong>The 7B completion model still chose 73 when it should have preserved the conflict.</strong>
++            <p>That is a useful boundary, not a hidden success claim: Braid retrieved and reconciled the evidence correctly, while the answer model showed why deterministic conflict instructions are the next engineering step.</p>
++          </div>
++        </div>
++      </div>
++
++      <p class="copy" style="margin-top:22px">In ordinary terms, a shared text pad would simply hold all five lines. Braid used the receiving computer's own semantic index to find the four lines relevant to the question, leave out the unrelated line, notice that 73 and 75 conflict, retain where each claim came from, and construct a new local prompt. The field worked even though the small answer model still needed stronger guardrails.</p>
++
++      <div class="grid4">
++        <article class="card"><div class="n">FIELD_01</div><h3>5 atoms committed</h3><p>Exact source text and provenance remained available on the Linux receiver.</p></article>
++        <article class="card"><div class="n">FIELD_02</div><h3>4 relevant retrieved</h3><p>The Kestrel question activated the signature rule and both threshold claims.</p></article>
++        <article class="card"><div class="n">FIELD_03</div><h3>1 unrelated suppressed</h3><p>The archive-retention statement was not included in the generated context.</p></article>
++        <article class="card"><div class="n">FIELD_04</div><h3>0 transcript replayed</h3><p>The Linux node reconstructed fresh context from committed receiver-local state.</p></article>
++      </div>
++      <p class="security-note">Behavioral result: receiver-local 384D cosine + MMR retrieval passed; numeric conflict detection passed; source preservation passed; whole-transcript replay was false. Completion quality remains model-dependent. The stricter Qwen 7B rerun still selected 73 despite receiving both 73 and 75, so Braid will next pass reconciliation constraints into generation more deterministically.</p>
+     </section>
+ 
+     <section id="why" class="block">
+       <div class="section-tag">Why this matters</div>
+       <h2 class="section-title">More than one LLM should not mean starting over every time.</h2>
+-      <p class="copy">A second model may live on another computer, specialize in another task, or operate in another physical location. Without a shared state layer, useful context often dies where it was created or has to be copied manually. Braid gives that context a portable, inspectable form while leaving each receiver in control.</p>
++      <p class="copy">A second model may live on another computer, specialize in another task, or operate in another physical location. Without a shared state layer, useful context often dies where it was created or has to be copied manually. Braid gives that context a portable, inspectable form, then lets the receiver retrieve the parts relevant to a new question while leaving acceptance and local use under receiver control.</p>
+       <p class="copy" style="margin-top:16px"><strong style="color:var(--text)">One LLM can work alone. The moment you have two, continuity becomes infrastructure.</strong></p>
+ 
+       <div class="grid4">
+@@ -221,8 +251,8 @@
+ 
+     <section id="compatibility" class="block">
+       <div class="section-tag">Reproducibility and compatibility</div>
+-      <h2 class="section-title">Technical users can reproduce the mechanism now. The one-click experience is the next packaging layer.</h2>
+-      <p class="copy">Kestrel was a controlled benchmark, not a hard-coded answer. The scenario was invented so the receiver could not know it in advance; Braid carried the missing state, and the receiver's own local model performed the later reasoning. A technical user can reproduce that class of result today with Braid 1.6.0rc2, local Ollama, an enrolled trust route, and either LAN reachability or Jump Kit.</p>
++      <h2 class="section-title">Technical users can reproduce the core mechanism now. The one-click field experience is still being packaged.</h2>
++      <p class="copy">Kestrel was a controlled benchmark, not a hard-coded answer. The scenario was invented so the receiver could not know it in advance; Braid carried the missing state, and the receiver's own local model performed the later reasoning. Braid 1.6.0rc2 remains the public technical release candidate. Braid 1.7.0a2 has now passed its first physical Mac-to-Linux Semantic Field UAT, but it remains a CLI-level engineering alpha rather than a finished consumer workflow.</p>
+       <div class="grid4">
+         <article class="card"><div class="n">COMPAT_01</div><h3>Same completion LLM?</h3><p><strong style="color:var(--text)">Not required.</strong> Node A and Node B can use different reasoning models because the receiver reasons from explicit authenticated material.</p></article>
+         <article class="card"><div class="n">COMPAT_02</div><h3>Same embedding digest?</h3><p><strong style="color:var(--text)">Recommended for the first run.</strong> A matching digest enables the strict exact-space 384D fast path demonstrated by Kestrel.</p></article>
+@@ -231,36 +261,38 @@
+       </div>
+       <div class="readiness" aria-label="Braid readiness summary">
+         <div class="readiness-row"><div class="readiness-key">Core mechanism</div><div class="readiness-value"><b>Physically demonstrated.</b> A remote receiver corrected its decision in multiple fresh inference calls after committed state arrived.</div></div>
++        <div class="readiness-row"><div class="readiness-key">1.7 Semantic Field</div><div class="readiness-value"><b>First Mac-to-Linux behavioral UAT passed.</b> The receiver indexed five atoms, retrieved the four relevant to a new question, excluded an unrelated atom, and flagged a numeric conflict without replaying the whole transcript. Completion-model conflict handling still needs tighter deterministic guidance.</div></div>
++        <div class="readiness-row"><div class="readiness-key">Development status</div><div class="readiness-value"><b>Active engineering alpha.</b> Not every planned feature or one-click workflow exists today. Real community tests are driving fixes and features on an almost daily basis during active build cycles.</div></div>
+         <div class="readiness-row"><div class="readiness-key">Technical reproduction</div><div class="readiness-value"><b>Available now.</b> It requires CLI-level installation, local models, trust enrollment, route configuration, and a chosen transport.</div></div>
+         <div class="readiness-row"><div class="readiness-key">User-defined text transfer</div><div class="readiness-value"><b>Available now at the engine/CLI layer.</b> Technical users can create a signed capsule from their own text or UTF-8 text file, send it to an approved receiver, and ask fresh questions against the committed state.</div></div>
+-        <div class="readiness-row"><div class="readiness-key">One-click native 1.6</div><div class="readiness-value"><b>Not yet shipped.</b> Native installers, automatic model detection, guided pairing, and a paste-or-file semantic transfer workflow are the next product milestone.</div></div>
++        <div class="readiness-row"><div class="readiness-key">One-click native packaging</div><div class="readiness-value"><b>Not yet shipped for the 1.7 field workflow.</b> Validated Windows, macOS, and Linux packaging, automatic model detection, guided pairing, and a paste-or-file semantic transfer experience remain active work.</div></div>
+         <div class="readiness-row"><div class="readiness-key">Universal guarantee</div><div class="readiness-value"><b>No.</b> Braid supplies missing situational context; success still depends on the receiver model's ability to understand and apply it.</div></div>
+       </div>
+     </section>
+ 
+     <section id="founding" class="block">
+-      <div class="section-tag">Founding membership</div>
+-      <h2 class="section-title">Fund the packaging layer without putting the core LAN protocol behind a wall.</h2>
+-      <p class="copy">Core Braid LAN software remains free and inspectable. The paid founding tier supports the operational layer around it: managed cross-network reach, guided onboarding, native 1.6 packaging, user-defined semantic transfer, updates, and human support.</p>
++      <div class="section-tag">Braid Membership</div>
++      <h2 class="section-title">Join the active build - with today's capabilities stated plainly.</h2>
++      <p class="copy">Braid is moving quickly, but not every planned capability or one-click workflow exists today. Membership places you inside the working feedback loop: a practical degree of direct human support, every Braid software update released during your active membership term, and access to Braid Managed Relays once they are sufficiently hardened for member use.</p>
+       <div class="membership">
+         <div class="membership-top">
+-          <div><div class="section-tag">Braid Founding Membership</div><h3>From technical proof to reproducible product.</h3><p>A deliberately small early cohort for local-LLM users who want managed relay access and want to help harden the first practical cross-node situational-continuity workflow.</p></div>
++          <div><div class="section-tag">Braid Founding Membership</div><h3>Build with us as the protocol becomes a product.</h3><p>The community is already shaping Braid through real installations, reproducible bug reports, livestreams, and cross-node tests. During active engineering cycles, fixes and features are landing on an almost daily basis. Membership supports that work and gives members a human point of contact.</p></div>
+           <div class="price">$99<span>per year</span></div>
+         </div>
+         <div class="membership-body">
+           <div class="grid4" style="margin-top:0">
+-            <article class="card"><div class="n">MEMBER_01</div><h3>Braid Managed Relay</h3><p>Enrollment for approved member devices during the membership term, subject to experimental capacity and fair-use limits.</p></article>
+-            <article class="card"><div class="n">MEMBER_02</div><h3>Native 1.6 updates</h3><p>Supported installer builds as they clear platform validation, plus release notes and upgrade guidance throughout the year.</p></article>
+-            <article class="card"><div class="n">MEMBER_03</div><h3>Your own transfer test</h3><p>Use your own facts, rules, observations, or project state, then verify that a second node can answer fresh questions from what it accepted.</p></article>
+-            <article class="card"><div class="n">MEMBER_04</div><h3>Best-effort support</h3><p>Priority bug intake, setup guidance, and direct feedback into the protocol's first production-oriented packaging cycle.</p></article>
++            <article class="card"><div class="n">MEMBER_01</div><h3>Human support</h3><p>Reasonable best-effort help with installation, pairing, test design, bug intake, troubleshooting, and upgrade paths during the membership term.</p></article>
++            <article class="card"><div class="n">MEMBER_02</div><h3>Every software update</h3><p>Access to all Braid software updates released during your active membership term, including validated installer builds as they become available.</p></article>
++            <article class="card"><div class="n">MEMBER_03</div><h3>Managed Relays when ready</h3><p>Access to Braid Managed Relays once they are sufficiently hardened and opened for member use, subject to compatibility, capacity, location, fair-use limits, and experimental-service constraints.</p></article>
++            <article class="card"><div class="n">MEMBER_04</div><h3>Community feedback loop</h3><p>A direct path for reproducible results and feature requests. Not every request will ship, but member experience helps determine engineering priorities.</p></article>
+           </div>
+           <div class="membership-actions">
+-            <a id="founding-checkout" class="btn primary" href="https://buy.stripe.com/14A3cvb2ncYj2vyaZ88so00">Join founding membership - $99/year</a>
++            <a id="founding-checkout" class="btn primary" href="https://buy.stripe.com/14A3cvb2ncYj2vyaZ88so00">Join Braid Membership - $99/year</a>
+             <a id="founding-portal" class="btn secondary" href="/" hidden>Manage billing</a>
+             <a class="btn secondary" href="#compatibility">See current readiness</a>
+           </div>
+-          <div id="founding-status" class="membership-status">Stripe-hosted annual checkout is available. Managed Relay access is provisioned separately after subscription verification.</div>
+-          <div class="membership-note"><strong style="color:var(--text)">What the payment gates:</strong> managed relay enrollment, supported packaging, onboarding, and member services. It does not revoke public access to the core LAN software or research record. A Stripe receipt is not itself a relay credential; access is provisioned separately after subscription verification. Experimental service, no production SLA.</div>
++          <div id="founding-status" class="membership-status">Membership begins immediately for support and software updates. Managed Relay access begins when a compatible service is ready and separately provisioned for the member.</div>
++          <div class="membership-note"><strong style="color:var(--text)">What membership is - and is not:</strong> Membership supports active development, software access, and member services; it is not a claim that every roadmap feature already exists and it does not include a production SLA. Core LAN software and the public research record remain accessible. A Stripe receipt is not itself a relay credential, and relay availability is not guaranteed in every region or configuration.</div>
+         </div>
+       </div>
+     </section>
+@@ -412,14 +444,14 @@
+ 
+       if (checkout && validCheckout) {
+         checkout.href = checkoutUrl;
+-        checkout.textContent = 'Join founding membership - $99/year';
++        checkout.textContent = 'Join Braid Membership - $99/year';
+         checkout.rel = 'noopener';
+         if (status) {
+-          status.textContent = 'Stripe checkout is live. Managed Relay access is provisioned after subscription verification.';
++          status.textContent = 'Membership begins immediately for support and software updates. Managed Relay access begins when a compatible service is ready and separately provisioned for the member.';
+           status.classList.add('live');
+         }
+       } else if (checkout) {
+-        checkout.href = 'mailto:' + email + '?subject=' + encodeURIComponent('Braid Founding Membership launch notice');
++        checkout.href = 'mailto:' + email + '?subject=' + encodeURIComponent('Braid Membership inquiry');
+       }
+ 
+       if (portal && validPortal) {
