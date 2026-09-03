@@ -1,0 +1,10 @@
+INTERSIGNAL HOMEPAGE MULTI-LLM NARRATIVE REFRESH - QA
+
+- HTML parsed successfully.
+- All element IDs are unique.
+- All internal fragment links resolve to an ID in the document.
+- The Why Braid section appears before the proof section.
+- Inline JavaScript passed `node --check`.
+- Chromium successfully rendered hero, Why Braid, and proof sections at desktop and mobile widths using the final HTML.
+- Existing Membership, Stripe runtime configuration, Downloads, Managed Relay, architecture, and research sections were retained.
+- The page has not been deployed and does not add a public a3 download link.

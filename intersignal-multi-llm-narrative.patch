@@ -1,0 +1,244 @@
+--- /mnt/data/intersignal_homepage_update/intersignal-index-semantic-field-membership.html	2026-09-03 11:06:00.416867956 +0000
++++ /mnt/data/intersignal_homepage_narrative_refresh/intersignal-index-multi-llm-shared-state.html	2026-09-03 11:07:31.591540913 +0000
+@@ -5,8 +5,8 @@
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="color-scheme" content="dark" />
+   <meta name="theme-color" content="#07090c" />
+-  <meta name="description" content="Braid lets one AI node pass signed situational state to another, where the receiver can retrieve relevant evidence, preserve conflicts, and reconstruct fresh local context without replaying an entire conversation." />
+-  <title>Intersignal - Braid Semantic Field</title>
++  <meta name="description" content="Use more than one LLM without starting over. Braid carries selected context across models, devices, and locations while keeping provenance visible and acceptance under receiver control." />
++  <title>Intersignal - Braid Shared State for Multiple LLMs</title>
+   <style>
+     :root{
+       --bg:#07090c;
+@@ -124,17 +124,17 @@
+ <body>
+   <div class="scan" aria-hidden="true"></div>
+   <div class="vectors" aria-hidden="true">
+-    <div class="vector-column v1">NODE A  selected state\n384D  signed route vector\ncapsule  explicit meaning\nLAN or managed path\nreceiver commit  local authority</div>
+-    <div class="vector-column v2">NODE B  receiver-local field\n5 atoms  committed\n4 relevant  retrieved\n1 unrelated  suppressed\nconflict  preserved</div>
+-    <div class="vector-column v3">FRESH QUERY  local reconstruction\nWHOLE TRANSCRIPT  not replayed\nCOMPLETION MODEL  still fallible\nprovenance  retained\nno KV cache transfer</div>
++    <div class="vector-column v1">NODE A  selected context\nportable  inspectable state\nmodel or device  independent\nLAN or managed path\nprovenance  retained</div>
++    <div class="vector-column v2">NODE B  receiver-local field\nrelevant context  retrieved\nunrelated state  left out\nconflicts  kept visible\nacceptance  local</div>
++    <div class="vector-column v3">FRESH QUESTION  local reconstruction\nFULL CHAT  not required\nCOMPLETION MODEL  remains local\nhuman oversight  preserved\ncontinuity  across nodes</div>
+   </div>
+ 
+   <header>
+     <div class="shell topbar">
+       <a class="brand" href="/">INTERSIGNAL</a>
+       <nav aria-label="Primary">
+-        <a href="#proof">Core proof</a>
+         <a href="#why">Why Braid</a>
++        <a href="#proof">What we have shown</a>
+         <a href="#compatibility">Reproduce</a>
+         <a href="#founding">Membership</a>
+         <a href="#downloads">Downloads</a>
+@@ -149,124 +149,125 @@
+   <main class="shell">
+     <section class="hero">
+       <div>
+-        <div class="eyebrow">Braid 1.7 engineering proof - receiver-local semantic field</div>
+-        <h1>Let one AI node pass useful understanding to another.</h1>
+-        <p class="lede">If you run more than one LLM - on different computers or in different physical locations - each normally starts with only its own context. Braid lets one node package selected situational state, move it with provenance, and let the receiving node retrieve what matters later under local control.</p>
++        <div class="eyebrow">Braid - shared state for more than one LLM</div>
++        <h1>More than one LLM should not mean starting over every time.</h1>
++        <p class="lede">A second model may live on another computer, specialize in another task, or operate in another physical location. Without a shared state layer, useful context often dies where it was created or has to be copied manually. Braid gives selected context a portable, inspectable form, then lets the receiving system retrieve what matters for a new question while keeping acceptance and local use under its control.</p>
+         <div class="chips">
+-          <span class="chip live">Mac to Linux field proof passed</span>
+-          <span class="chip live">Relevant state retrieved locally</span>
+-          <span class="chip live">Numeric conflict preserved</span>
+-          <span class="chip live">No transcript replay</span>
+-          <span class="chip">Receiver-owned acceptance</span>
++          <span class="chip live">Across devices and models</span>
++          <span class="chip live">Relevant context, not whole chats</span>
++          <span class="chip live">Provenance stays visible</span>
++          <span class="chip live">Conflicts stay visible</span>
++          <span class="chip">Receiver keeps control</span>
+         </div>
+-        <div class="actions hero-actions"><a class="btn primary" href="#proof">See the behavioral proof</a><a class="btn secondary" href="#founding">Braid Membership</a></div>
++        <div class="actions hero-actions"><a class="btn primary" href="#why">Why Braid exists</a><a class="btn secondary" href="#proof">What we have demonstrated</a><a class="btn secondary" href="#founding">Braid Membership</a></div>
++      </div>
++      <aside class="hero-aside"><strong>For anyone whose AI work spans more than one model.</strong><br />A creator can move a project from laptop to workstation. A researcher can let a specialist model inherit accepted context. A small team can keep useful state available across rooms, machines, or sites - without turning every system into one giant shared chat.</aside>
++    </section>
++
++    <section id="why" class="block">
++      <div class="section-tag">The problem Braid is solving</div>
++      <h2 class="section-title">Your work should survive the model, machine, and session where it began.</h2>
++      <p class="copy">People increasingly use several AI systems: one for writing, another for research, another on a local workstation, and perhaps another at a different site. Each may be capable, but each usually begins with its own isolated context. Braid is a shared state layer for carrying forward the facts, constraints, decisions, observations, and relationships that should not have to be explained again from zero.</p>
++      <p class="copy" style="margin-top:16px"><strong style="color:var(--text)">One model can work alone. The moment you have two, continuity becomes infrastructure.</strong></p>
++
++      <div class="grid4">
++        <article class="card"><div class="n">USE_01</div><h3>Move between devices</h3><p>Carry selected project context from a laptop to a workstation, home machine, office system, or edge device without rebuilding the entire conversation.</p></article>
++        <article class="card"><div class="n">USE_02</div><h3>Use specialist models</h3><p>Let one model research, another review, and another act from the same accepted situational foundation while each keeps its own role.</p></article>
++        <article class="card"><div class="n">USE_03</div><h3>Continue across places and time</h3><p>Keep useful state available when a session ends, a machine goes offline, or work moves between people, rooms, or physical locations.</p></article>
++        <article class="card"><div class="n">USE_04</div><h3>Keep humans and receivers in control</h3><p>Move evidence and context without treating transport, similarity, or another model's output as automatic authority.</p></article>
++      </div>
++
++      <div class="compare" aria-label="Without shared state versus Braid-enabled systems">
++        <div class="compare-row compare-head"><div class="compare-cell">Without shared state</div><div class="compare-cell">With Braid</div></div>
++        <div class="compare-row"><div class="compare-cell">A new model or device begins with little or none of the earlier situational context.</div><div class="compare-cell"><b>Selected accepted context can survive the machine and session where it was created.</b></div></div>
++        <div class="compare-row"><div class="compare-cell">People copy prompts, chats, files, and memory bundles by hand.</div><div class="compare-cell"><b>A bounded portable object carries selected meaning together with its provenance.</b></div></div>
++        <div class="compare-row"><div class="compare-cell">Important facts and unrelated material often arrive as one undifferentiated block.</div><div class="compare-cell"><b>The receiver can retrieve the pieces relevant to the question being asked now.</b></div></div>
++        <div class="compare-row"><div class="compare-cell">A successful handoff can be confused with trust or permission.</div><div class="compare-cell"><b>The receiving node still decides what to accept, retain, and use.</b></div></div>
+       </div>
+-      <aside class="hero-aside"><strong>A controlled kind of AI osmosis.</strong><br />Braid does not merge models, copy a mind, or make a completion model infallible. It moves bounded signed state into a receiver-local field, where relevant evidence can be retrieved, conflicts can be preserved, and fresh context can be built without replaying an entire conversation.</aside>
+     </section>
+ 
+     <section id="proof" class="block">
+-      <div class="section-tag">Physical proofs - August and September 2026</div>
+-      <h2 class="section-title">The second node gained usable state - and the September field test showed what the receiver chose.</h2>
+-      <p class="copy">In the Kestrel run, a local model on a remote Linux node was asked a question about an invented operating protocol it had never seen. Before Braid, it confidently made the wrong decision. A Mac then sent the missing facts and rules through a public TLS 1.3 relay. After the receiving node accepted and committed that state, the same model answered new questions correctly in fresh inference calls.</p>
++      <div class="section-tag">What we have demonstrated</div>
++      <h2 class="section-title">A receiving machine can do more than store another model's notes.</h2>
++      <p class="copy">In controlled cross-computer tests, one node sent selected project context to another. The receiving node accepted that context locally, kept where it came from, and later used its own semantic field to rebuild useful context for a new question. The original chat did not have to remain open, and the receiving model did not have to be the same model as the sender.</p>
+ 
+       <div class="proof-panel">
+         <div class="proof-head">
+-          <div><h3>Kestrel Run: before and after</h3><p>The test used made-up names, rules, thresholds, and readings so the answer could not come from model training data. The post-transfer questions were phrased differently from the transmitted text.</p></div>
+-          <span class="chip live">Core proof passed</span>
++          <div><h3>The second model no longer had to guess</h3><p>We used an invented project scenario so the receiving model could not know the rules from its training data. The later question was phrased differently from the information that had been transferred.</p></div>
++          <span class="chip live">Cross-node continuity demonstrated</span>
+         </div>
+         <div class="before-after">
+           <div class="result before">
+-            <div class="result-label">Before Braid</div>
+-            <strong>Node B said: do not proceed.</strong>
+-            <p>Without the Kestrel policy, the model invented a rule and interpreted readings of 68 and 70 in the wrong direction.</p>
++            <div class="result-label">Before the handoff</div>
++            <strong>The second model guessed from incomplete context.</strong>
++            <p>It lacked the project-specific rules and confidently reached the wrong operational conclusion.</p>
+           </div>
+           <div class="middle-arrow">&rarr;</div>
+           <div class="result after">
+-            <div class="result-label">After Braid</div>
+-            <strong>Node B said: proceed.</strong>
+-            <p>It correctly recovered the two-reading rule, the below-73 threshold, and the requirement that both readings be independently signed by Finch.</p>
++            <div class="result-label">After the handoff</div>
++            <strong>The second model could reason from accepted context.</strong>
++            <p>It answered a fresh, differently worded question using state committed on its own machine rather than relying on a continuing chat.</p>
+           </div>
+         </div>
+       </div>
+ 
+       <div class="grid3">
+-        <article class="card"><div class="n">PROOF_01</div><h3>Fresh inference</h3><p>Both post-transfer answers rebuilt context from committed Braid state. They did not rely on a continuing chat session.</p></article>
+-        <article class="card"><div class="n">PROOF_02</div><h3>Real network boundary</h3><p>The path crossed from macOS to a physically remote Linux node through the relay, then into a loopback-only local receiver and local model.</p></article>
+-        <article class="card"><div class="n">PROOF_03</div><h3>Meaning plus provenance</h3><p>The receiver retained the signed material, a 384D state vector, lineage, acceptance evidence, and separate query records.</p></article>
++        <article class="card"><div class="n">PROOF_01</div><h3>Fresh questions</h3><p>The receiving model could use the accepted state later, in a new inference call, after the original exchange had ended.</p></article>
++        <article class="card"><div class="n">PROOF_02</div><h3>Different machines</h3><p>The behavior was demonstrated across macOS and Linux rather than inside one shared application or one continuing browser session.</p></article>
++        <article class="card"><div class="n">PROOF_03</div><h3>Visible provenance</h3><p>The receiver retained source material, lineage, acceptance evidence, and separate records of what was retrieved for each question.</p></article>
+       </div>
+-      <p class="security-note">Object digest: <code>5f81e8a4578f4b766644e95c08a26f8e22e82b6ff03bcad87c71b2efd49e08cb</code>. This proves the core A-to-B contextual-hydration result from committed semantic state. It does not claim transfer of model weights, hidden activations, or KV cache; broader release-candidate negative testing remains ongoing.</p>
+ 
+       <div class="proof-panel">
+         <div class="proof-head">
+-          <div><h3>Semantic Field behavioral proof: Mac to Linux, September 2, 2026</h3><p>A Mac sent three small signed objects to a Linux receiver: four statements relevant to Kestrel Run and one unrelated maintenance statement. The Linux node committed five exact semantic atoms into its own 384-dimensional field.</p></div>
+-          <span class="chip live">Receiver-local retrieval passed</span>
++          <div><h3>The receiver also chose what mattered</h3><p>In a second test, the incoming state contained project rules, two different values for the same threshold, and an unrelated maintenance note.</p></div>
++          <span class="chip live">Relevant context retrieved locally</span>
+         </div>
+         <div class="before-after">
+           <div class="result after">
+-            <div class="result-label">What the field did</div>
+-            <strong>Selected four relevant statements and suppressed the unrelated fifth.</strong>
+-            <p>It grouped threshold values 73 and 75, identified a numeric-value conflict, preserved both sources, and rebuilt a fresh 227-byte context on Linux without replaying the original conversation.</p>
++            <div class="result-label">What Braid preserved</div>
++            <strong>The relevant rules and both conflicting values remained visible.</strong>
++            <p>The receiver left out the unrelated note, grouped the two threshold claims as a possible disagreement, retained their sources, and built a fresh local context for the question.</p>
+           </div>
+           <div class="middle-arrow">&ne;</div>
+           <div class="result before">
+-            <div class="result-label">What the local model did</div>
+-            <strong>The 7B completion model still chose 73 when it should have preserved the conflict.</strong>
+-            <p>That is a useful boundary, not a hidden success claim: Braid retrieved and reconciled the evidence correctly, while the answer model showed why deterministic conflict instructions are the next engineering step.</p>
++            <div class="result-label">What the answer model revealed</div>
++            <strong>A small local model still tried to choose one value.</strong>
++            <p>Because Braid kept the evidence and the generated answer separate and inspectable, the model's mistake was visible. That result directly informed the next generation guardrail.</p>
+           </div>
+         </div>
+       </div>
+ 
+-      <p class="copy" style="margin-top:22px">In ordinary terms, a shared text pad would simply hold all five lines. Braid used the receiving computer's own semantic index to find the four lines relevant to the question, leave out the unrelated line, notice that 73 and 75 conflict, retain where each claim came from, and construct a new local prompt. The field worked even though the small answer model still needed stronger guardrails.</p>
++      <p class="copy" style="margin-top:22px">This is the practical difference between a shared text pad and a shared state layer. A text pad can hold everything. Braid is being built to help a receiving system identify what is relevant now, preserve uncertainty and disagreement, retain provenance, and construct bounded context for its own local model.</p>
+ 
+       <div class="grid4">
+-        <article class="card"><div class="n">FIELD_01</div><h3>5 atoms committed</h3><p>Exact source text and provenance remained available on the Linux receiver.</p></article>
+-        <article class="card"><div class="n">FIELD_02</div><h3>4 relevant retrieved</h3><p>The Kestrel question activated the signature rule and both threshold claims.</p></article>
+-        <article class="card"><div class="n">FIELD_03</div><h3>1 unrelated suppressed</h3><p>The archive-retention statement was not included in the generated context.</p></article>
+-        <article class="card"><div class="n">FIELD_04</div><h3>0 transcript replayed</h3><p>The Linux node reconstructed fresh context from committed receiver-local state.</p></article>
+-      </div>
+-      <p class="security-note">Behavioral result: receiver-local 384D cosine + MMR retrieval passed; numeric conflict detection passed; source preservation passed; whole-transcript replay was false. Completion quality remains model-dependent. The stricter Qwen 7B rerun still selected 73 despite receiving both 73 and 75, so Braid will next pass reconciliation constraints into generation more deterministically.</p>
+-    </section>
+-
+-    <section id="why" class="block">
+-      <div class="section-tag">Why this matters</div>
+-      <h2 class="section-title">More than one LLM should not mean starting over every time.</h2>
+-      <p class="copy">A second model may live on another computer, specialize in another task, or operate in another physical location. Without a shared state layer, useful context often dies where it was created or has to be copied manually. Braid gives that context a portable, inspectable form, then lets the receiver retrieve the parts relevant to a new question while leaving acceptance and local use under receiver control.</p>
+-      <p class="copy" style="margin-top:16px"><strong style="color:var(--text)">One LLM can work alone. The moment you have two, continuity becomes infrastructure.</strong></p>
+-
+-      <div class="grid4">
+-        <article class="card"><div class="n">USE_01</div><h3>Laptop and workstation</h3><p>Carry selected project state from a mobile machine to a larger local model without recreating the entire conversation.</p></article>
+-        <article class="card"><div class="n">USE_02</div><h3>Different physical sites</h3><p>Let a node at home, in an office, or in the field pass situational updates to another location through an approved path.</p></article>
+-        <article class="card"><div class="n">USE_03</div><h3>Specialized models</h3><p>One model can observe or summarize a situation while another later reasons from the accepted state in its own local environment.</p></article>
+-        <article class="card"><div class="n">USE_04</div><h3>Interrupted connectivity</h3><p>Useful state can remain locally committed and queryable even when the originating node or cloud service is no longer available.</p></article>
+-      </div>
+-
+-      <div class="compare" aria-label="Unbraided versus Braid-enabled systems">
+-        <div class="compare-row compare-head"><div class="compare-cell">Unbraided</div><div class="compare-cell">Braid-enabled</div></div>
+-        <div class="compare-row"><div class="compare-cell">A new node begins without the first node's situational context.</div><div class="compare-cell"><b>Accepted state survives the machine and session where it was created.</b></div></div>
+-        <div class="compare-row"><div class="compare-cell">Operators copy prompts, transcripts, files, or memory bundles by hand.</div><div class="compare-cell"><b>A bounded signed capsule carries selected meaning and provenance.</b></div></div>
+-        <div class="compare-row"><div class="compare-cell">Transport success can be confused with successful ingestion.</div><div class="compare-cell"><b>The receiving node independently validates, accepts, stores, and records finality.</b></div></div>
+-        <div class="compare-row"><div class="compare-cell">Different model environments need ad hoc bridges.</div><div class="compare-cell"><b>The receiver can construct its own local representation from authenticated material.</b></div></div>
++        <article class="card"><div class="n">FIELD_01</div><h3>Context survived</h3><p>Useful project state remained available after leaving the machine and session where it originated.</p></article>
++        <article class="card"><div class="n">FIELD_02</div><h3>Relevant pieces surfaced</h3><p>The receiving node selected the facts and rules related to the new question.</p></article>
++        <article class="card"><div class="n">FIELD_03</div><h3>Noise stayed out</h3><p>Unrelated committed material was not added to the generated context merely because it was present.</p></article>
++        <article class="card"><div class="n">FIELD_04</div><h3>Disagreement was not erased</h3><p>Conflicting values remained inspectable instead of being silently averaged or overwritten.</p></article>
+       </div>
++      <p class="security-note">Current claim boundary: these tests demonstrate bounded cross-node context continuity, receiver-local retrieval, visible provenance, and conflict-preserving evidence. They do not show model weights, hidden activations, KV cache, or a complete mind moving between systems. Completion models remain fallible. Detailed test records and exact artifacts remain available in the research section.</p>
++      <div class="actions"><a class="btn secondary" href="#research">See the technical record</a><a class="btn secondary" href="#compatibility">See current readiness</a></div>
+     </section>
+ 
+     <section id="compatibility" class="block">
+       <div class="section-tag">Reproducibility and compatibility</div>
+-      <h2 class="section-title">Technical users can reproduce the core mechanism now. The one-click field experience is still being packaged.</h2>
+-      <p class="copy">Kestrel was a controlled benchmark, not a hard-coded answer. The scenario was invented so the receiver could not know it in advance; Braid carried the missing state, and the receiver's own local model performed the later reasoning. Braid 1.6.0rc2 remains the public technical release candidate. Braid 1.7.0a2 has now passed its first physical Mac-to-Linux Semantic Field UAT, but it remains a CLI-level engineering alpha rather than a finished consumer workflow.</p>
++      <h2 class="section-title">Technical users can reproduce the mechanism now. The one-click experience is still being packaged.</h2>
++      <p class="copy">Braid 1.7.0a3 is the current Semantic Field Proof Build candidate. It packages what we learned from the first physical Mac-to-Linux field test, including clearer acceptance reporting, safer proof-mode defaults, repaired inspection, and stronger safeguards around conflicting evidence. It remains engineering software pending the frozen cross-platform test matrix, not a finished consumer workflow.</p>
+       <div class="grid4">
+-        <article class="card"><div class="n">COMPAT_01</div><h3>Same completion LLM?</h3><p><strong style="color:var(--text)">Not required.</strong> Node A and Node B can use different reasoning models because the receiver reasons from explicit authenticated material.</p></article>
+-        <article class="card"><div class="n">COMPAT_02</div><h3>Same embedding digest?</h3><p><strong style="color:var(--text)">Recommended for the first run.</strong> A matching digest enables the strict exact-space 384D fast path demonstrated by Kestrel.</p></article>
+-        <article class="card"><div class="n">COMPAT_03</div><h3>Different embeddings?</h3><p><strong style="color:var(--text)">Supported through local re-embedding.</strong> The receiver builds its own representation from the signed Semantic Capsule rather than pretending unrelated vectors share coordinates.</p></article>
+-        <article class="card"><div class="n">COMPAT_04</div><h3>Same OS or location?</h3><p><strong style="color:var(--text)">Not required.</strong> The proof crossed from macOS to remote Linux over TLS 1.3; LAN and optical paths remain available.</p></article>
++        <article class="card"><div class="n">COMPAT_01</div><h3>Same completion model?</h3><p><strong style="color:var(--text)">Not required.</strong> The sending and receiving nodes can use different reasoning models because the receiver reasons from explicit accepted material.</p></article>
++        <article class="card"><div class="n">COMPAT_02</div><h3>Same embedding setup?</h3><p><strong style="color:var(--text)">Recommended for the first run.</strong> Matching verified representation settings provide the simplest controlled path while broader interoperability is tested.</p></article>
++        <article class="card"><div class="n">COMPAT_03</div><h3>Different embedding setups?</h3><p><strong style="color:var(--text)">Supported through receiver-local representation.</strong> The receiver can build its own semantic form from authenticated material instead of assuming unrelated vector spaces are identical.</p></article>
++        <article class="card"><div class="n">COMPAT_04</div><h3>Same OS or location?</h3><p><strong style="color:var(--text)">Not required in principle.</strong> Cross-OS behavior has been physically demonstrated; the a3 candidate is now being tested across macOS, Linux, Windows, and varied hardware.</p></article>
+       </div>
+       <div class="readiness" aria-label="Braid readiness summary">
+-        <div class="readiness-row"><div class="readiness-key">Core mechanism</div><div class="readiness-value"><b>Physically demonstrated.</b> A remote receiver corrected its decision in multiple fresh inference calls after committed state arrived.</div></div>
+-        <div class="readiness-row"><div class="readiness-key">1.7 Semantic Field</div><div class="readiness-value"><b>First Mac-to-Linux behavioral UAT passed.</b> The receiver indexed five atoms, retrieved the four relevant to a new question, excluded an unrelated atom, and flagged a numeric conflict without replaying the whole transcript. Completion-model conflict handling still needs tighter deterministic guidance.</div></div>
+-        <div class="readiness-row"><div class="readiness-key">Development status</div><div class="readiness-value"><b>Active engineering alpha.</b> Not every planned feature or one-click workflow exists today. Real community tests are driving fixes and features on an almost daily basis during active build cycles.</div></div>
+-        <div class="readiness-row"><div class="readiness-key">Technical reproduction</div><div class="readiness-value"><b>Available now.</b> It requires CLI-level installation, local models, trust enrollment, route configuration, and a chosen transport.</div></div>
+-        <div class="readiness-row"><div class="readiness-key">User-defined text transfer</div><div class="readiness-value"><b>Available now at the engine/CLI layer.</b> Technical users can create a signed capsule from their own text or UTF-8 text file, send it to an approved receiver, and ask fresh questions against the committed state.</div></div>
+-        <div class="readiness-row"><div class="readiness-key">One-click native packaging</div><div class="readiness-value"><b>Not yet shipped for the 1.7 field workflow.</b> Validated Windows, macOS, and Linux packaging, automatic model detection, guided pairing, and a paste-or-file semantic transfer experience remain active work.</div></div>
+-        <div class="readiness-row"><div class="readiness-key">Universal guarantee</div><div class="readiness-value"><b>No.</b> Braid supplies missing situational context; success still depends on the receiver model's ability to understand and apply it.</div></div>
++        <div class="readiness-row"><div class="readiness-key">Core mechanism</div><div class="readiness-value"><b>Physically demonstrated.</b> A receiving machine gained useful project-specific context and applied it in fresh questions after the original exchange ended.</div></div>
++        <div class="readiness-row"><div class="readiness-key">Semantic Field behavior</div><div class="readiness-value"><b>Demonstrated on Mac to Linux.</b> The receiver retrieved relevant state, excluded unrelated material, preserved a disagreement, and rebuilt context locally without replaying the whole conversation.</div></div>
++        <div class="readiness-row"><div class="readiness-key">Current proof build</div><div class="readiness-value"><b>1.7.0a3 candidate.</b> Frozen macOS, Linux, Windows, restart, replay, and varied-hardware validation remains the immediate promotion gate.</div></div>
++        <div class="readiness-row"><div class="readiness-key">Development status</div><div class="readiness-value"><b>Active engineering alpha.</b> Not every planned feature or one-click workflow exists today. Community tests are driving fixes and additions on an almost daily basis during active build cycles.</div></div>
++        <div class="readiness-row"><div class="readiness-key">Technical reproduction</div><div class="readiness-value"><b>Available now.</b> It currently requires CLI-level installation, local models, trust enrollment, route configuration, and a chosen transport.</div></div>
++        <div class="readiness-row"><div class="readiness-key">User-defined context</div><div class="readiness-value"><b>Available at the engine and CLI layer.</b> Technical users can create a signed capsule from their own text, send it to an approved receiver, and ask fresh questions against committed state.</div></div>
++        <div class="readiness-row"><div class="readiness-key">One-click packaging</div><div class="readiness-value"><b>Still in progress for the 1.7 field workflow.</b> Validated installers, automatic model detection, guided pairing, and a paste-or-file transfer experience remain active work.</div></div>
++        <div class="readiness-row"><div class="readiness-key">Universal guarantee</div><div class="readiness-value"><b>No.</b> Braid can preserve and surface useful context; success still depends on the receiving model's ability to understand and apply it.</div></div>
+       </div>
+     </section>
+ 
+@@ -410,7 +411,7 @@
+     <section id="research" class="block">
+       <div class="section-tag">Research and release record</div>
+       <h2 class="section-title">The plain-language result sits on top of an inspectable technical history.</h2>
+-      <p class="copy">The homepage now leads with what Braid does. The materials below preserve how the result was tested, what changed during the Kestrel run, and where the present claim stops. Earlier native installers remain available because they document the LAN, trust, optical, and cross-OS foundation that preceded queryable state.</p>
++      <p class="copy">The homepage leads with the everyday problem Braid is designed to solve. The materials below preserve how the behavior was tested, what changed during development, and where the present claim stops. Earlier native installers remain available because they document the LAN, trust, optical, and cross-OS foundation that preceded queryable state.</p>
+       <div class="grid4">
+         <article class="card"><div class="n">RECORD_01</div><h3>Core Kestrel proof</h3><p>Before/after result, transport path, object digest, fresh-context flags, and exact claim boundary.</p><p style="margin-top:12px"><a href="research/BRAID_V1_6_0RC2_KESTREL_PROOF.md">Read proof record</a></p></article>
+         <article class="card"><div class="n">RECORD_02</div><h3>Formal UAT</h3><p>The synthetic scenario, control condition, transfer requirements, fresh-query tests, and remaining negative closure steps.</p><p style="margin-top:12px"><a href="research/BRAID_V1_6_0RC2_KESTREL_QUERY_UAT.md">Read UAT</a></p></article>
