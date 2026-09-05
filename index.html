@@ -1,466 +1,160 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#07090c" />
-  <meta name="description" content="Use more than one LLM without starting over. Braid carries selected context across models, devices, and locations while keeping provenance visible and acceptance under receiver control." />
-  <title>Intersignal - Braid Shared State for Multiple LLMs</title>
-  <style>
-    :root{
-      --bg:#07090c;
-      --panel:#0d1117;
-      --panel2:#090d12;
-      --line:#1b2430;
-      --text:#eaf0f6;
-      --muted:#8b98a8;
-      --dim:#586575;
-      --cyan:#68f7dc;
-      --blue:#72a7ff;
-      --violet:#b28cff;
-      --amber:#ffc46b;
-      --red:#ff7b83;
-      --ok:#80f0aa;
-      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
-      --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    }
-    *{box-sizing:border-box}
-    html{background:var(--bg);color:var(--text);scroll-behavior:smooth}
-    body{margin:0;min-height:100vh;font-family:var(--sans);line-height:1.65;color:var(--text);overflow-x:hidden;background:
-      radial-gradient(900px 560px at 74% -8%,rgba(104,247,220,.075),transparent 64%),
-      radial-gradient(760px 520px at -5% 62%,rgba(114,167,255,.055),transparent 66%),var(--bg)}
-    body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.12;background-image:radial-gradient(circle at center,rgba(255,255,255,.4) 0 1px,transparent 1.2px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 84%)}
-    .scan{position:fixed;z-index:2;left:0;right:0;top:-22vh;height:22vh;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(104,247,220,.045),rgba(104,247,220,.018),transparent);animation:scan 13s linear infinite;mix-blend-mode:screen}
-    @keyframes scan{to{transform:translateY(132vh)}}
-    .vectors{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;font:10px/1.75 var(--mono);letter-spacing:.035em;color:rgba(104,247,220,.09);user-select:none}
-    .vector-column{position:absolute;white-space:pre;animation:drift linear infinite}
-    .v1{left:2.5%;top:9%;animation-duration:31s}.v2{right:3%;top:28%;animation-duration:37s;color:rgba(114,167,255,.075)}.v3{left:7%;bottom:3%;animation-duration:43s;color:rgba(178,140,255,.06)}
-    @keyframes drift{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(-42px);opacity:1}}
-    .shell{position:relative;z-index:3;max-width:1120px;margin:auto;padding:0 clamp(18px,4vw,44px)}
-    header{border-bottom:1px solid var(--line);background:rgba(7,9,12,.72);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}
-    .topbar{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{font-size:12px;font-weight:900;letter-spacing:.28em;color:var(--text);text-decoration:none}
-    nav{display:flex;gap:20px;flex-wrap:wrap;justify-content:flex-end}
-    nav a{font:10px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-decoration:none}
-    nav a:hover{color:var(--cyan)}
-    .hero{padding:78px 0 56px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:42px;align-items:end}
-    .eyebrow{font:11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:15px}
-    h1{font-size:clamp(46px,8vw,88px);line-height:.92;letter-spacing:-.057em;margin:0 0 24px;max-width:860px}
-    .lede{font-size:17px;line-height:1.75;color:#b1bdc9;max-width:790px;margin:0}
-    .hero-aside{border-left:1px solid var(--line);padding-left:24px;color:var(--muted);font-size:13px}
-    .hero-aside strong{color:var(--text)}
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}
-    .chip{font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line);padding:8px 10px;border-radius:999px;color:var(--muted);background:rgba(10,13,18,.7)}
-    .chip.live{color:var(--cyan);border-color:rgba(104,247,220,.3)}
-    .chip.pending{color:var(--amber);border-color:rgba(255,196,107,.3)}
-    section.block{padding:58px 0;border-bottom:1px solid var(--line)}
-    .section-tag{font:10px var(--mono);color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
-    h2.section-title{font-size:31px;line-height:1.15;letter-spacing:-.035em;margin:0 0 18px}
-    .copy{color:#aeb8c4;font-size:15px;max-width:870px;margin:0}
-    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
-    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
-    .card{background:linear-gradient(180deg,rgba(14,18,24,.94),rgba(9,12,17,.94));border:1px solid var(--line);border-radius:14px;padding:20px}
-    .card .n{font:10px var(--mono);color:var(--cyan)}
-    .card h3{font-size:14px;margin:8px 0 9px}
-    .card p{font-size:12px;color:var(--muted);margin:0;line-height:1.65}
-    .card a{color:var(--cyan);text-decoration:none}
-    .proof-panel{margin-top:28px;border:1px solid rgba(104,247,220,.28);border-radius:16px;background:linear-gradient(180deg,rgba(11,21,22,.94),rgba(8,12,16,.98));overflow:hidden}
-    .proof-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:22px;border-bottom:1px solid rgba(104,247,220,.16);flex-wrap:wrap}
-    .proof-head h3{margin:0 0 7px;font-size:19px}.proof-head p{margin:0;color:var(--muted);font-size:13px;max-width:760px}
-    .before-after{display:grid;grid-template-columns:1fr 56px 1fr;gap:0;align-items:stretch}
-    .result{padding:22px}.result.before{background:rgba(255,123,131,.025)}.result.after{background:rgba(128,240,170,.025)}
-    .result-label{font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}.before .result-label{color:var(--red)}.after .result-label{color:var(--ok)}
-    .result strong{display:block;font-size:17px;margin-bottom:8px}.result p{margin:0;color:var(--muted);font-size:13px}
-    .middle-arrow{display:flex;align-items:center;justify-content:center;color:var(--cyan);font:20px var(--mono);border-left:1px solid var(--line);border-right:1px solid var(--line)}
-    .compare{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
-    .compare-row{display:grid;grid-template-columns:1fr 1fr;background:#0a0d12;border-bottom:1px solid var(--line)}.compare-row:last-child{border-bottom:0}
-    .compare-cell{padding:16px 18px;font-size:13px;color:var(--muted)}.compare-cell:first-child{border-right:1px solid var(--line)}
-    .compare-head{font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:#0d1117}
-    .compare-cell b{color:var(--text)}
-    .download{margin:42px 0 0;background:linear-gradient(180deg,rgba(14,18,24,.98),rgba(9,12,17,.98));border:1px solid rgba(104,247,220,.24);border-radius:18px;padding:24px;box-shadow:0 0 50px rgba(104,247,220,.035)}
-    .download + .download{margin-top:14px}
-    .download.windows{border-color:rgba(178,140,255,.27);box-shadow:0 0 50px rgba(178,140,255,.03)}
-    .download.windows .btn.primary{background:var(--violet);border-color:var(--violet);color:#0b0712}
-    .download.relay{border-color:rgba(114,167,255,.34);box-shadow:0 0 50px rgba(114,167,255,.045)}
-    .download.relay .section-tag{color:var(--blue)}
-    .download.relay .btn.primary{background:var(--blue);border-color:var(--blue);color:#07101d}
-    .download-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
-    .download h2{margin:0;font-size:20px;letter-spacing:-.02em}.download p{margin:7px 0 0;color:var(--muted);font-size:13px}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:9px;padding:12px 16px;text-decoration:none;font:700 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line)}
-    .btn.primary{background:var(--cyan);border-color:var(--cyan);color:#06100e}.btn.primary:hover{background:white;border-color:white}.btn.secondary{color:var(--text)}.btn.secondary:hover{border-color:var(--cyan)}
-    .hash{margin-top:16px;padding:12px 14px;border:1px solid #151d27;border-radius:10px;background:#080b0f;font:10px/1.6 var(--mono);color:var(--dim);overflow-wrap:anywhere}.hash b{color:var(--muted);font-weight:600}
-    .flow{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#090c10}
-    .flow-row{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}.flow-row:last-child{border-bottom:0}
-    .flow-node{font:12px var(--mono);color:var(--text)}.flow-node small{display:block;color:var(--dim);margin-top:5px;line-height:1.5}.arrow{color:var(--cyan);font:16px var(--mono)}
-    .security{margin-top:28px;border:1px solid rgba(255,196,107,.25);border-radius:16px;padding:22px;background:rgba(255,196,107,.035)}
-    .security-top{display:flex;gap:13px;align-items:flex-start}.security-icon{font-size:20px;line-height:1}.security h3{margin:0 0 6px;font-size:15px}.security p{margin:0;color:#abb5c0;font-size:13px}
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;counter-reset:step}
-    .step{position:relative;padding:15px 14px 14px;border:1px solid rgba(255,196,107,.15);border-radius:11px;background:#0a0d11;min-height:112px}.step:before{counter-increment:step;content:counter(step);display:block;font:10px var(--mono);color:var(--amber);margin-bottom:8px}.step b{display:block;font-size:12px;margin-bottom:5px}.step span{font-size:11px;color:var(--muted);line-height:1.55}
-    .security-note{margin-top:14px;font:10px/1.55 var(--mono);color:var(--dim)}
-    .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:26px}.fact{background:#0a0d12;padding:17px}.fact span{display:block;font:9px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:6px}.fact b{font-size:13px;font-weight:620}
-    .quote{font-size:22px;line-height:1.55;color:var(--text);max-width:870px;margin:0;border-left:2px solid var(--cyan);padding-left:22px}
-    .hero-actions{margin-top:22px}
-    .readiness{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0a0d12}
-    .readiness-row{display:grid;grid-template-columns:minmax(210px,.7fr) minmax(0,1.3fr);border-bottom:1px solid var(--line)}.readiness-row:last-child{border-bottom:0}
-    .readiness-key,.readiness-value{padding:15px 18px;font-size:13px}.readiness-key{font:10px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-right:1px solid var(--line);background:#0d1117}.readiness-value{color:var(--muted)}.readiness-value b{color:var(--text)}
-    .membership{margin-top:28px;border:1px solid rgba(104,247,220,.32);border-radius:18px;background:linear-gradient(180deg,rgba(12,23,24,.96),rgba(8,12,16,.98));overflow:hidden;box-shadow:0 0 60px rgba(104,247,220,.04)}
-    .membership-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;padding:25px;border-bottom:1px solid rgba(104,247,220,.17)}
-    .membership-top h3{font-size:23px;letter-spacing:-.025em;margin:5px 0 8px}.membership-top p{margin:0;color:var(--muted);font-size:13px;max-width:730px}
-    .price{text-align:right;white-space:nowrap;font-size:44px;line-height:1;font-weight:800;letter-spacing:-.05em;color:var(--text)}.price span{display:block;margin-top:7px;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-    .membership-body{padding:24px}.membership-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center}.membership-status{font:10px/1.55 var(--mono);color:var(--amber);margin-top:13px}.membership-status.live{color:var(--ok)}
-    .membership-note{margin-top:18px;padding:14px 16px;border:1px solid rgba(255,196,107,.2);border-radius:11px;background:rgba(255,196,107,.035);font-size:12px;color:var(--muted)}
-    code{font-family:var(--mono);font-size:.92em;color:#c4d2df}
-    a{color:inherit}
-    footer{padding:40px 0 54px;color:var(--dim);font:10px/1.8 var(--mono)}
-    @media(max-width:900px){.grid4{grid-template-columns:1fr 1fr}}
-    @media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:54px}.hero-aside{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}.grid3,.steps{grid-template-columns:1fr 1fr}.facts{grid-template-columns:1fr}.flow-row{grid-template-columns:1fr}.arrow{transform:rotate(90deg);width:max-content}.vectors{opacity:.6}.before-after{grid-template-columns:1fr}.middle-arrow{min-height:48px;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(90deg)}}
-    @media(max-width:820px){.membership-top{grid-template-columns:1fr}.price{text-align:left}.readiness-row{grid-template-columns:1fr}.readiness-key{border-right:0;border-bottom:1px solid var(--line)}}
-    @media(max-width:560px){nav{gap:12px}.grid3,.grid4,.steps{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr}.compare-cell:first-child{border-right:0;border-bottom:1px solid var(--line)}.download{padding:19px}h1{font-size:48px}.topbar{align-items:flex-start;padding:20px 0;flex-direction:column;gap:10px}.membership-top,.membership-body{padding:19px}.price{font-size:38px}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scan,.vector-column{animation:none}}
-  </style>
-</head>
-<body>
-  <div class="scan" aria-hidden="true"></div>
-  <div class="vectors" aria-hidden="true">
-    <div class="vector-column v1">NODE A  selected context\nportable  inspectable state\nmodel or device  independent\nLAN or managed path\nprovenance  retained</div>
-    <div class="vector-column v2">NODE B  receiver-local field\nrelevant context  retrieved\nunrelated state  left out\nconflicts  kept visible\nacceptance  local</div>
-    <div class="vector-column v3">FRESH QUESTION  local reconstruction\nFULL CHAT  not required\nCOMPLETION MODEL  remains local\nhuman oversight  preserved\ncontinuity  across nodes</div>
-  </div>
+<!DOCTYPE html>
 
-  <header>
-    <div class="shell topbar">
-      <a class="brand" href="/">INTERSIGNAL</a>
-      <nav aria-label="Primary">
-        <a href="#why">Why Braid</a>
-        <a href="#proof">What we have shown</a>
-        <a href="#compatibility">Reproduce</a>
-        <a href="#founding">Membership</a>
-        <a href="#downloads">Downloads</a>
-        <a href="#relay">Managed Relay</a>
-        <a href="#architecture">How it works</a>
-        <a href="#research">Research</a>
-        <a href="https://x.com/intersignal_ai" rel="noopener">X / Twitter</a>
-      </nav>
-    </div>
-  </header>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="dark" name="color-scheme"/><meta content="#080d12" name="theme-color"/><title>Braid Archangel | An inbox for your own AI rigs</title><meta content="Connect your local AI rigs. Share reviewed context, keep the receipt, and ask fresh questions on the receiving machine. Archangel 1.7.0a5 with the Mac fix included." name="description"/><link href="https://intersignal.org/" rel="canonical"/><link href="assets/archangel/favicon.svg" rel="icon" type="image/svg+xml"/><meta content="website" property="og:type"/><meta content="Braid Archangel | An inbox for your own AI rigs" property="og:title"/><meta content="Connect your local AI rigs. Share reviewed context, keep the receipt, and ask fresh questions on the receiving machine. Archangel 1.7.0a5 with the Mac fix included." property="og:description"/><meta content="https://intersignal.org/" property="og:url"/><meta content="https://intersignal.org/assets/archangel/archangel-social.jpg" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><style>
+:root{color-scheme:dark;--bg:#080d12;--panel:#0f171e;--panel2:#152028;--line:#253139;--text:#edf3f3;--muted:#a6b5bd;--soft:#8597a2;--mint:#87e7d8;--amber:#f0c68b;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:98px}body{margin:0;background:var(--bg);font:16px/1.65 var(--sans);color:var(--text);-webkit-font-smoothing:antialiased}a{color:var(--mint);text-underline-offset:4px}a:hover{color:white}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:default}button,a,summary{touch-action:manipulation}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--mint);outline-offset:5px}[hidden]{display:none!important}.wrap{width:min(1240px,calc(100% - 72px));margin:auto}.skip{position:absolute;top:-100px;left:20px;background:var(--mint);color:#081714;z-index:100;padding:12px}.skip:focus{top:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.site-head{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(8,13,18,.95);backdrop-filter:blur(14px)}.head-inner{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:25px}.brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;color:var(--text);font-size:12px;letter-spacing:.22em;font-weight:750}.brand svg{width:28px;height:28px;stroke:var(--mint);fill:none;stroke-width:1.7}.nav{display:flex;align-items:center;gap:28px}.nav a{font-size:12px;text-decoration:none;color:var(--muted)}.nav a:hover{color:white}.nav .nav-download{border:1px solid #38564f;border-radius:7px;color:var(--mint);padding:8px 13px}.menu-toggle{display:none;border:1px solid var(--line);border-radius:6px;padding:9px;background:var(--panel);color:var(--text)}
+h1,h2,h3,p{margin:0}h1{font-size:clamp(48px,5.9vw,82px);line-height:1.02;letter-spacing:-.064em;font-weight:620}h2{font-size:clamp(32px,3.7vw,48px);line-height:1.12;letter-spacing:-.044em;font-weight:600}h3{font-size:20px;line-height:1.3;letter-spacing:-.025em;font-weight:600}p+p{margin-top:16px}.eyebrow{font:11px/1.65 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mint);display:block;margin-bottom:20px}.muted{color:var(--muted)}.small{font-size:13px;line-height:1.7;color:var(--muted)}.fine{font-size:12px;color:var(--soft);line-height:1.7}.accent{color:var(--mint)}.pill{display:inline-flex;align-items:center;gap:7px;font:10px/1.5 var(--mono);letter-spacing:.025em;padding:5px 9px;border:1px solid #34534c;background:rgba(135,231,216,.06);border-radius:5px;color:var(--mint)}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mint);flex:none}.actions{display:flex;flex-wrap:wrap;gap:11px;align-items:center;margin-top:27px}.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--mint);border:1px solid var(--mint);border-radius:7px;color:#0b2523;font-size:13px;font-weight:700;padding:13px 19px;min-height:46px;text-decoration:none;line-height:1.35}.button:hover{background:#b6f1e6;color:#071f19}.button.secondary{background:transparent;border-color:#34434d;color:var(--text)}.button.secondary:hover{border-color:var(--mint);background:rgba(135,231,216,.04)}.button.small-button{min-height:40px;padding:9px 12px;font-size:12px}.button.wide{width:100%}.text-link{font-size:13px;font-weight:550;text-decoration:none}.hero{padding:86px 0 64px;position:relative;background:radial-gradient(ellipse at 80% 25%,rgba(57,142,126,.09),transparent 60%)}.hero-grid{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.1fr);gap:48px;align-items:center}.hero h1{margin-bottom:27px}.hero .lede{max-width:480px;color:#b5c3ca;font-size:17px;line-height:1.8}.hero-note{font-size:11px;color:var(--muted);margin-top:18px}.hero-note span{color:var(--mint)}.hero-bottom{display:flex;gap:20px;justify-content:space-between;border-top:1px solid var(--line);padding-top:23px;margin-top:67px;color:var(--muted);font:10px/1.7 var(--mono);letter-spacing:.065em}.hero-bottom strong{color:#d5e1e4;font-weight:500}
+/* Deliberately labeled illustrative UI, never presented as a live peer or receipt. */
+.product{min-width:0}.demo-frame{border:1px solid #3a4c54;border-radius:11px;background:#111b23;box-shadow:0 28px 90px rgba(0,0,0,.3);overflow:hidden}.demo-title{height:51px;display:flex;justify-content:space-between;align-items:center;padding:0 17px;background:#19242c;border-bottom:1px solid #32414a}.mini-brand{font-weight:650;font-size:18px;letter-spacing:-.6px;display:flex;gap:8px;align-items:center}.mini-brand small{font:8px var(--mono);letter-spacing:1.5px;color:#aec2c9;margin-left:3px}.demo-title>.fine{font-size:10px}.demo-body{display:grid;grid-template-columns:135px minmax(0,1fr);min-height:338px}.demo-sidebar{padding:17px 11px;background:#101920;border-right:1px solid #2a3740;font-size:11px}.mini-compose{background:#8de0d5;color:#18302f;font-size:10px;padding:8px 9px;border-radius:5px;font-weight:650;margin-bottom:18px}.mini-folder{display:flex;justify-content:space-between;color:#acbdc5;padding:7px 8px;border-radius:5px;margin:2px 0}.mini-folder.selected{background:#253f43;color:#c4f1e9}.mini-folder b{font:9px var(--mono)}.mini-heading{font:8px var(--mono);letter-spacing:.12em;color:#99aeb7;margin:26px 8px 10px}.mini-peer{display:flex;align-items:center;gap:7px;margin:13px 8px;color:#c2d1d7;font-size:10px}.mini-field{margin-top:26px;padding:8px 7px;border:1px solid #32454c;border-radius:6px;font-size:10px;color:#c0e7df}.mini-field small{display:block;color:#9db1ba;font-size:9px}.mini-main{padding:23px 21px;min-width:0}.mini-main .eyebrow{font-size:8px;margin-bottom:12px;color:#abc1c9}.mini-main h3{font-size:20px;letter-spacing:-.65px;margin-bottom:11px}.mini-from{font-size:10px;color:#b2c1c8;border-bottom:1px solid #2e3d45;padding-bottom:17px}.mini-quote{font-size:16px;line-height:1.6;color:#f0f7f6;margin:23px 0 20px;padding-left:12px;border-left:2px solid var(--mint)}.mini-receipt{display:flex;flex-wrap:wrap;gap:11px;color:#a8e3d2;font-size:9px}.mini-query{background:#0c151d;border:1px solid #2c424a;padding:11px 12px;border-radius:7px;margin-top:22px;font-size:10px;color:#b0c1ca}.mini-query b{display:block;color:#e6f1ee;font-size:12px;margin-top:4px}.demo-foot{display:flex;justify-content:space-between;gap:12px;background:#121d25;border-top:1px solid #2d3c45;font-size:9px;color:#aec1ca;padding:9px 14px}.demo-caption{font-size:10px;color:#9caeb9;line-height:1.7;margin-top:12px;text-align:right}
+section.section{padding:84px 0;border-top:1px solid var(--line)}.section-top{display:flex;align-items:flex-start;gap:60px;justify-content:space-between;margin-bottom:34px}.section-top h2{max-width:620px}.section-top>p{max-width:335px;color:var(--muted);font-size:14px;line-height:1.85;padding-top:37px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}.feature{padding:27px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(145deg,#111c24,#0c141b)}.feature .number{font:11px var(--mono);color:var(--mint);margin-bottom:36px;display:block}.feature h3{margin-bottom:14px}.feature p{font-size:14px;color:var(--muted);line-height:1.8}.feature .feature-tail{margin-top:28px;border-top:1px solid var(--line);padding-top:17px;font:10px/1.6 var(--mono);color:#b7c9ca}.proof{background:linear-gradient(110deg,#0d171c,#0a1117)}.proof-grid{display:grid;grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);gap:54px;align-items:center}.proof-photo{margin:0}.proof-photo>a{display:block;border:1px solid #41504d;border-radius:10px;background:#080b0c;overflow:hidden}.proof-photo img{display:block;width:100%;height:auto}.proof-photo figcaption{font-size:11px;color:var(--soft);padding-top:13px;line-height:1.65}.proof-copy h2{margin:15px 0 24px}.proof-copy .quote-answer{font-size:23px;line-height:1.45;color:#d0f6ea;padding:21px 0;border-top:1px solid #354d45;border-bottom:1px solid #354d45;margin:25px 0}.stats{display:flex;gap:36px;margin:25px 0}.stats div strong{font-size:31px;line-height:1;color:var(--mint);font-weight:550}.stats div span{display:block;font:10px/1.5 var(--mono);color:var(--muted);margin-top:8px}.proof-meta{display:grid;grid-template-columns:1fr 1fr;gap:17px;margin:24px 0}.proof-meta div{font-size:12px;color:var(--muted)}.proof-meta span{display:block;font-size:10px;color:var(--soft);margin-bottom:2px}.proof-copy .fine{max-width:560px}
+.download-layout{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:start}.download-intro h2{margin:18px 0 22px}.download-intro p{max-width:380px;color:var(--muted);font-size:15px}.requirements{padding:23px 0 0;margin-top:24px;border-top:1px solid var(--line);font-size:13px}.requirements h3{font-size:14px;margin-bottom:12px}.requirements p{font-size:13px;line-height:1.8;margin:7px 0}.download-box{border:1px solid #3c5853;border-radius:11px;background:#101a21;overflow:hidden}.release-head{padding:25px 25px 20px}.release-head h3{font-size:24px;margin-top:11px}.release-head p{font-size:12px;color:var(--muted);margin-top:9px}.os-tabs{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#0b141b;padding:6px;gap:6px}.os-tabs button{flex:1;background:transparent;border:1px solid transparent;color:var(--muted);padding:12px 7px;border-radius:6px;font-size:12px;min-height:43px}.os-tabs button[aria-selected="true"]{background:#253d3d;color:#d7f7ee;border-color:#3b5c54}.os-panel{padding:24px 25px}.os-panel h4{font-size:15px;margin:0 0 8px}.os-panel p{font-size:13px;color:#adbdc6;margin:8px 0 14px;line-height:1.75}.os-panel .pill{margin-bottom:16px}.os-panel .warning-tag{color:var(--amber);border-color:#67533b;background:#2b2218}.code-box{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border-radius:7px;border:1px solid #34424c;background:#080f15;margin:13px 0}.code-box code{font:12px/1.75 var(--mono);color:#d5e6ea;white-space:pre-wrap;word-break:break-word;flex:1;min-width:0}.copy{background:#17242e;color:#c2d4dd;border:1px solid #3c4c58;border-radius:5px;padding:6px 9px;font-size:10px;min-height:30px;flex:none}.copy:hover{background:#254038}.download-foot{padding:0 25px 23px}.download-foot>.button{margin:0 0 17px}.release-links{display:flex;gap:15px;flex-wrap:wrap;font-size:11px}.checksum{margin-top:17px;border-top:1px solid var(--line);padding-top:15px;color:var(--soft);font-size:10px}.checksum summary{cursor:pointer;padding:6px 0}.checksum code{display:block;word-break:break-all;color:#b3c6cb;font:10px/1.8 var(--mono);margin-top:9px}.setup-note{border:1px solid #665237;background:rgba(240,198,139,.035);color:#e1d4bf;padding:17px 21px;border-radius:8px;font-size:12px;line-height:1.8;margin-top:23px}.ready-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border:1px solid var(--line);border-radius:9px;background:var(--line);overflow:hidden;margin-top:45px}.ready-strip>div{background:#101920;padding:23px;font-size:13px;color:var(--muted)}.ready-strip strong{display:block;color:var(--text);font-size:15px;margin-bottom:6px}.ready-strip .eyebrow{font-size:9px;margin-bottom:12px}.journey{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:21px;counter-reset:journey}.journey>div{border-top:1px solid #40534e;padding-top:18px;counter-increment:journey}.journey>div:before{content:'0' counter(journey);font:11px var(--mono);color:var(--mint)}.journey h3{font-size:17px;margin:19px 0 12px}.journey p{font-size:13px;color:var(--muted)}.receipt-explainer{display:flex;align-items:center;gap:24px;border:1px solid var(--line);background:#101920;border-radius:9px;padding:23px 27px;margin-top:36px}.receipt-explainer>strong{font-size:13px;color:var(--mint);white-space:nowrap}.receipt-explainer p{font-size:12px;color:var(--muted)}.roadmap{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:30px;border:1px solid var(--line);border-radius:10px;background:#101820;margin-top:30px}.roadmap h3{font-size:17px;margin-bottom:13px}.roadmap p{font-size:13px;color:var(--muted)}.roadmap .eyebrow{font-size:9px;margin-bottom:12px}.faq-list{border-top:1px solid var(--line)}.faq-list details{border-bottom:1px solid var(--line);padding:20px 0}.faq-list summary{cursor:pointer;font-size:16px;font-weight:500;padding-right:18px}.faq-list details p{font-size:14px;color:var(--muted);max-width:860px;margin-top:16px}.membership{display:grid;grid-template-columns:1.3fr .7fr;gap:60px;align-items:center;border:1px solid #395b51;padding:42px;border-radius:11px;background:radial-gradient(ellipse at 10% 0,rgba(135,231,216,.08),transparent 80%),#0d171c}.membership p{font-size:14px;color:var(--muted);margin-top:20px}.membership .price{font-size:44px;letter-spacing:-.04em;line-height:1;font-weight:600}.membership .price small{font-size:14px;letter-spacing:0;color:var(--muted);font-weight:400}.member-right{max-width:340px}.member-right .button{margin-top:23px}.member-right .fine{font-size:11px;margin-top:13px}.footer{border-top:1px solid var(--line);padding:36px 0}.footer-inner{display:flex;justify-content:space-between;gap:30px}.footer p{font-size:11px;color:var(--soft);margin-top:11px}.footer-links{display:flex;flex-wrap:wrap;gap:20px;align-content:flex-start;justify-content:flex-end}.footer-links a{color:var(--muted);font-size:11px;text-decoration:none}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 20px;border:1px solid #476158;background:#1b302b;color:#defff0;border-radius:8px;font-size:12px;z-index:50;max-width:90vw;text-align:center}
+/* Progressive enhancement: all instructions remain available without JavaScript. */
+.os-tabs,.copy,.menu-toggle{display:none}.js .os-tabs{display:flex}.js .copy{display:block}
+@media(max-width:560px){.js .menu-toggle{display:block}}
+/* First-run guide */
+.guide-hero{padding:65px 0 36px}.guide-hero h1{font-size:clamp(40px,5.1vw,64px);max-width:900px}.guide-hero p{font-size:16px;color:var(--muted);max-width:800px;margin-top:22px}.guide-layout{display:grid;grid-template-columns:220px minmax(0,820px);gap:60px;padding:30px 0 70px}.guide-nav{position:sticky;top:104px;align-self:start;display:flex;flex-direction:column;gap:7px}.guide-nav a{font-size:12px;color:var(--muted);text-decoration:none;padding:7px 0}.guide-nav a:hover{color:var(--mint)}.guide-content section{border-top:1px solid var(--line);padding:35px 0}.guide-content h2{font-size:28px;margin:12px 0 22px;letter-spacing:-.03em}.guide-content h3{font-size:17px;margin:25px 0 13px}.guide-content p,.guide-content li{font-size:14px;color:#afc0c9;line-height:1.9}.guide-content ol,.guide-content ul{padding-left:22px}.guide-content li{padding-left:5px;margin:11px 0}.guide-content strong{color:var(--text)}.guide-content code:not(.code-box code){font:12px var(--mono);overflow-wrap:anywhere;color:#d9e9e8}.guide-content .code-box{margin:16px 0}.guide-content .os-panel{padding:20px}.callout{border-left:2px solid var(--mint);background:#101f24;padding:17px 20px;margin:23px 0;font-size:13px;color:#b8d2d5}.callout.caution{border-color:var(--amber);background:#201e19;color:#dacdb6}.receipt-table{width:100%;border-collapse:collapse;margin:22px 0;font-size:12px}.receipt-table th,.receipt-table td{text-align:left;border:1px solid var(--line);padding:12px;vertical-align:top}.receipt-table th{color:#d2e8e3;background:#15242a}.receipt-table td{color:var(--muted)}.receipt-table td:first-child{width:32%;color:var(--text)}.checks{margin-top:20px;display:grid;gap:8px}.checks label{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:7px;background:#101921;color:var(--muted);font-size:12px}.checks input{margin-top:4px;accent-color:var(--mint);width:16px;height:16px;flex:none}.guide-photo{max-width:500px;display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line)}.legacy-banner{padding:20px;background:#263b37;border-bottom:1px solid #75bda9;font:14px/1.8 var(--sans);text-align:center}
+@media(min-width:1550px){.hero{padding-top:105px;padding-bottom:75px}}
+@media(max-width:1050px){.wrap{width:calc(100% - 48px)}.nav{gap:17px}.hero-grid{gap:26px;grid-template-columns:1fr 1.08fr}h1{font-size:61px}.demo-body{grid-template-columns:115px 1fr}.demo-sidebar{padding:15px 8px}.mini-main{padding:20px 15px}.mini-title{font-size:18px}.mini-from{font-size:9px}.proof-grid{gap:34px}.download-layout{gap:32px}.membership{gap:30px}.guide-layout{gap:32px;grid-template-columns:185px 1fr}}
+@media(max-width:800px){html{scroll-padding-top:90px}.head-inner{min-height:68px}.nav{gap:14px}.nav a{font-size:11px}.nav a:nth-child(1){display:none}.hero{padding:52px 0 40px}.hero-grid{grid-template-columns:1fr;gap:38px}.hero h1{font-size:clamp(54px,10vw,76px);max-width:650px}.hero .lede{max-width:580px}.product{max-width:650px}.demo-body{grid-template-columns:145px 1fr}.hero-bottom{margin-top:38px;gap:18px;flex-wrap:wrap}.section-top{display:block}.section-top>p{padding-top:22px;max-width:600px}.section-top h2{max-width:650px}.three{gap:12px}.feature{padding:20px}.feature .number{margin-bottom:24px}.feature h3{font-size:18px}.feature p{font-size:13px}.proof-grid{grid-template-columns:1fr;gap:30px}.proof-photo{max-width:500px;order:2}.proof-copy{order:1}.proof-copy h2{max-width:650px}.download-layout{grid-template-columns:1fr;gap:28px}.download-intro p{max-width:620px}.requirements{margin-top:20px;padding-top:20px}.download-box{max-width:670px}.journey{grid-template-columns:1fr 1fr;row-gap:28px}.receipt-explainer{align-items:flex-start}.roadmap{gap:24px}.membership{grid-template-columns:1fr;gap:30px;padding:30px}.member-right{max-width:none}.footer-inner{flex-direction:column}.footer-links{justify-content:flex-start}.guide-layout{grid-template-columns:1fr;gap:15px}.guide-nav{position:static;display:flex;flex-direction:row;flex-wrap:wrap;gap:6px 18px;border-top:1px solid var(--line);padding-top:10px}.guide-nav a{font-size:11px}.guide-hero{padding-top:40px}}
+@media(max-width:560px){.wrap{width:calc(100% - 36px)}.brand{font-size:10px;letter-spacing:.17em;gap:7px}.brand svg{width:25px}.head-inner{min-height:64px;flex-wrap:wrap;gap:0}.menu-toggle{display:block;font-size:11px}.nav{width:100%;padding:12px 0 18px;justify-content:space-between;gap:14px;flex-wrap:wrap}.nav a:nth-child(1){display:block}.js .nav{display:none}.js .nav.nav-open{display:flex}.nav .nav-download{display:none}h1{font-size:52px}.hero h1{font-size:54px;letter-spacing:-.064em}.eyebrow{font-size:9px;letter-spacing:.1em;margin-bottom:17px}.hero .lede{font-size:15px;line-height:1.85}.hero .actions{gap:11px}.button{font-size:12px;padding:12px 16px}.hero-note{font-size:10px;line-height:1.8}.demo-title{padding:0 11px;height:45px}.mini-brand{font-size:16px}.mini-brand small{font-size:7px;letter-spacing:1px}.demo-title>.fine{font-size:8px}.demo-body{grid-template-columns:102px 1fr;min-height:336px}.demo-sidebar{padding:13px 7px}.mini-compose{font-size:8px;padding:8px 5px}.mini-folder{font-size:9px;padding:6px}.mini-peer{font-size:8px;gap:5px;margin:12px 4px}.mini-heading{font-size:7px;margin-left:5px}.mini-field{font-size:9px;padding:7px 5px}.mini-field small{font-size:8px}.mini-main{padding:19px 12px}.mini-main h3{font-size:17px;line-height:1.3}.mini-main .eyebrow{font-size:7px}.mini-from{font-size:8px;padding-bottom:13px}.mini-quote{font-size:13px;margin:20px 0 15px;padding-left:10px}.mini-receipt{font-size:8px;gap:6px}.mini-query{font-size:8px;padding:10px;margin-top:20px}.mini-query b{font-size:11px}.demo-foot{padding:9px 10px;font-size:8px}.demo-caption{font-size:9px;text-align:left}.hero-bottom{display:block;font-size:9px;padding-top:20px}.hero-bottom>span{display:block;margin:9px 0}.hero-bottom strong{display:inline-block;min-width:80px}.three{grid-template-columns:1fr}.feature{padding:24px}.feature .number{margin-bottom:18px}.feature p{font-size:14px}.feature .feature-tail{margin-top:19px}.section-top{margin-bottom:27px}section.section{padding:53px 0}h2{font-size:33px}.proof-copy .quote-answer{font-size:20px}.stats{gap:34px}.proof-meta{gap:16px}.release-head,.os-panel{padding:20px}.download-foot{padding:0 20px 20px}.release-head h3{font-size:23px}.os-tabs{gap:3px}.os-tabs button{padding:10px 5px;font-size:11px}.code-box{padding:12px 10px;gap:8px}.code-box code{font-size:11px}.copy{padding:5px 7px;font-size:9px}.ready-strip{grid-template-columns:1fr;margin-top:30px}.ready-strip>div{padding:20px}.journey{gap:26px 20px}.journey h3{font-size:15px}.journey p{font-size:12px}.receipt-explainer{display:block;padding:20px}.receipt-explainer p{margin-top:10px}.roadmap{grid-template-columns:1fr;padding:23px;gap:28px}.faq-list summary{font-size:14px}.membership{padding:25px}.membership .price{font-size:38px}.guide-hero h1{font-size:42px}.guide-content h2{font-size:26px}.guide-content section{padding:26px 0}.guide-content p,.guide-content li{font-size:13px}.receipt-table{font-size:11px}.receipt-table th,.receipt-table td{padding:9px}.guide-hero p{font-size:14px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+html:not(.js) .menu-toggle{display:none}
+@media print{.site-head,.guide-nav,.copy,.actions,.footer,.product{display:none}body{background:white;color:black}.wrap{width:100%}.guide-layout{display:block}.guide-content p,.guide-content li{color:black}section{break-inside:avoid}.code-box{background:#eee}.code-box code{color:black}}
 
-  <main class="shell">
-    <section class="hero">
-      <div>
-        <div class="eyebrow">Braid - shared state for more than one LLM</div>
-        <h1>More than one LLM should not mean starting over every time.</h1>
-        <p class="lede">A second model may live on another computer, specialize in another task, or operate in another physical location. Without a shared state layer, useful context often dies where it was created or has to be copied manually. Braid gives selected context a portable, inspectable form, then lets the receiving system retrieve what matters for a new question while keeping acceptance and local use under its control.</p>
-        <div class="chips">
-          <span class="chip live">Across devices and models</span>
-          <span class="chip live">Relevant context, not whole chats</span>
-          <span class="chip live">Provenance stays visible</span>
-          <span class="chip live">Conflicts stay visible</span>
-          <span class="chip">Receiver keeps control</span>
-        </div>
-        <div class="actions hero-actions"><a class="btn primary" href="#why">Why Braid exists</a><a class="btn secondary" href="#proof">What we have demonstrated</a><a class="btn secondary" href="#founding">Braid Membership</a></div>
-      </div>
-      <aside class="hero-aside"><strong>For anyone whose AI work spans more than one model.</strong><br />A creator can move a project from laptop to workstation. A researcher can let a specialist model inherit accepted context. A small team can keep useful state available across rooms, machines, or sites - without turning every system into one giant shared chat.</aside>
-    </section>
 
-    <section id="why" class="block">
-      <div class="section-tag">The problem Braid is solving</div>
-      <h2 class="section-title">Your work should survive the model, machine, and session where it began.</h2>
-      <p class="copy">People increasingly use several AI systems: one for writing, another for research, another on a local workstation, and perhaps another at a different site. Each may be capable, but each usually begins with its own isolated context. Braid is a shared state layer for carrying forward the facts, constraints, decisions, observations, and relationships that should not have to be explained again from zero.</p>
-      <p class="copy" style="margin-top:16px"><strong style="color:var(--text)">One model can work alone. The moment you have two, continuity becomes infrastructure.</strong></p>
-
-      <div class="grid4">
-        <article class="card"><div class="n">USE_01</div><h3>Move between devices</h3><p>Carry selected project context from a laptop to a workstation, home machine, office system, or edge device without rebuilding the entire conversation.</p></article>
-        <article class="card"><div class="n">USE_02</div><h3>Use specialist models</h3><p>Let one model research, another review, and another act from the same accepted situational foundation while each keeps its own role.</p></article>
-        <article class="card"><div class="n">USE_03</div><h3>Continue across places and time</h3><p>Keep useful state available when a session ends, a machine goes offline, or work moves between people, rooms, or physical locations.</p></article>
-        <article class="card"><div class="n">USE_04</div><h3>Keep humans and receivers in control</h3><p>Move evidence and context without treating transport, similarity, or another model's output as automatic authority.</p></article>
-      </div>
-
-      <div class="compare" aria-label="Without shared state versus Braid-enabled systems">
-        <div class="compare-row compare-head"><div class="compare-cell">Without shared state</div><div class="compare-cell">With Braid</div></div>
-        <div class="compare-row"><div class="compare-cell">A new model or device begins with little or none of the earlier situational context.</div><div class="compare-cell"><b>Selected accepted context can survive the machine and session where it was created.</b></div></div>
-        <div class="compare-row"><div class="compare-cell">People copy prompts, chats, files, and memory bundles by hand.</div><div class="compare-cell"><b>A bounded portable object carries selected meaning together with its provenance.</b></div></div>
-        <div class="compare-row"><div class="compare-cell">Important facts and unrelated material often arrive as one undifferentiated block.</div><div class="compare-cell"><b>The receiver can retrieve the pieces relevant to the question being asked now.</b></div></div>
-        <div class="compare-row"><div class="compare-cell">A successful handoff can be confused with trust or permission.</div><div class="compare-cell"><b>The receiving node still decides what to accept, retain, and use.</b></div></div>
-      </div>
-    </section>
-
-    <section id="proof" class="block">
-      <div class="section-tag">What we have demonstrated</div>
-      <h2 class="section-title">A receiving machine can do more than store another model's notes.</h2>
-      <p class="copy">In controlled cross-computer tests, one node sent selected project context to another. The receiving node accepted that context locally, kept where it came from, and later used its own semantic field to rebuild useful context for a new question. The original chat did not have to remain open, and the receiving model did not have to be the same model as the sender.</p>
-
-      <div class="proof-panel">
-        <div class="proof-head">
-          <div><h3>The second model no longer had to guess</h3><p>We used an invented project scenario so the receiving model could not know the rules from its training data. The later question was phrased differently from the information that had been transferred.</p></div>
-          <span class="chip live">Cross-node continuity demonstrated</span>
-        </div>
-        <div class="before-after">
-          <div class="result before">
-            <div class="result-label">Before the handoff</div>
-            <strong>The second model guessed from incomplete context.</strong>
-            <p>It lacked the project-specific rules and confidently reached the wrong operational conclusion.</p>
-          </div>
-          <div class="middle-arrow">&rarr;</div>
-          <div class="result after">
-            <div class="result-label">After the handoff</div>
-            <strong>The second model could reason from accepted context.</strong>
-            <p>It answered a fresh, differently worded question using state committed on its own machine rather than relying on a continuing chat.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid3">
-        <article class="card"><div class="n">PROOF_01</div><h3>Fresh questions</h3><p>The receiving model could use the accepted state later, in a new inference call, after the original exchange had ended.</p></article>
-        <article class="card"><div class="n">PROOF_02</div><h3>Different machines</h3><p>The behavior was demonstrated across macOS and Linux rather than inside one shared application or one continuing browser session.</p></article>
-        <article class="card"><div class="n">PROOF_03</div><h3>Visible provenance</h3><p>The receiver retained source material, lineage, acceptance evidence, and separate records of what was retrieved for each question.</p></article>
-      </div>
-
-      <div class="proof-panel">
-        <div class="proof-head">
-          <div><h3>The receiver also chose what mattered</h3><p>In a second test, the incoming state contained project rules, two different values for the same threshold, and an unrelated maintenance note.</p></div>
-          <span class="chip live">Relevant context retrieved locally</span>
-        </div>
-        <div class="before-after">
-          <div class="result after">
-            <div class="result-label">What Braid preserved</div>
-            <strong>The relevant rules and both conflicting values remained visible.</strong>
-            <p>The receiver left out the unrelated note, grouped the two threshold claims as a possible disagreement, retained their sources, and built a fresh local context for the question.</p>
-          </div>
-          <div class="middle-arrow">&ne;</div>
-          <div class="result before">
-            <div class="result-label">What the answer model revealed</div>
-            <strong>A small local model still tried to choose one value.</strong>
-            <p>Because Braid kept the evidence and the generated answer separate and inspectable, the model's mistake was visible. That result directly informed the next generation guardrail.</p>
-          </div>
-        </div>
-      </div>
-
-      <p class="copy" style="margin-top:22px">This is the practical difference between a shared text pad and a shared state layer. A text pad can hold everything. Braid is being built to help a receiving system identify what is relevant now, preserve uncertainty and disagreement, retain provenance, and construct bounded context for its own local model.</p>
-
-      <div class="grid4">
-        <article class="card"><div class="n">FIELD_01</div><h3>Context survived</h3><p>Useful project state remained available after leaving the machine and session where it originated.</p></article>
-        <article class="card"><div class="n">FIELD_02</div><h3>Relevant pieces surfaced</h3><p>The receiving node selected the facts and rules related to the new question.</p></article>
-        <article class="card"><div class="n">FIELD_03</div><h3>Noise stayed out</h3><p>Unrelated committed material was not added to the generated context merely because it was present.</p></article>
-        <article class="card"><div class="n">FIELD_04</div><h3>Disagreement was not erased</h3><p>Conflicting values remained inspectable instead of being silently averaged or overwritten.</p></article>
-      </div>
-      <p class="security-note">Current claim boundary: these tests demonstrate bounded cross-node context continuity, receiver-local retrieval, visible provenance, and conflict-preserving evidence. They do not show model weights, hidden activations, KV cache, or a complete mind moving between systems. Completion models remain fallible. Detailed test records and exact artifacts remain available in the research section.</p>
-      <div class="actions"><a class="btn secondary" href="#research">See the technical record</a><a class="btn secondary" href="#compatibility">See current readiness</a></div>
-    </section>
-
-    <section id="compatibility" class="block">
-      <div class="section-tag">Reproducibility and compatibility</div>
-      <h2 class="section-title">Technical users can reproduce the mechanism now. The one-click experience is still being packaged.</h2>
-      <p class="copy">Braid 1.7.0a3 is the current Semantic Field Proof Build candidate. It packages what we learned from the first physical Mac-to-Linux field test, including clearer acceptance reporting, safer proof-mode defaults, repaired inspection, and stronger safeguards around conflicting evidence. It remains engineering software pending the frozen cross-platform test matrix, not a finished consumer workflow.</p>
-      <div class="grid4">
-        <article class="card"><div class="n">COMPAT_01</div><h3>Same completion model?</h3><p><strong style="color:var(--text)">Not required.</strong> The sending and receiving nodes can use different reasoning models because the receiver reasons from explicit accepted material.</p></article>
-        <article class="card"><div class="n">COMPAT_02</div><h3>Same embedding setup?</h3><p><strong style="color:var(--text)">Recommended for the first run.</strong> Matching verified representation settings provide the simplest controlled path while broader interoperability is tested.</p></article>
-        <article class="card"><div class="n">COMPAT_03</div><h3>Different embedding setups?</h3><p><strong style="color:var(--text)">Supported through receiver-local representation.</strong> The receiver can build its own semantic form from authenticated material instead of assuming unrelated vector spaces are identical.</p></article>
-        <article class="card"><div class="n">COMPAT_04</div><h3>Same OS or location?</h3><p><strong style="color:var(--text)">Not required in principle.</strong> Cross-OS behavior has been physically demonstrated; the a3 candidate is now being tested across macOS, Linux, Windows, and varied hardware.</p></article>
-      </div>
-      <div class="readiness" aria-label="Braid readiness summary">
-        <div class="readiness-row"><div class="readiness-key">Core mechanism</div><div class="readiness-value"><b>Physically demonstrated.</b> A receiving machine gained useful project-specific context and applied it in fresh questions after the original exchange ended.</div></div>
-        <div class="readiness-row"><div class="readiness-key">Semantic Field behavior</div><div class="readiness-value"><b>Demonstrated on Mac to Linux.</b> The receiver retrieved relevant state, excluded unrelated material, preserved a disagreement, and rebuilt context locally without replaying the whole conversation.</div></div>
-        <div class="readiness-row"><div class="readiness-key">Current proof build</div><div class="readiness-value"><b>1.7.0a3 candidate.</b> Frozen macOS, Linux, Windows, restart, replay, and varied-hardware validation remains the immediate promotion gate.</div></div>
-        <div class="readiness-row"><div class="readiness-key">Development status</div><div class="readiness-value"><b>Active engineering alpha.</b> Not every planned feature or one-click workflow exists today. Community tests are driving fixes and additions on an almost daily basis during active build cycles.</div></div>
-        <div class="readiness-row"><div class="readiness-key">Technical reproduction</div><div class="readiness-value"><b>Available now.</b> It currently requires CLI-level installation, local models, trust enrollment, route configuration, and a chosen transport.</div></div>
-        <div class="readiness-row"><div class="readiness-key">User-defined context</div><div class="readiness-value"><b>Available at the engine and CLI layer.</b> Technical users can create a signed capsule from their own text, send it to an approved receiver, and ask fresh questions against committed state.</div></div>
-        <div class="readiness-row"><div class="readiness-key">One-click packaging</div><div class="readiness-value"><b>Still in progress for the 1.7 field workflow.</b> Validated installers, automatic model detection, guided pairing, and a paste-or-file transfer experience remain active work.</div></div>
-        <div class="readiness-row"><div class="readiness-key">Universal guarantee</div><div class="readiness-value"><b>No.</b> Braid can preserve and surface useful context; success still depends on the receiving model's ability to understand and apply it.</div></div>
-      </div>
-    </section>
-
-    <section id="founding" class="block">
-      <div class="section-tag">Braid Membership</div>
-      <h2 class="section-title">Join the active build - with today's capabilities stated plainly.</h2>
-      <p class="copy">Braid is moving quickly, but not every planned capability or one-click workflow exists today. Membership places you inside the working feedback loop: a practical degree of direct human support, every Braid software update released during your active membership term, and access to Braid Managed Relays once they are sufficiently hardened for member use.</p>
-      <div class="membership">
-        <div class="membership-top">
-          <div><div class="section-tag">Braid Founding Membership</div><h3>Build with us as the protocol becomes a product.</h3><p>The community is already shaping Braid through real installations, reproducible bug reports, livestreams, and cross-node tests. During active engineering cycles, fixes and features are landing on an almost daily basis. Membership supports that work and gives members a human point of contact.</p></div>
-          <div class="price">$99<span>per year</span></div>
-        </div>
-        <div class="membership-body">
-          <div class="grid4" style="margin-top:0">
-            <article class="card"><div class="n">MEMBER_01</div><h3>Human support</h3><p>Reasonable best-effort help with installation, pairing, test design, bug intake, troubleshooting, and upgrade paths during the membership term.</p></article>
-            <article class="card"><div class="n">MEMBER_02</div><h3>Every software update</h3><p>Access to all Braid software updates released during your active membership term, including validated installer builds as they become available.</p></article>
-            <article class="card"><div class="n">MEMBER_03</div><h3>Managed Relays when ready</h3><p>Access to Braid Managed Relays once they are sufficiently hardened and opened for member use, subject to compatibility, capacity, location, fair-use limits, and experimental-service constraints.</p></article>
-            <article class="card"><div class="n">MEMBER_04</div><h3>Community feedback loop</h3><p>A direct path for reproducible results and feature requests. Not every request will ship, but member experience helps determine engineering priorities.</p></article>
-          </div>
-          <div class="membership-actions">
-            <a id="founding-checkout" class="btn primary" href="https://buy.stripe.com/14A3cvb2ncYj2vyaZ88so00">Join Braid Membership - $99/year</a>
-            <a id="founding-portal" class="btn secondary" href="/" hidden>Manage billing</a>
-            <a class="btn secondary" href="#compatibility">See current readiness</a>
-          </div>
-          <div id="founding-status" class="membership-status">Membership begins immediately for support and software updates. Managed Relay access begins when a compatible service is ready and separately provisioned for the member.</div>
-          <div class="membership-note"><strong style="color:var(--text)">What membership is - and is not:</strong> Membership supports active development, software access, and member services; it is not a claim that every roadmap feature already exists and it does not include a production SLA. Core LAN software and the public research record remain accessible. A Stripe receipt is not itself a relay credential, and relay availability is not guaranteed in every region or configuration.</div>
-        </div>
-      </div>
-    </section>
-
-    <div id="downloads"></div>
-    <section id="release-16" class="download" aria-labelledby="download-16-title">
-      <div class="download-head">
-        <div>
-          <div class="section-tag">Current technical release candidate</div>
-          <h2 id="download-16-title">Braid v1.6.0rc2</h2>
-          <p>The exact Python wheel and full source candidate used for queryable committed state, strict same-space coherence verification, and the novelty-as-evidence policy exercised in the successful Kestrel run. Existing v1.5.2 native installers remain available below while native 1.6 packaging is validated.</p>
-        </div>
-        <span class="chip pending">Release candidate</span>
-      </div>
-      <p>After receiver-owned commitment, Braid stores authenticated semantic material beside the receiver-local vector and lineage. Later queries reconstruct a fresh local context from that committed bundle. The rc2 correction distinguishes coherent novel information from malformed or untrusted state without disabling receiver checks.</p>
-      <div class="actions">
-        <a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=14Ai1UM8KPv4sQSWLpjZ_skiQfiHzH1rL">Download Python wheel</a>
-        <a class="btn secondary" href="https://drive.google.com/uc?export=download&amp;id=1l4c6PRbdUSC_LzN_fJeO1ESyr306h_k1">Download source candidate</a>
-        <a class="btn secondary" href="research/BRAID_V1_6_0RC2_KESTREL_PROOF.md">Kestrel proof record</a>
-        <a class="btn secondary" href="research/BRAID_V1_6_0RC2_KESTREL_QUERY_UAT.md">Technical UAT</a>
-        <a class="btn secondary" href="research/BRAID_V1_6_0RC2_KESTREL_NOVELTY_HOTFIX.md">Novelty correction note</a>
-        <a class="btn secondary" href="research/Braid-1.6.0rc2-exact-space-novelty.patch">Source patch</a>
-      </div>
-      <div class="hash"><b>SHA-256 - braid_client-1.6.0rc2-py3-none-any.whl</b><br />f93473c00fd74ba8deb18402f8e27f0f03a73d4be108edfc6c359a89c993744a<br /><b>SHA-256 - intersignal-braid-light-client-v1.6.0rc2-source-candidate.tar.gz</b><br />0bf31ed3888069ff3e3f6685ad5ea794d1a16b03183c04b4c44d7892e7681645</div>
-    </section>
-
-    <section id="release" class="download" aria-labelledby="download-title">
-      <div class="download-head">
-        <div><div class="section-tag">Native macOS installer - v1.5.2</div><h2 id="download-title">Braid for Apple Silicon</h2><p>Standalone macOS app in a drag-to-Applications DMG. This native build contains the proven 1.5.2 transport and trust foundation; use the 1.6 wheel above for the new queryable-state workflow.</p></div>
-        <span class="chip live">62.6 MB - arm64</span>
-      </div>
-      <div class="actions"><a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=1Zh7wOY-r2s5Dp1_-2F48Iw8JcFri_RTp">Download Mac installer</a><a class="btn secondary" href="#install">Mac security steps</a></div>
-      <div class="hash"><b>SHA-256 - Braid-1.5.2-macOS-arm64.dmg</b><br />385d61ab993de9fa0b47548379818a5dc9e7a8f57f44b7d03ca9091392ed5397</div>
-    </section>
-
-    <section id="windows" class="download windows" aria-labelledby="windows-title">
-      <div class="download-head">
-        <div><div class="section-tag">Native Windows package - v1.5.2</div><h2 id="windows-title">Braid for Windows x64</h2><p>Download the ZIP, extract the complete folder, and run <code>Install-Braid.cmd</code>. It installs for the current user and includes its own runtime and dependencies.</p></div>
-        <span class="chip live">43.7 MB - x64</span>
-      </div>
-      <div class="actions"><a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=1YV__Hm3tOftZtp_veJnIyer91PCHab7W">Download Windows package</a></div>
-      <p><strong>Research-build note:</strong> Windows may show an unfamiliar-app warning because this release is not code-signed. Verify the SHA-256 below; do not disable Windows security globally.</p>
-      <div class="hash"><b>SHA-256 - Braid-1.5.2-Windows-x64.zip</b><br />656bc264dd821af1edac966b982acf6e96275effffc6470a049de8b9111864ff</div>
-    </section>
-
-    <section id="linux-release" class="download" aria-labelledby="linux-download-title">
-      <div class="download-head">
-        <div><div class="section-tag">Native Linux package - v1.5.2</div><h2 id="linux-download-title">Braid for Linux</h2><p>Desktop installer with Braid Client, Braid Visualizer, and Braid Trust enrollment. Physically validated on ASUS Ascent and Lenovo ThinkPad hardware.</p></div>
-        <span class="chip live">Linux - x86_64 / arm64 Python runtime</span>
-      </div>
-      <div class="actions"><a class="btn primary" href="Braid-1.5.2-Linux.tar.gz">Download Linux release</a><a class="btn secondary" href="#trust">Braid Trust</a></div>
-      <div class="hash"><b>SHA-256 - Braid-1.5.2-Linux.tar.gz</b><br />47952e20fa78382b712caa1fbe81afb7525349099db952eae645d1ee916af853</div>
-    </section>
-
-    <section id="relay" class="download relay" aria-labelledby="relay-title">
-      <div class="download-head">
-        <div><div class="section-tag">Cross-network reach - public testing</div><h2 id="relay-title">Braid Managed Relay / Jump Kit 1.5.3rc2</h2><p>When two approved devices are on different networks, Jump Kit carries the exact signed Braid object through an authenticated TLS 1.3 relay path. The relay changes reach, not authority: the receiving Braid node still decides whether anything is accepted.</p></div>
-        <span class="chip pending">Free testing · founding tier next</span>
-      </div>
-      <p>The successful Kestrel run used this path from a Mac sender to a remote Linux receiver. Public testing remains free during the transition. Founding membership adds managed enrollment, guided onboarding, supported packaging, and updates; the relay still cannot create Braid acceptance.</p>
-      <div class="actions"><a class="btn primary" href="download/braid_jumpkit-1.5.3rc2-py3-none-any.whl">Download Python wheel</a><a class="btn secondary" href="download/braid_jumpkit-1.5.3rc2.tar.gz">Download source</a><a class="btn secondary" href="mailto:hello@intersignal.ai?subject=Braid%20Managed%20Relay%20testing%20access">Request relay access</a><a class="btn secondary" href="https://docs.google.com/forms/d/1IGL22mCIlwPTh82KB1Crc69fxrYh-lq1lEsL3lltrHA/" rel="noopener">Feedback form</a></div>
-      <p><strong>Requirements:</strong> Python 3.12 and an installed Braid receiver. This is experimental software, not a production SLA. Do not publish enrollment tokens, private keys, pairing codes, or sensitive <code>.brad</code> objects.</p>
-      <div class="hash"><b>SHA-256 - braid_jumpkit-1.5.3rc2-py3-none-any.whl</b><br />a1bf6a92bc1b44726e3c8720695a4b42ba53440d82871d2ce3128de83de7df24<br /><b>SHA-256 - braid_jumpkit-1.5.3rc2.tar.gz</b><br />9a2519d62c70739bb8f68af8390d9f27f9180423969aaf6502e09d27b99c37cd</div>
-    </section>
-
-    <section id="architecture" class="block">
-      <div class="section-tag">How the osmosis works</div>
-      <h2 class="section-title">Selected meaning moves. Control does not.</h2>
-      <p class="copy">Braid is not a shared chat window and it does not ask unrelated models to interpret an opaque vector as a universal language. The sender chooses what should become durable. Braid binds explicit semantic material to a compact machine representation and its provenance. The receiver verifies the object, applies local policy, and only then makes the state available to its own model.</p>
-      <div class="grid4">
-        <article class="card"><div class="n">STEP_01</div><h3>Select</h3><p>An operator or application decides which facts, constraints, observations, or relationships are worth preserving.</p></article>
-        <article class="card"><div class="n">STEP_02</div><h3>Represent and sign</h3><p>The selected meaning travels with a signed Semantic Capsule and a 384D route representation bound to the same object.</p></article>
-        <article class="card"><div class="n">STEP_03</div><h3>Transport</h3><p>The same signed object can move over LAN, optical QR, or an approved relay path without the transport layer granting acceptance.</p></article>
-        <article class="card"><div class="n">STEP_04</div><h3>Commit and query</h3><p>The receiver accepts under local policy, stores material, vector, and lineage, then reconstructs fresh inference context when queried.</p></article>
-      </div>
-      <div class="flow" aria-label="Braid state flow">
-        <div class="flow-row"><div class="flow-node">NODE A<small>Selected situational meaning + local 384D characterization + signature</small></div><div class="arrow">&rarr;</div><div class="flow-node">BRAID OBJECT<small>Bounded material, provenance, route evidence, and exact signed bytes</small></div></div>
-        <div class="flow-row"><div class="flow-node">TRANSPORT<small>LAN, optical QR, or Braid Managed Relay path</small></div><div class="arrow">&rarr;</div><div class="flow-node">NODE B<small>Verify, accept locally, persist, and reconstruct context for fresh queries</small></div></div>
-      </div>
-      <div id="trust" class="security">
-        <div class="security-top"><div class="security-icon">&#8858;</div><div><h3>Receiver sovereignty</h3><p>A signed capsule establishes provenance and integrity, not truth or command authority. Transport arrival, semantic similarity, and model output cannot create acceptance. Only the receiving Braid node's own final commit does that.</p></div></div>
-        <div class="security-note">Braid 1.6 transfers authenticated semantic material and reconstructs it as receiver-local context. It does not transfer transformer hidden activations, model weights, native internal state, or KV cache.</div>
-      </div>
-    </section>
-
-    <section id="install" class="block">
-      <div class="section-tag">Mac install - read this first</div>
-      <h2 class="section-title">macOS may block the first launch of the v1.5.2 research build.</h2>
-      <p class="copy">The current downloadable DMG is not yet distributed through Apple's Developer ID notarization pipeline. Gatekeeper can therefore show that Braid was blocked. You do not need to disable macOS security.</p>
-      <div class="security">
-        <div class="security-top"><div class="security-icon">&#8858;</div><div><h3>If you see the Apple security warning</h3><p>Use the one-app exception built into macOS. The wording may vary slightly by version.</p></div></div>
-        <div class="steps"><div class="step"><b>Install the app</b><span>Drag <strong>Braid.app</strong> into Applications, then try opening it once.</span></div><div class="step"><b>Open Privacy &amp; Security</b><span>Go to <strong>System Settings &rarr; Privacy &amp; Security</strong>.</span></div><div class="step"><b>Choose Open Anyway</b><span>Use the one-app exception next to the Braid warning.</span></div><div class="step"><b>Confirm once</b><span>Authenticate if requested, then choose <strong>Open</strong>.</span></div></div>
-        <div class="security-note">Do not disable Gatekeeper globally. If the expected one-app exception is absent, stop and contact us rather than changing system-wide security settings.</div>
-      </div>
-    </section>
-
-    <section class="block">
-      <div class="section-tag">Release facts</div>
-      <h2 class="section-title">What Braid 1.6 is - and is not</h2>
-      <p class="copy">Braid 1.6.0rc2 is experimental research software for moving authenticated situational meaning into durable, queryable receiver-owned state. Native v1.5.2 packages remain available while native 1.6 installers complete physical validation.</p>
-      <div class="facts">
-        <div class="fact"><span>Demonstrated result</span><b>Remote Node B corrected its decision after receiving committed state</b></div>
-        <div class="fact"><span>Fresh-query behavior</span><b>Context reconstructed from durable receiver state, not chat memory</b></div>
-        <div class="fact"><span>Primary object</span><b>Signed <code>.brad</code> frame with explicit Semantic Capsule</b></div>
-        <div class="fact"><span>384D role</span><b>Compact semantic characterization, route evidence, and compatible exact-space fast path</b></div>
-        <div class="fact"><span>Heterogeneous path</span><b>Receiver-local representation built from authenticated material</b></div>
-        <div class="fact"><span>Receiver flow</span><b>Quarantine &rarr; validation &rarr; local commit &rarr; durable query</b></div>
-        <div class="fact"><span>Transport choices</span><b>Direct LAN, optical QR, and authenticated relay path</b></div>
-        <div class="fact"><span>Not transferred</span><b>Weights, hidden activations, KV cache, or sender authority</b></div>
-        <div class="fact"><span>Status</span><b>Experimental developer research software</b></div>
-        <div class="fact"><span>Contact</span><b><a href="mailto:hello@intersignal.ai">hello@intersignal.ai</a></b></div>
-      </div>
-    </section>
-
-    <section id="research" class="block">
-      <div class="section-tag">Research and release record</div>
-      <h2 class="section-title">The plain-language result sits on top of an inspectable technical history.</h2>
-      <p class="copy">The homepage leads with the everyday problem Braid is designed to solve. The materials below preserve how the behavior was tested, what changed during development, and where the present claim stops. Earlier native installers remain available because they document the LAN, trust, optical, and cross-OS foundation that preceded queryable state.</p>
-      <div class="grid4">
-        <article class="card"><div class="n">RECORD_01</div><h3>Core Kestrel proof</h3><p>Before/after result, transport path, object digest, fresh-context flags, and exact claim boundary.</p><p style="margin-top:12px"><a href="research/BRAID_V1_6_0RC2_KESTREL_PROOF.md">Read proof record</a></p></article>
-        <article class="card"><div class="n">RECORD_02</div><h3>Formal UAT</h3><p>The synthetic scenario, control condition, transfer requirements, fresh-query tests, and remaining negative closure steps.</p><p style="margin-top:12px"><a href="research/BRAID_V1_6_0RC2_KESTREL_QUERY_UAT.md">Read UAT</a></p></article>
-        <article class="card"><div class="n">RECORD_03</div><h3>Novelty correction</h3><p>Why a valid novel state first failed the old subspace gate, and how rc2 preserved evidence without disabling coherence checks.</p><p style="margin-top:12px"><a href="research/BRAID_V1_6_0RC2_KESTREL_NOVELTY_HOTFIX.md">Read correction note</a></p></article>
-        <article class="card"><div class="n">RECORD_04</div><h3>Source and history</h3><p>Review the exact rc2 patch and the public Braid repository alongside earlier research releases.</p><p style="margin-top:12px"><a href="research/Braid-1.6.0rc2-exact-space-novelty.patch">View patch</a> &middot; <a href="https://github.com/dgseaman/Intersignal-braid" rel="noopener">GitHub</a></p></article>
-      </div>
-    </section>
-
-    <section class="block">
-      <div class="section-tag">The Intersignal thesis</div>
-      <blockquote class="quote">Useful intelligence should not die where it was created.</blockquote>
-      <p class="copy" style="margin-top:24px">Models, agents, robots, workstations, and edge systems will increasingly operate as independent nodes. They need a way to pass useful situational state without collapsing into one cloud account, one proprietary memory store, or one model-specific session.</p>
-      <p class="copy" style="margin-top:16px">Braid is an early semantic state plane for that future: explicit meaning, compact representation, visible provenance, receiver-owned acceptance, and multiple possible paths between machines. Evidence may travel. Authority remains local.</p>
-    </section>
-  </main>
-
-  <footer><div class="shell">Intersignal LLC - Fort Lauderdale - 2026<br />Experimental developer software - inspect before deployment - <a style="color:var(--muted)" href="https://x.com/intersignal_ai">@intersignal_ai</a></div></footer>
-
-  <script src="site-config.js"></script>
-  <script>
-    (function(){
-      var cfg = window.INTERSIGNAL_SITE_CONFIG || {};
-      var checkout = document.getElementById('founding-checkout');
-      var portal = document.getElementById('founding-portal');
-      var status = document.getElementById('founding-status');
-      var email = cfg.supportEmail || 'hello@intersignal.ai';
-      var checkoutUrl = String(cfg.foundingPaymentLink || '').trim();
-      var portalUrl = String(cfg.customerPortalUrl || '').trim();
-      var validCheckout = /^https:\/\/buy\.stripe\.com\//.test(checkoutUrl);
-      var validPortal = /^https:\/\/billing\.stripe\.com\//.test(portalUrl);
-
-      if (checkout && validCheckout) {
-        checkout.href = checkoutUrl;
-        checkout.textContent = 'Join Braid Membership - $99/year';
-        checkout.rel = 'noopener';
-        if (status) {
-          status.textContent = 'Membership begins immediately for support and software updates. Managed Relay access begins when a compatible service is ready and separately provisioned for the member.';
-          status.classList.add('live');
-        }
-      } else if (checkout) {
-        checkout.href = 'mailto:' + email + '?subject=' + encodeURIComponent('Braid Membership inquiry');
-      }
-
-      if (portal && validPortal) {
-        portal.href = portalUrl;
-        portal.hidden = false;
-        portal.rel = 'noopener';
-      }
-    })();
-  </script>
-</body>
-</html>
+/* Two clear offers, with current availability attached to each promise. */
+.plans-section{background:linear-gradient(160deg,#0a1218,#0c161b)}
+.plans-intro{margin-bottom:30px}.plans-intro>p{max-width:365px}
+.plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:stretch}
+.plan-card{min-width:0;border:1px solid #33434c;border-radius:12px;background:#101a22;display:flex;flex-direction:column;overflow:hidden}
+.member-plan{border-color:#628d7a;background:linear-gradient(150deg,#15251f,#0e1920 76%)}
+.plan-heading{padding:29px 30px 23px;min-height:245px;border-bottom:1px solid #2c3e44}
+.plan-label{display:block;font:10px/1.5 var(--mono);letter-spacing:.13em;color:#a6bec4;margin-bottom:16px}
+.member-plan .plan-label{color:var(--mint)}
+.plan-heading h3{font-size:23px;letter-spacing:-.025em;line-height:1.2;margin:0 0 18px}
+.plan-price{font-size:43px;line-height:1.15;font-weight:600;letter-spacing:-.04em;color:var(--text)}
+.plan-price small{font-size:12px;letter-spacing:0;color:var(--muted);font-weight:400;display:inline-block}
+.plan-heading p{font-size:13px;line-height:1.7;color:var(--muted);margin:15px 0 0;max-width:370px}
+.plan-features{list-style:none;margin:0;padding:14px 30px 8px;flex:1}
+.plan-features>li{display:flex;gap:12px;padding:15px 0;align-items:flex-start}
+.feature-check{color:var(--mint);font-size:14px;line-height:1.5;flex:none;width:14px;padding-top:1px}
+.plan-features strong{display:block;font-size:14px;line-height:1.6;font-weight:600;color:#e8f1ee}
+.plan-features div>span{display:block;font-size:12px;line-height:1.75;color:#aebec6;margin-top:4px}
+.plan-features b{color:#e0eee6;font-weight:600}
+.plan-features .coming-badge{display:inline-block;vertical-align:middle;font:8px/1.5 var(--mono);letter-spacing:.06em;border:1px solid #75613e;color:#f1d29d;background:#332a1b;border-radius:4px;padding:3px 6px;margin-left:6px}
+.plan-features .relay-icon{color:#f1d29d}
+.plan-bottom{min-height:150px;padding:18px 30px 26px;border-top:1px solid #2c3e44;margin-top:10px}
+.plan-bottom .fine{font-size:11px;line-height:1.8;margin:13px 0 0;color:#a7babf}
+.plan-bottom .text-link{display:inline-block;margin-top:12px;font-size:12px}
+.membership-boundary{display:flex;gap:16px;align-items:flex-start;border:1px solid #41544b;background:#101d19;border-radius:8px;margin-top:20px;padding:20px 24px}
+.boundary-mark{color:var(--mint);font-size:20px;line-height:1.2}
+.membership-boundary p{font-size:12px;line-height:1.85;color:#b9cbc7;margin:0}
+.membership-boundary strong{color:#e0efe7}
+.membership-terms{padding:17px 2px 0;font-size:12px;color:#9fb3b9}
+.membership-terms summary{cursor:pointer;color:#c3d3d6;font-size:12px}
+.membership-terms p{max-width:940px;font-size:12px;line-height:1.9;margin:14px 0 0}
+.proof-video{margin-top:25px;border-top:1px solid #36504a;padding-top:23px}
+.proof-video>.eyebrow{font-size:9px;margin-bottom:12px}
+.demo-video-link{display:flex;gap:15px;align-items:center;text-decoration:none;color:#e3f2eb;padding:16px;border:1px solid #476257;border-radius:8px;background:#12221d}
+.demo-video-link:hover{border-color:var(--mint);background:#1b3028}
+.video-play{font-size:18px;color:var(--mint);border:1px solid #597363;border-radius:50%;width:44px;height:44px;display:grid;place-items:center;flex:none}
+.demo-video-link strong{font-size:14px;line-height:1.6;font-weight:550}
+.demo-video-link small{display:block;font-size:10px;line-height:1.7;color:#b1c6bd;margin-top:5px}
+.proof-video .fine{font-size:10px;line-height:1.8;margin-top:10px}
+@media(max-width:800px){.plan-grid{gap:16px}.plan-heading{padding:24px 22px;min-height:235px}.plan-heading h3{font-size:21px}.plan-price{font-size:37px}.plan-price small{display:block;margin-top:7px}.plan-features{padding:12px 22px}.plan-bottom{padding:18px 22px 24px}.plan-features .coming-badge{margin-left:0;margin-top:4px}}
+@media(max-width:640px){.plan-grid{grid-template-columns:1fr;gap:22px}.plan-heading{min-height:0;padding:25px}.plan-price small{display:inline-block;margin-top:0}.plan-heading h3{font-size:24px}.plan-features{padding:9px 25px}.plan-features>li{padding:13px 0}.plan-bottom{padding:20px 25px 25px}.plan-features .coming-badge{margin-left:6px;margin-top:0}.membership-boundary{padding:18px;gap:12px}.plans-intro>p{max-width:none}.demo-video-link{padding:13px;gap:12px}.demo-video-link strong{font-size:13px}}
+</style></head><body><a class="skip" href="#main">Skip to content</a><header class="site-head"><div class="wrap head-inner"><a aria-label="Intersignal home" class="brand" href="index.html"><svg aria-hidden="true" viewbox="0 0 26 26"><path d="M4 4c18 0 0 18 18 18M22 4C4 4 22 22 4 22M5 4v18M21 4v18"></path></svg>INTERSIGNAL</a><button aria-controls="primary-nav" aria-expanded="false" class="menu-toggle" id="menu-toggle">Menu</button><nav aria-label="Primary" class="nav" id="primary-nav"><a href="#experience">The experience</a><a href="#proof">The real test</a><a href="archangel.html">Get started</a><a href="#membership">Free &amp; membership</a><a class="nav-download" href="#download">Download Archangel ↓</a></nav></div></header>
+<main id="main">
+<section class="hero"><div class="wrap"><div class="hero-grid"><div>
+<span class="eyebrow">Braid Messenger  /  Archangel 1.7.0a5</span>
+<h1>Your rigs.<br/>On <span class="accent">speaking<br/>terms.</span></h1>
+<p class="lede">An inbox for the useful things your local AI should carry forward. Share reviewed context with an approved rig. Ask a fresh question there. Keep control of both.</p>
+<div class="actions"><a class="button" href="#download">Get Archangel <span aria-hidden="true">↓</span></a><a class="button secondary" href="#proof">See the real test <span aria-hidden="true">↗</span></a></div>
+<p class="hero-note"><span>Mac → Linux demonstrated.</span> Mac launcher fix included.<br/>Public engineering alpha. Python and local Ollama required.</p>
+</div><div class="product"><div aria-label="Illustrated Braid inbox: a reviewed Cobalt fact from a Mac, an indexed receipt, and a local field answer on Linux. Sample interface, not a live connection." class="demo-frame" role="img">
+<div class="demo-title"><div class="mini-brand"><span class="accent">∿</span> Braid <small>ARCHANGEL</small></div><span class="fine">Linux laptop</span></div>
+<div class="demo-body"><aside class="demo-sidebar"><div class="mini-compose">↗ Share summary</div><div class="mini-folder selected">Inbox <b>1</b></div><div class="mini-folder">Sent</div><div class="mini-folder">Drafts</div><div class="mini-folder">Needs attention</div><div class="mini-heading">YOUR RIGS</div><div class="mini-peer"><span class="dot"></span> MacBook Air</div><div class="mini-peer"><span class="dot"></span> Linux laptop</div><div class="mini-field">✦ Shared field<small>1 indexed item</small></div></aside>
+<div class="mini-main"><span class="eyebrow">RECEIVED STATE</span><h3>A little context.<br/>A useful connection.</h3><div class="mini-from">From MacBook Air · reviewed handoff</div><div class="mini-quote">Project Cobalt’s launch color is amber.</div><div class="mini-receipt"><span>✓ Received</span><span>✓ Accepted</span><span>✓ Indexed</span></div><div class="mini-query">A fresh question on the receiving rig<b>The launch color is amber.</b></div></div></div>
+<div class="demo-foot"><span>Receiver-owned state</span><span>Local models · visible evidence</span></div></div><p class="demo-caption">Interface illustration, not a live session. Actual test photograph below.</p></div></div>
+<div class="hero-bottom"><span><strong>PAIR ONCE</strong>   Your machines become contacts.</span><span><strong>SHARE DELIBERATELY</strong>   You review what leaves.</span><span><strong>QUERY LOCALLY</strong>   The receiver uses its own field.</span></div></div></section>
+<span aria-hidden="true" id="why"></span><section class="section" id="experience"><div class="wrap"><div class="section-top"><div><span class="eyebrow">A familiar front door</span><h2>Less control panel.<br/>More “there’s my other rig.”</h2></div><p>Think signed state mail for your local AI rigs: a small, deliberate place to carry useful facts, decisions, and constraints between the computers you own.</p></div>
+<div class="three"><article class="feature"><span class="number">01  /  YOUR RIGS</span><h3>Machines, not mysteries.</h3><p>Name a rig. Prepare it locally. Exchange public rig cards and approve the full fingerprints in both directions.</p><div class="feature-tail">Public cards. Private keys stay home.</div></article><article class="feature"><span class="number">02  /  YOUR INBOX</span><h3>Share the useful part.</h3><p>Paste context, make a local summary or keep the exact text, then review it before sending. Inbox, Sent, and receipts keep the work visible.</p><div class="feature-tail">Write → Review → Share</div></article><article class="feature"><span class="number">03  /  YOUR SHARED FIELD</span><h3>A handoff you can use.</h3><p>The receiver indexes accepted material locally. Ask a new question through Braid and inspect the evidence behind the answer.</p><div class="feature-tail">Relevant state. A fresh local question.</div></article></div></div></section>
+<section class="section proof" id="proof"><div class="wrap proof-grid"><figure class="proof-photo"><a aria-label="Open the actual receiver photograph" href="assets/archangel/physical-field-answer.jpg"><img alt="Photograph of Braid running on the Linux receiver: one indexed item, one indexed object, 384 dimensions, and a guarded answer identifying Project Cobalt's launch color as amber." height="984" loading="lazy" src="assets/archangel/physical-field-answer.jpg" width="1004"/></a><figcaption>Actual receiver photograph · September 5, 2026.<br/>Cropped from the founder’s test photo; interface values are unaltered.</figcaption></figure>
+<div class="proof-copy"><span class="pill"><span class="dot"></span> PHYSICAL MAC → LINUX RUN</span><h2>Sent on a Mac.<br/>Useful on Linux.</h2><p class="muted">A made-up project fact left a MacBook Air through the reviewed handoff flow. On the Linux laptop, Braid showed an indexed item and returned the fact through its shared-field question workflow.</p><div class="quote-answer">“Project Cobalt’s launch color is amber.”</div><div class="stats"><div><strong>1</strong><span>Indexed item</span></div><div><strong>1</strong><span>Indexed object</span></div><div><strong>384</strong><span>Dimensions</span></div></div><div class="proof-meta"><div><span>EMBEDDING MODEL</span>all-minilm:latest</div><div><span>CONFIGURED COMPLETION MODEL</span>mistral:latest</div></div><p class="fine">Founder-run, single-item test with visible receiver output, not independent certification. This demonstrates the handoff-and-query experience; it does not establish every operating system, restart behavior, or internet-distance operation.</p><div class="actions"><a class="text-link" href="assets/archangel/physical-field-evidence.jpg">Inspect the photographed result ↗</a><a class="text-link" href="download/archangel/PHYSICAL_RUN_2026-09-05.md">Read the test record ↗</a></div><div class="proof-video" id="watch-demo">
+<span class="eyebrow">Watch the on-camera demonstration</span>
+<a aria-label="Watch PROOF On Camera: Two Ollama LLMs Shared State on YouTube (opens in a new tab)" class="demo-video-link" href="https://www.youtube.com/watch?v=UruJhL3oIE4" rel="noopener noreferrer" target="_blank"><span aria-hidden="true" class="video-play">▶</span><span><strong>PROOF On Camera:<br/>Two Ollama LLMs Shared State</strong><small>The founder’s Mac-to-Linux demonstration · opens YouTube ↗</small></span></a>
+<p class="fine">Watch the workflow, then reproduce the handoff with the free client. The video is a demonstration, not independent certification.</p>
+</div></div></div></section>
+<span aria-hidden="true" id="compatibility"></span><span aria-hidden="true" id="downloads"></span><section aria-labelledby="plans-title" class="section plans-section" id="membership">
+<span aria-hidden="true" id="founding"></span>
+<div class="wrap">
+<div class="section-top plans-intro">
+<div><span class="eyebrow">Free local software. Optional membership.</span><h2 id="plans-title">Start free.<br/>Build with us.</h2></div>
+<p>The same Archangel client in both columns. No membership required for local transfers. Join for human help, early access, and forthcoming managed reach.</p>
+</div>
+<div class="plan-grid">
+<article aria-labelledby="free-title" class="plan-card free-plan" id="plan-free">
+<div class="plan-heading"><span class="plan-label">THE LOCAL CLIENT</span><h3 id="free-title">Braid Archangel</h3><div class="plan-price">Free <small>/ no membership required</small></div><p>Connect the rigs you own. Keep the useful context moving.</p></div>
+<ul class="plan-features">
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>Direct LAN transfers</strong><span>Approved rig-to-rig handoffs over your local network. No Intersignal relay needed.</span></div></li>
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>QR reel / chunk transfers</strong><span>Included optical tools in the Advanced workspace. Camera and decoder requirements apply.</span></div></li>
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>Your rigs, inbox, and receipts</strong><span>Review a summary or exact text before sending. See acceptance and indexing separately.</span></div></li>
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>Receiver-local shared field</strong><span>384D indexing, relevant-state retrieval, and guarded questions through your own local model.</span></div></li>
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>Public releases and source</strong><span>Use the public client without a subscription. The Mac launcher fix is already included.</span></div></li>
+</ul>
+<div class="plan-bottom"><a class="button secondary wide" href="#download">Download free Archangel <span aria-hidden="true">↓</span></a><p class="fine">Python, Ollama, and models are separate prerequisites. <a href="archangel.html#optical">About the QR tools</a>.</p></div>
+</article>
+<article aria-labelledby="member-title" class="plan-card member-plan" id="plan-member">
+<div class="plan-heading"><span class="plan-label">THE FOUNDING MEMBERSHIP</span><h3 id="member-title">Braid Founding Membership</h3><div class="plan-price">$99 <small>/ year</small></div><p>Everything in the free client, plus a closer connection to the build.</p></div>
+<ul class="plan-features">
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>Human support</strong><span>Reasonable, best-effort help with installation, pairing, troubleshooting, and upgrades.</span></div></li>
+<li class="relay-benefit"><span aria-hidden="true" class="feature-check relay-icon">◇</span><div><strong>Managed Relay access <span class="coming-badge">FORTHCOMING</span></strong><span>For <b>at least 2 unique devices</b> per active membership, once the member service launches and your access is provisioned.</span></div></li>
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>First access to new versions &amp; experiments</strong><span>Member-first releases and experimental builds during your active membership term.</span></div></li>
+<li><span aria-hidden="true" class="feature-check">✓</span><div><strong>A direct feedback loop</strong><span>Bring reproducible results and feature requests directly to the project. Not every experiment or request will ship.</span></div></li>
+</ul>
+<div class="plan-bottom"><a class="button wide" href="https://buy.stripe.com/14A3cvb2ncYj2vyaZ88so00" id="founding-checkout" rel="noopener">Join Founding Membership <span aria-hidden="true">↗</span></a><a class="text-link" hidden="" href="#membership" id="founding-portal" rel="noopener">Manage billing ↗</a><p class="fine">Support starts with membership; early builds are supplied as released. Managed Relay is forthcoming, not an active service included at checkout today.</p></div>
+</article>
+</div>
+<div class="membership-boundary"><span aria-hidden="true" class="boundary-mark">◇</span><p><strong>Membership adds support and reach. It does not unlock the free client.</strong> LAN and QR tools stay free. Managed Relay has no announced activation date; its two-device minimum applies once the service is launched and provisioned during an active membership.</p></div>
+<details class="membership-terms"><summary>Service details &amp; what is not included</summary><p>Human support is reasonable and best-effort, not a 24/7 service or production SLA. Early access covers member releases and experiments as they become available during your active annual term; there is no fixed release schedule. Public software releases remain free.</p><p>Forthcoming Managed Relay access covers at least two unique devices per active membership once launched and provisioned. Service use will be subject to compatibility, capacity, location, and fair-use limits; no unlimited bandwidth or additional-device entitlement is promised here. A payment receipt is not a relay credential. Support starts when membership begins; there is no guaranteed relay launch date within the term.</p><p>Membership does not include computers, hosted inference, model subscriptions, Python, Ollama, or model downloads. Your local models remain yours to provision and run. This site update does not activate a relay or change existing subscriptions.</p></details>
+</div>
+</section><section class="section" id="download"><div class="wrap"><div class="download-layout"><div class="download-intro"><span class="eyebrow">The download that matches the demo</span><h2>Archangel.<br/>One bundle.<br/>Your own rigs.</h2><p>The working 1.7.0a5 release, with the Mac startup correction already integrated. No patch hunt. No installer built just for someone else’s two machines.</p><div class="requirements"><h3>Have these ready on each rig</h3><p><strong>Standard CPython 3.10–3.13.</strong> <a href="https://www.python.org/downloads/" rel="noopener">Get Python</a>. Choose a supported version, not 3.14.</p><p><strong>Local Ollama + an embedding model.</strong> The first-run guide uses <code>all-minilm</code>. <a href="https://ollama.com/download" rel="noopener">Get Ollama</a>.</p><p><strong>A local chat model for Ask field.</strong> The demonstrated receiver used <code>mistral:latest</code>.</p><p>Begin with two machines on the same private LAN. No Intersignal relay enrollment is needed for that path.</p></div><div class="setup-note"><strong>Ready-to-run does not mean zero prerequisites.</strong> The launcher installs Python dependencies into its own environment. Python, Ollama, and model weights are not bundled. First setup needs internet access unless you prepare the documented offline pack.</div></div>
+<div class="download-box"><div class="release-head"><span class="pill">PUBLIC ENGINEERING ALPHA</span><h3>Braid Messenger 1.7.0a5</h3><p>Archangel · Mac Launcher Fix 1 integrated · 1.27 MB ZIP<br/>The same complete bundle for macOS, Linux, and Windows.</p></div><div data-os-picker=""><div class="os-tabs"><button data-os="mac" id="download-tab-mac" type="button">macOS</button><button data-os="linux" id="download-tab-linux" type="button">Linux</button><button data-os="windows" id="download-tab-windows" type="button">Windows</button></div>
+<section class="os-panel" data-panel="mac" id="download-panel-mac"><span class="pill">MacBook Air startup exercised</span><h4>Extract. Open Start Braid.command.</h4><p>The Mac fix is already in this ZIP. It skips an unsupported default Python, finds a supported installed runtime, and prints its selection.</p><div class="code-box"><code id="download-mac-command">sh "Start Braid.command"</code><button aria-label="Copy download mac command" class="copy" data-copy="download-mac-command" type="button">Copy</button></div><p class="fine">Terminal alternative: run the command above inside the extracted folder. Python must already be installed. No global Python setting is changed. <a href="archangel.html#mac-security">Mac security guidance</a>.</p></section>
+<section class="os-panel" data-panel="linux" id="download-panel-linux"><span class="pill">Linux receive-and-query exercised</span><h4>Open the extracted folder in Terminal.</h4><p>Right-click an empty space in the folder, choose Open in Terminal, and run:</p><div class="code-box"><code id="download-linux-command">sh "Start Braid.sh"</code><button aria-label="Copy download linux command" class="copy" data-copy="download-linux-command" type="button">Copy</button></div><p class="fine">Run as your normal user, without sudo. The Linux launcher uses your default python3. For an unsupported default, explicitly use an installed supported version, such as <code>python3.12 start_braid.py</code>.</p></section>
+<section class="os-panel" data-panel="windows" id="download-panel-windows"><span class="pill warning-tag">Windows physical testing pending</span><h4>Choose a supported Python explicitly.</h4><p>Open the extracted folder in Terminal. With standard Python 3.12 installed, use:</p><div class="code-box"><code id="download-windows-command">py -3.12 start_braid.py</code><button aria-label="Copy download windows command" class="copy" data-copy="download-windows-command" type="button">Copy</button></div><p class="fine">Use <code>-3.13</code> instead when that is your installed supported version. Start Braid.cmd is also included, but uses the default runtime. This is not an Authenticode-signed installer.</p></section></div><div class="download-foot"><a class="button wide download-file" download="" href="download/archangel/Braid-Archangel-1.7.0a5-Mac-Launcher-Fix1.zip">Download Archangel ZIP <span aria-hidden="true">↓</span></a><div class="release-links"><a href="archangel.html">First-run guide</a><a href="download/archangel/Braid-Archangel-1.7.0a5-Mac-Launcher-Fix1.zip.sha256.txt">SHA-256</a><a href="download/archangel/release.json">Release manifest</a></div><details class="checksum"><summary>Verify the exact download</summary><code>b6bf35bd10edcb687e89e21f9674db0ca58a9dc7adb37b667c9d139213ab4227</code><p>SHA-256 of the complete ZIP. Consistency check, not a publisher signature.</p></details></div></div></div>
+<div class="ready-strip"><div><span class="eyebrow">INCLUDED</span><strong>App + source + platform launchers</strong>The corrected Mac launcher, isolated setup, offline-pack tools, test evidence, and full source travel together.</div><div><span class="eyebrow">NOT REQUIRED FOR LAN</span><strong>No account. No managed relay.</strong>Direct approved-rig handoffs do not automatically use an Intersignal relay. Keep the local UI private.</div><div><span class="eyebrow">STILL AN ALPHA</span><strong>Start with harmless test context.</strong>Not a signed native installer. Windows, WAN, restart persistence, and broader hardware need further physical testing.</div></div></div></section>
+<span aria-hidden="true" id="install"></span><section class="section" id="first-handoff"><div class="wrap"><div class="section-top"><div><span class="eyebrow">A first win, not a terminal marathon</span><h2>From two windows<br/>to one useful handoff.</h2></div><p>Start with exact text. Prove delivery and retrieval first. Add local summarization after that simple path works.</p></div><div class="journey"><div><h3>Open on both rigs.</h3><p>Use the platform launcher. Keep the local service running and Ollama available.</p></div><div><h3>Exchange rig cards.</h3><p>Prepare each rig, import its public card on the other, compare the full fingerprint, and approve both ways.</p></div><div><h3>Review. Then actually send.</h3><p>Start receiving. Choose one rig, use exact text, and click <strong>Send summary</strong> once. A review banner is not a receipt.</p></div><div><h3>Ask the receiving field.</h3><p>Confirm acceptance and indexing. Open <strong>Shared field</strong>, find the relevant state, then ask a fresh question.</p></div></div><div class="receipt-explainer"><strong>Received → Accepted → Indexed</strong><p>Three different confirmations. A green contact only indicates recent reachability. An uncertain receipt stays uncertain; do not blindly resend.</p></div><div class="actions"><a class="button secondary" href="archangel.html#first-send">Follow the exact first-handoff flow ↗</a></div></div></section>
+<span aria-hidden="true" id="architecture"></span><span aria-hidden="true" id="trust"></span><section class="section" id="how"><div class="wrap"><span class="eyebrow">The interface is small. The idea is not.</span><h2>Useful context travels.<br/>Authority stays local.</h2><div class="roadmap"><div><span class="eyebrow">WORKING TODAY</span><h3>A shared-state foundation.</h3><p>Braid carries explicit, signed semantic material. Each receiver applies its own acceptance policy and builds its own searchable 384-dimensional field. Retrieved evidence and model output stay inspectable. Signatures and similarity do not make a claim true.</p></div><div><span class="eyebrow">THE DIRECTION</span><h3>Richer interchange, without pretending.</h3><p>We are building toward richer validated interchange states across independent AI systems. Today’s release is the foundation, not native hidden-state transfer. It does not move model weights, KV cache, or a complete model mind.</p></div></div></div></section>
+<section class="section" id="questions"><div class="wrap"><div class="section-top"><div><span class="eyebrow">Before you click</span><h2>A few things worth knowing.</h2></div></div><div class="faq-list">
+<details><summary>Does this automatically share everything my local AI knows?</summary><p>No. You choose the material, review the exact text, and explicitly send it. Braid does not silently import another chat application’s conversation. Ask questions through Braid’s Shared field to use the received material; a separate chat window is not automatically populated.</p></details>
+<details><summary>What did the Mac patch fix?</summary><p>The original shortcut could choose an unsupported default Python and stop before opening Braid. The integrated Mac launcher checks supported installed runtimes, including common Homebrew and Python.org locations, then prints the interpreter it selects. It does not install Python, alter global aliases, or retry application failures under another interpreter. The a5 application wheel is unchanged.</p></details>
+<details id="relay"><summary>Will this send traffic through an Intersignal relay?</summary><p>Not for the direct private-LAN workflow shown here. Rigs connect to the approved endpoint in the exchanged card. Managed Relay / Jump Kit is a separate enrollment and configuration path, not a switch activated by downloading Archangel. No production relay availability or WAN result is implied by this LAN demonstration.</p></details>
+<details><summary>Can I use different models?</summary><p>The completion model is receiver-local; Braid carries explicit material rather than requiring identical model weights. For the simplest first run, use the guide’s matching <code>all-minilm</code> embedding setup. The physical result on this page used <code>mistral:latest</code> for the receiver’s configured completion model, not a full compatibility matrix.</p></details>
+<details><summary>What has actually been tested?</summary><p>The founder exercised corrected MacBook Air startup, Linux startup, pairing, and a Mac-to-Linux handoff followed by indexed field-question output. Screenshots are above. Packaged a5 regression evidence separately records 264 passing tests and six subtests on Linux with deterministic model fixtures. The Mac fix has 16 focused launcher tests. Physical Windows, reverse-direction, restart-persistence, broader-network, and cold-offline checks remain outstanding for this run.</p></details>
+<details><summary>What should I do when the field is empty?</summary><p>Stop at the receipt. On the sender, open Sent and expand Receipt &amp; provenance. On the receiver, check Inbox. Review is not delivery; delivery is not acceptance; acceptance alone does not confirm indexing. A “Receipt not confirmed” outcome must not be treated as permission to resend. <a href="archangel.html#troubleshooting">Open the troubleshooting guide</a>.</p></details>
+<details><summary>What is free, and what does $99/year add?</summary><p>Archangel's local Messenger, LAN transfers, QR reel / chunk tools, receiver-local field, and public releases are free. Founding Membership adds human support, first access to new versions and experiments, and forthcoming Managed Relay access for at least two unique devices once launched and provisioned during an active term. The QR tools use the Advanced workspace and depend on compatible camera/decoder support. <a href="#membership">Compare both options</a>.</p></details>
+</div></div></section>
+<section class="section" id="research"><div class="wrap"><span class="eyebrow">The inspectable record</span><h2>Keep the evidence.<br/>Keep the earlier work.</h2><p class="muted" style="max-width:760px;margin-top:22px">The release includes its full source and original automated evidence. This physical result adds one specific working path, not a blanket certification.</p><div class="actions"><a class="button secondary" href="download/archangel/PHYSICAL_RUN_2026-09-05.md">September 5 physical run</a><a class="button secondary" href="download/archangel/QA.md">Packaged a5 QA</a><a class="button secondary" href="legacy.html#research">Earlier research &amp; releases</a></div><span id="release-16"></span><span id="release"></span><span id="windows"></span><span id="linux-release"></span><p class="fine" style="margin-top:22px">Looking for the older native installers? They remain in the <a href="legacy.html#downloads">historical download archive</a>. They do not contain Archangel Messenger.</p></div></section>
+</main><footer class="footer"><div class="wrap footer-inner"><div><a class="brand" href="index.html"><svg aria-hidden="true" viewbox="0 0 26 26"><path d="M4 4c18 0 0 18 18 18M22 4C4 4 22 22 4 22M5 4v18M21 4v18"></path></svg>INTERSIGNAL</a><p>Intersignal LLC · Fort Lauderdale · 2026<br/>Archangel 1.7.0a5 · Public engineering alpha</p></div><nav aria-label="More" class="footer-links"><a href="mailto:hello@intersignal.ai">Contact</a><a href="https://x.com/intersignal_ai" rel="noopener">X / Twitter</a><a href="https://github.com/dgseaman/Intersignal-braid" rel="noopener">GitHub</a><a href="legacy.html">Earlier releases &amp; research</a><a href="download/archangel/LICENSE">License</a></nav></div></footer><div aria-live="polite" class="toast" hidden="" id="notice" role="status"></div><script src="site-config.js"></script><script>
+(function(){
+  'use strict';
+  document.documentElement.classList.add('js');
+  var menu=document.getElementById('menu-toggle'), nav=document.getElementById('primary-nav');
+  if(menu&&nav){menu.addEventListener('click',function(){var open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));nav.classList.toggle('nav-open',open);});nav.addEventListener('click',function(e){if(e.target.closest('a')){nav.classList.remove('nav-open');menu.setAttribute('aria-expanded','false');}});}
+  function toast(t){var node=document.getElementById('notice');if(!node)return;node.textContent=t;node.hidden=false;clearTimeout(window.braidToast);window.braidToast=setTimeout(function(){node.hidden=true;},3500);}
+  function fallbackCopy(text,button){var t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.top='0';t.style.left='-9999px';document.body.appendChild(t);t.select();var ok=false;try{ok=document.execCommand('copy');}catch(e){}t.remove();button.focus();toast(ok?'Copied.':'Copy unavailable here. Select the command and copy it manually.');}
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'),function(button){button.addEventListener('click',function(){var target=document.getElementById(button.getAttribute('data-copy'));if(!target)return;var text=target.textContent;if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast('Copied.');},function(){fallbackCopy(text,button);});}else fallbackCopy(text,button);});});
+  Array.prototype.forEach.call(document.querySelectorAll('[data-os-picker]'),function(picker){
+    var tabs=picker.querySelectorAll('[data-os]');var panels=picker.querySelectorAll('[data-panel]');var group=picker.querySelector('.os-tabs');group.setAttribute('role','tablist');group.setAttribute('aria-label','Operating system');
+    function choose(os,focus){Array.prototype.forEach.call(tabs,function(tab){var on=tab.getAttribute('data-os')===os;tab.setAttribute('aria-selected',String(on));tab.tabIndex=on?0:-1;if(on&&focus)tab.focus();});Array.prototype.forEach.call(panels,function(panel){panel.hidden=panel.getAttribute('data-panel')!==os;});}
+    Array.prototype.forEach.call(tabs,function(tab,i){tab.setAttribute('role','tab');var panel=picker.querySelector('[data-panel="'+tab.getAttribute('data-os')+'"]');tab.setAttribute('aria-controls',panel.id);panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',tab.id);tab.addEventListener('click',function(){choose(tab.getAttribute('data-os'),false);});tab.addEventListener('keydown',function(e){var n;if(e.key==='ArrowRight')n=(i+1)%tabs.length;else if(e.key==='ArrowLeft')n=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=tabs.length-1;else return;e.preventDefault();choose(tabs[n].getAttribute('data-os'),true);});});
+    var platform=navigator.platform||'';var initial=/Win/i.test(platform)?'windows':/Linux/i.test(platform)?'linux':'mac';choose(initial,false);
+  });
+  var cfg=window.INTERSIGNAL_SITE_CONFIG||{}, checkout=document.getElementById('founding-checkout'), portal=document.getElementById('founding-portal');
+  function allowed(url,host){try{var u=new URL(url);return u.protocol==='https:'&&u.hostname===host&&!u.username&&!u.password;}catch(e){return false;}}
+  if(checkout&&allowed(String(cfg.foundingPaymentLink||''),'buy.stripe.com'))checkout.href=cfg.foundingPaymentLink;
+  if(portal&&allowed(String(cfg.customerPortalUrl||''),'billing.stripe.com')){portal.href=cfg.customerPortalUrl;portal.hidden=false;}
+})();
+</script></body></html>

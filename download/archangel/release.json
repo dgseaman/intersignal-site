@@ -1,0 +1,28 @@
+{
+  "schema": "intersignal.public-release.v1",
+  "version": "1.7.0a5",
+  "codename": "Archangel",
+  "packaging_revision": "mac-launcher-fix1",
+  "filename": "Braid-Archangel-1.7.0a5-Mac-Launcher-Fix1.zip",
+  "bytes": 1271970,
+  "sha256": "b6bf35bd10edcb687e89e21f9674db0ca58a9dc7adb37b667c9d139213ab4227",
+  "wheel_sha256": "c828c1c19a2359181ebbbb3dd0bae6dc97b8745b1138702c4a3adcc98e3ec507",
+  "status": "engineering_alpha",
+  "published_bytes": "unchanged from the Mac Launcher Fix 1 release",
+  "physical_evidence": "Founder-reported MacBook Air to Linux handoff and receiver-local field answer; September 5, 2026",
+  "not_verified_in_this_run": [
+    "Windows",
+    "reverse direction",
+    "restart persistence",
+    "WAN or managed relay",
+    "cold offline installation",
+    "independent replication"
+  ],
+  "requirements": [
+    "standard CPython 3.10-3.13",
+    "local Ollama",
+    "local embedding model",
+    "local completion model for Ask field"
+  ],
+  "mac_launcher_fix_included": true
+}

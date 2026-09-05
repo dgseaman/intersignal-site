@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#07090c" />
+  <meta name="description" content="Use more than one LLM without starting over. Braid carries selected context across models, devices, and locations while keeping provenance visible and acceptance under receiver control." />
+  <title>Earlier Braid Releases | Historical Archive</title><meta name="robots" content="noindex">
+  <style>
+    :root{
+      --bg:#07090c;
+      --panel:#0d1117;
+      --panel2:#090d12;
+      --line:#1b2430;
+      --text:#eaf0f6;
+      --muted:#8b98a8;
+      --dim:#586575;
+      --cyan:#68f7dc;
+      --blue:#72a7ff;
+      --violet:#b28cff;
+      --amber:#ffc46b;
+      --red:#ff7b83;
+      --ok:#80f0aa;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{background:var(--bg);color:var(--text);scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:var(--sans);line-height:1.65;color:var(--text);overflow-x:hidden;background:
+      radial-gradient(900px 560px at 74% -8%,rgba(104,247,220,.075),transparent 64%),
+      radial-gradient(760px 520px at -5% 62%,rgba(114,167,255,.055),transparent 66%),var(--bg)}
+    body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.12;background-image:radial-gradient(circle at center,rgba(255,255,255,.4) 0 1px,transparent 1.2px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 84%)}
+    .scan{position:fixed;z-index:2;left:0;right:0;top:-22vh;height:22vh;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(104,247,220,.045),rgba(104,247,220,.018),transparent);animation:scan 13s linear infinite;mix-blend-mode:screen}
+    @keyframes scan{to{transform:translateY(132vh)}}
+    .vectors{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;font:10px/1.75 var(--mono);letter-spacing:.035em;color:rgba(104,247,220,.09);user-select:none}
+    .vector-column{position:absolute;white-space:pre;animation:drift linear infinite}
+    .v1{left:2.5%;top:9%;animation-duration:31s}.v2{right:3%;top:28%;animation-duration:37s;color:rgba(114,167,255,.075)}.v3{left:7%;bottom:3%;animation-duration:43s;color:rgba(178,140,255,.06)}
+    @keyframes drift{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(-42px);opacity:1}}
+    .shell{position:relative;z-index:3;max-width:1120px;margin:auto;padding:0 clamp(18px,4vw,44px)}
+    header{border-bottom:1px solid var(--line);background:rgba(7,9,12,.72);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}
+    .topbar{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{font-size:12px;font-weight:900;letter-spacing:.28em;color:var(--text);text-decoration:none}
+    nav{display:flex;gap:20px;flex-wrap:wrap;justify-content:flex-end}
+    nav a{font:10px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+    nav a:hover{color:var(--cyan)}
+    .hero{padding:78px 0 56px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:42px;align-items:end}
+    .eyebrow{font:11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:15px}
+    h1{font-size:clamp(46px,8vw,88px);line-height:.92;letter-spacing:-.057em;margin:0 0 24px;max-width:860px}
+    .lede{font-size:17px;line-height:1.75;color:#b1bdc9;max-width:790px;margin:0}
+    .hero-aside{border-left:1px solid var(--line);padding-left:24px;color:var(--muted);font-size:13px}
+    .hero-aside strong{color:var(--text)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}
+    .chip{font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line);padding:8px 10px;border-radius:999px;color:var(--muted);background:rgba(10,13,18,.7)}
+    .chip.live{color:var(--cyan);border-color:rgba(104,247,220,.3)}
+    .chip.pending{color:var(--amber);border-color:rgba(255,196,107,.3)}
+    section.block{padding:58px 0;border-bottom:1px solid var(--line)}
+    .section-tag{font:10px var(--mono);color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+    h2.section-title{font-size:31px;line-height:1.15;letter-spacing:-.035em;margin:0 0 18px}
+    .copy{color:#aeb8c4;font-size:15px;max-width:870px;margin:0}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
+    .card{background:linear-gradient(180deg,rgba(14,18,24,.94),rgba(9,12,17,.94));border:1px solid var(--line);border-radius:14px;padding:20px}
+    .card .n{font:10px var(--mono);color:var(--cyan)}
+    .card h3{font-size:14px;margin:8px 0 9px}
+    .card p{font-size:12px;color:var(--muted);margin:0;line-height:1.65}
+    .card a{color:var(--cyan);text-decoration:none}
+    .proof-panel{margin-top:28px;border:1px solid rgba(104,247,220,.28);border-radius:16px;background:linear-gradient(180deg,rgba(11,21,22,.94),rgba(8,12,16,.98));overflow:hidden}
+    .proof-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:22px;border-bottom:1px solid rgba(104,247,220,.16);flex-wrap:wrap}
+    .proof-head h3{margin:0 0 7px;font-size:19px}.proof-head p{margin:0;color:var(--muted);font-size:13px;max-width:760px}
+    .before-after{display:grid;grid-template-columns:1fr 56px 1fr;gap:0;align-items:stretch}
+    .result{padding:22px}.result.before{background:rgba(255,123,131,.025)}.result.after{background:rgba(128,240,170,.025)}
+    .result-label{font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}.before .result-label{color:var(--red)}.after .result-label{color:var(--ok)}
+    .result strong{display:block;font-size:17px;margin-bottom:8px}.result p{margin:0;color:var(--muted);font-size:13px}
+    .middle-arrow{display:flex;align-items:center;justify-content:center;color:var(--cyan);font:20px var(--mono);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+    .compare{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+    .compare-row{display:grid;grid-template-columns:1fr 1fr;background:#0a0d12;border-bottom:1px solid var(--line)}.compare-row:last-child{border-bottom:0}
+    .compare-cell{padding:16px 18px;font-size:13px;color:var(--muted)}.compare-cell:first-child{border-right:1px solid var(--line)}
+    .compare-head{font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:#0d1117}
+    .compare-cell b{color:var(--text)}
+    .download{margin:42px 0 0;background:linear-gradient(180deg,rgba(14,18,24,.98),rgba(9,12,17,.98));border:1px solid rgba(104,247,220,.24);border-radius:18px;padding:24px;box-shadow:0 0 50px rgba(104,247,220,.035)}
+    .download + .download{margin-top:14px}
+    .download.windows{border-color:rgba(178,140,255,.27);box-shadow:0 0 50px rgba(178,140,255,.03)}
+    .download.windows .btn.primary{background:var(--violet);border-color:var(--violet);color:#0b0712}
+    .download.relay{border-color:rgba(114,167,255,.34);box-shadow:0 0 50px rgba(114,167,255,.045)}
+    .download.relay .section-tag{color:var(--blue)}
+    .download.relay .btn.primary{background:var(--blue);border-color:var(--blue);color:#07101d}
+    .download-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
+    .download h2{margin:0;font-size:20px;letter-spacing:-.02em}.download p{margin:7px 0 0;color:var(--muted);font-size:13px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:9px;padding:12px 16px;text-decoration:none;font:700 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line)}
+    .btn.primary{background:var(--cyan);border-color:var(--cyan);color:#06100e}.btn.primary:hover{background:white;border-color:white}.btn.secondary{color:var(--text)}.btn.secondary:hover{border-color:var(--cyan)}
+    .hash{margin-top:16px;padding:12px 14px;border:1px solid #151d27;border-radius:10px;background:#080b0f;font:10px/1.6 var(--mono);color:var(--dim);overflow-wrap:anywhere}.hash b{color:var(--muted);font-weight:600}
+    .flow{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#090c10}
+    .flow-row{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}.flow-row:last-child{border-bottom:0}
+    .flow-node{font:12px var(--mono);color:var(--text)}.flow-node small{display:block;color:var(--dim);margin-top:5px;line-height:1.5}.arrow{color:var(--cyan);font:16px var(--mono)}
+    .security{margin-top:28px;border:1px solid rgba(255,196,107,.25);border-radius:16px;padding:22px;background:rgba(255,196,107,.035)}
+    .security-top{display:flex;gap:13px;align-items:flex-start}.security-icon{font-size:20px;line-height:1}.security h3{margin:0 0 6px;font-size:15px}.security p{margin:0;color:#abb5c0;font-size:13px}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;counter-reset:step}
+    .step{position:relative;padding:15px 14px 14px;border:1px solid rgba(255,196,107,.15);border-radius:11px;background:#0a0d11;min-height:112px}.step:before{counter-increment:step;content:counter(step);display:block;font:10px var(--mono);color:var(--amber);margin-bottom:8px}.step b{display:block;font-size:12px;margin-bottom:5px}.step span{font-size:11px;color:var(--muted);line-height:1.55}
+    .security-note{margin-top:14px;font:10px/1.55 var(--mono);color:var(--dim)}
+    .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:26px}.fact{background:#0a0d12;padding:17px}.fact span{display:block;font:9px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:6px}.fact b{font-size:13px;font-weight:620}
+    .quote{font-size:22px;line-height:1.55;color:var(--text);max-width:870px;margin:0;border-left:2px solid var(--cyan);padding-left:22px}
+    .hero-actions{margin-top:22px}
+    .readiness{margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0a0d12}
+    .readiness-row{display:grid;grid-template-columns:minmax(210px,.7fr) minmax(0,1.3fr);border-bottom:1px solid var(--line)}.readiness-row:last-child{border-bottom:0}
+    .readiness-key,.readiness-value{padding:15px 18px;font-size:13px}.readiness-key{font:10px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-right:1px solid var(--line);background:#0d1117}.readiness-value{color:var(--muted)}.readiness-value b{color:var(--text)}
+    .membership{margin-top:28px;border:1px solid rgba(104,247,220,.32);border-radius:18px;background:linear-gradient(180deg,rgba(12,23,24,.96),rgba(8,12,16,.98));overflow:hidden;box-shadow:0 0 60px rgba(104,247,220,.04)}
+    .membership-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;padding:25px;border-bottom:1px solid rgba(104,247,220,.17)}
+    .membership-top h3{font-size:23px;letter-spacing:-.025em;margin:5px 0 8px}.membership-top p{margin:0;color:var(--muted);font-size:13px;max-width:730px}
+    .price{text-align:right;white-space:nowrap;font-size:44px;line-height:1;font-weight:800;letter-spacing:-.05em;color:var(--text)}.price span{display:block;margin-top:7px;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .membership-body{padding:24px}.membership-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center}.membership-status{font:10px/1.55 var(--mono);color:var(--amber);margin-top:13px}.membership-status.live{color:var(--ok)}
+    .membership-note{margin-top:18px;padding:14px 16px;border:1px solid rgba(255,196,107,.2);border-radius:11px;background:rgba(255,196,107,.035);font-size:12px;color:var(--muted)}
+    code{font-family:var(--mono);font-size:.92em;color:#c4d2df}
+    a{color:inherit}
+    footer{padding:40px 0 54px;color:var(--dim);font:10px/1.8 var(--mono)}
+    @media(max-width:900px){.grid4{grid-template-columns:1fr 1fr}}
+    @media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:54px}.hero-aside{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}.grid3,.steps{grid-template-columns:1fr 1fr}.facts{grid-template-columns:1fr}.flow-row{grid-template-columns:1fr}.arrow{transform:rotate(90deg);width:max-content}.vectors{opacity:.6}.before-after{grid-template-columns:1fr}.middle-arrow{min-height:48px;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(90deg)}}
+    @media(max-width:820px){.membership-top{grid-template-columns:1fr}.price{text-align:left}.readiness-row{grid-template-columns:1fr}.readiness-key{border-right:0;border-bottom:1px solid var(--line)}}
+    @media(max-width:560px){nav{gap:12px}.grid3,.grid4,.steps{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr}.compare-cell:first-child{border-right:0;border-bottom:1px solid var(--line)}.download{padding:19px}h1{font-size:48px}.topbar{align-items:flex-start;padding:20px 0;flex-direction:column;gap:10px}.membership-top,.membership-body{padding:19px}.price{font-size:38px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scan,.vector-column{animation:none}}
+  </style>
+</head>
+<body><div style="position:relative;z-index:100;background:#203b34;color:#effff8;padding:22px;text-align:center;font:15px/1.8 system-ui">HISTORICAL ARCHIVE &middot; This page preserves the earlier releases and research record. Its readiness statements are historical, not the current release status.<br><a href="index.html#download" style="color:#a7f4df;font-weight:700">Get the current Archangel Messenger release &rarr;</a></div>
+  <div class="scan" aria-hidden="true"></div>
+  <div class="vectors" aria-hidden="true">
+    <div class="vector-column v1">NODE A  selected context\nportable  inspectable state\nmodel or device  independent\nLAN or managed path\nprovenance  retained</div>
+    <div class="vector-column v2">NODE B  receiver-local field\nrelevant context  retrieved\nunrelated state  left out\nconflicts  kept visible\nacceptance  local</div>
+    <div class="vector-column v3">FRESH QUESTION  local reconstruction\nFULL CHAT  not required\nCOMPLETION MODEL  remains local\nhuman oversight  preserved\ncontinuity  across nodes</div>
+  </div>
+
+  <header>
+    <div class="shell topbar">
+      <a class="brand" href="/">INTERSIGNAL</a>
+      <nav aria-label="Primary">
+        <a href="#why">Why Braid</a>
+        <a href="#proof">What we have shown</a>
+        <a href="#compatibility">Reproduce</a>
+        <a href="#founding">Membership</a>
+        <a href="#downloads">Downloads</a>
+        <a href="#relay">Managed Relay</a>
+        <a href="#architecture">How it works</a>
+        <a href="#research">Research</a>
+        <a href="https://x.com/intersignal_ai" rel="noopener">X / Twitter</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Braid - shared state for more than one LLM</div>
+        <h1>More than one LLM should not mean starting over every time.</h1>
+        <p class="lede">A second model may live on another computer, specialize in another task, or operate in another physical location. Without a shared state layer, useful context often dies where it was created or has to be copied manually. Braid gives selected context a portable, inspectable form, then lets the receiving system retrieve what matters for a new question while keeping acceptance and local use under its control.</p>
+        <div class="chips">
+          <span class="chip live">Across devices and models</span>
+          <span class="chip live">Relevant context, not whole chats</span>
+          <span class="chip live">Provenance stays visible</span>
+          <span class="chip live">Conflicts stay visible</span>
+          <span class="chip">Receiver keeps control</span>
+        </div>
+        <div class="actions hero-actions"><a class="btn primary" href="#why">Why Braid exists</a><a class="btn secondary" href="#proof">What we have demonstrated</a><a class="btn secondary" href="#founding">Braid Membership</a></div>
+      </div>
+      <aside class="hero-aside"><strong>For anyone whose AI work spans more than one model.</strong><br />A creator can move a project from laptop to workstation. A researcher can let a specialist model inherit accepted context. A small team can keep useful state available across rooms, machines, or sites - without turning every system into one giant shared chat.</aside>
+    </section>
+
+    <section id="why" class="block">
+      <div class="section-tag">The problem Braid is solving</div>
+      <h2 class="section-title">Your work should survive the model, machine, and session where it began.</h2>
+      <p class="copy">People increasingly use several AI systems: one for writing, another for research, another on a local workstation, and perhaps another at a different site. Each may be capable, but each usually begins with its own isolated context. Braid is a shared state layer for carrying forward the facts, constraints, decisions, observations, and relationships that should not have to be explained again from zero.</p>
+      <p class="copy" style="margin-top:16px"><strong style="color:var(--text)">One model can work alone. The moment you have two, continuity becomes infrastructure.</strong></p>
+
+      <div class="grid4">
+        <article class="card"><div class="n">USE_01</div><h3>Move between devices</h3><p>Carry selected project context from a laptop to a workstation, home machine, office system, or edge device without rebuilding the entire conversation.</p></article>
+        <article class="card"><div class="n">USE_02</div><h3>Use specialist models</h3><p>Let one model research, another review, and another act from the same accepted situational foundation while each keeps its own role.</p></article>
+        <article class="card"><div class="n">USE_03</div><h3>Continue across places and time</h3><p>Keep useful state available when a session ends, a machine goes offline, or work moves between people, rooms, or physical locations.</p></article>
+        <article class="card"><div class="n">USE_04</div><h3>Keep humans and receivers in control</h3><p>Move evidence and context without treating transport, similarity, or another model's output as automatic authority.</p></article>
+      </div>
+
+      <div class="compare" aria-label="Without shared state versus Braid-enabled systems">
+        <div class="compare-row compare-head"><div class="compare-cell">Without shared state</div><div class="compare-cell">With Braid</div></div>
+        <div class="compare-row"><div class="compare-cell">A new model or device begins with little or none of the earlier situational context.</div><div class="compare-cell"><b>Selected accepted context can survive the machine and session where it was created.</b></div></div>
+        <div class="compare-row"><div class="compare-cell">People copy prompts, chats, files, and memory bundles by hand.</div><div class="compare-cell"><b>A bounded portable object carries selected meaning together with its provenance.</b></div></div>
+        <div class="compare-row"><div class="compare-cell">Important facts and unrelated material often arrive as one undifferentiated block.</div><div class="compare-cell"><b>The receiver can retrieve the pieces relevant to the question being asked now.</b></div></div>
+        <div class="compare-row"><div class="compare-cell">A successful handoff can be confused with trust or permission.</div><div class="compare-cell"><b>The receiving node still decides what to accept, retain, and use.</b></div></div>
+      </div>
+    </section>
+
+    <section id="proof" class="block">
+      <div class="section-tag">What we have demonstrated</div>
+      <h2 class="section-title">A receiving machine can do more than store another model's notes.</h2>
+      <p class="copy">In controlled cross-computer tests, one node sent selected project context to another. The receiving node accepted that context locally, kept where it came from, and later used its own semantic field to rebuild useful context for a new question. The original chat did not have to remain open, and the receiving model did not have to be the same model as the sender.</p>
+
+      <div class="proof-panel">
+        <div class="proof-head">
+          <div><h3>The second model no longer had to guess</h3><p>We used an invented project scenario so the receiving model could not know the rules from its training data. The later question was phrased differently from the information that had been transferred.</p></div>
+          <span class="chip live">Cross-node continuity demonstrated</span>
+        </div>
+        <div class="before-after">
+          <div class="result before">
+            <div class="result-label">Before the handoff</div>
+            <strong>The second model guessed from incomplete context.</strong>
+            <p>It lacked the project-specific rules and confidently reached the wrong operational conclusion.</p>
+          </div>
+          <div class="middle-arrow">&rarr;</div>
+          <div class="result after">
+            <div class="result-label">After the handoff</div>
+            <strong>The second model could reason from accepted context.</strong>
+            <p>It answered a fresh, differently worded question using state committed on its own machine rather than relying on a continuing chat.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <article class="card"><div class="n">PROOF_01</div><h3>Fresh questions</h3><p>The receiving model could use the accepted state later, in a new inference call, after the original exchange had ended.</p></article>
+        <article class="card"><div class="n">PROOF_02</div><h3>Different machines</h3><p>The behavior was demonstrated across macOS and Linux rather than inside one shared application or one continuing browser session.</p></article>
+        <article class="card"><div class="n">PROOF_03</div><h3>Visible provenance</h3><p>The receiver retained source material, lineage, acceptance evidence, and separate records of what was retrieved for each question.</p></article>
+      </div>
+
+      <div class="proof-panel">
+        <div class="proof-head">
+          <div><h3>The receiver also chose what mattered</h3><p>In a second test, the incoming state contained project rules, two different values for the same threshold, and an unrelated maintenance note.</p></div>
+          <span class="chip live">Relevant context retrieved locally</span>
+        </div>
+        <div class="before-after">
+          <div class="result after">
+            <div class="result-label">What Braid preserved</div>
+            <strong>The relevant rules and both conflicting values remained visible.</strong>
+            <p>The receiver left out the unrelated note, grouped the two threshold claims as a possible disagreement, retained their sources, and built a fresh local context for the question.</p>
+          </div>
+          <div class="middle-arrow">&ne;</div>
+          <div class="result before">
+            <div class="result-label">What the answer model revealed</div>
+            <strong>A small local model still tried to choose one value.</strong>
+            <p>Because Braid kept the evidence and the generated answer separate and inspectable, the model's mistake was visible. That result directly informed the next generation guardrail.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="copy" style="margin-top:22px">This is the practical difference between a shared text pad and a shared state layer. A text pad can hold everything. Braid is being built to help a receiving system identify what is relevant now, preserve uncertainty and disagreement, retain provenance, and construct bounded context for its own local model.</p>
+
+      <div class="grid4">
+        <article class="card"><div class="n">FIELD_01</div><h3>Context survived</h3><p>Useful project state remained available after leaving the machine and session where it originated.</p></article>
+        <article class="card"><div class="n">FIELD_02</div><h3>Relevant pieces surfaced</h3><p>The receiving node selected the facts and rules related to the new question.</p></article>
+        <article class="card"><div class="n">FIELD_03</div><h3>Noise stayed out</h3><p>Unrelated committed material was not added to the generated context merely because it was present.</p></article>
+        <article class="card"><div class="n">FIELD_04</div><h3>Disagreement was not erased</h3><p>Conflicting values remained inspectable instead of being silently averaged or overwritten.</p></article>
+      </div>
+      <p class="security-note">Current claim boundary: these tests demonstrate bounded cross-node context continuity, receiver-local retrieval, visible provenance, and conflict-preserving evidence. They do not show model weights, hidden activations, KV cache, or a complete mind moving between systems. Completion models remain fallible. Detailed test records and exact artifacts remain available in the research section.</p>
+      <div class="actions"><a class="btn secondary" href="#research">See the technical record</a><a class="btn secondary" href="#compatibility">See current readiness</a></div>
+    </section>
+
+    <section id="compatibility" class="block">
+      <div class="section-tag">Reproducibility and compatibility</div>
+      <h2 class="section-title">Technical users can reproduce the mechanism now. The one-click experience is still being packaged.</h2>
+      <p class="copy">Braid 1.7.0a3 is the current Semantic Field Proof Build candidate. It packages what we learned from the first physical Mac-to-Linux field test, including clearer acceptance reporting, safer proof-mode defaults, repaired inspection, and stronger safeguards around conflicting evidence. It remains engineering software pending the frozen cross-platform test matrix, not a finished consumer workflow.</p>
+      <div class="grid4">
+        <article class="card"><div class="n">COMPAT_01</div><h3>Same completion model?</h3><p><strong style="color:var(--text)">Not required.</strong> The sending and receiving nodes can use different reasoning models because the receiver reasons from explicit accepted material.</p></article>
+        <article class="card"><div class="n">COMPAT_02</div><h3>Same embedding setup?</h3><p><strong style="color:var(--text)">Recommended for the first run.</strong> Matching verified representation settings provide the simplest controlled path while broader interoperability is tested.</p></article>
+        <article class="card"><div class="n">COMPAT_03</div><h3>Different embedding setups?</h3><p><strong style="color:var(--text)">Supported through receiver-local representation.</strong> The receiver can build its own semantic form from authenticated material instead of assuming unrelated vector spaces are identical.</p></article>
+        <article class="card"><div class="n">COMPAT_04</div><h3>Same OS or location?</h3><p><strong style="color:var(--text)">Not required in principle.</strong> Cross-OS behavior has been physically demonstrated; the a3 candidate is now being tested across macOS, Linux, Windows, and varied hardware.</p></article>
+      </div>
+      <div class="readiness" aria-label="Braid readiness summary">
+        <div class="readiness-row"><div class="readiness-key">Core mechanism</div><div class="readiness-value"><b>Physically demonstrated.</b> A receiving machine gained useful project-specific context and applied it in fresh questions after the original exchange ended.</div></div>
+        <div class="readiness-row"><div class="readiness-key">Semantic Field behavior</div><div class="readiness-value"><b>Demonstrated on Mac to Linux.</b> The receiver retrieved relevant state, excluded unrelated material, preserved a disagreement, and rebuilt context locally without replaying the whole conversation.</div></div>
+        <div class="readiness-row"><div class="readiness-key">Current proof build</div><div class="readiness-value"><b>1.7.0a3 candidate.</b> Frozen macOS, Linux, Windows, restart, replay, and varied-hardware validation remains the immediate promotion gate.</div></div>
+        <div class="readiness-row"><div class="readiness-key">Development status</div><div class="readiness-value"><b>Active engineering alpha.</b> Not every planned feature or one-click workflow exists today. Community tests are driving fixes and additions on an almost daily basis during active build cycles.</div></div>
+        <div class="readiness-row"><div class="readiness-key">Technical reproduction</div><div class="readiness-value"><b>Available now.</b> It currently requires CLI-level installation, local models, trust enrollment, route configuration, and a chosen transport.</div></div>
+        <div class="readiness-row"><div class="readiness-key">User-defined context</div><div class="readiness-value"><b>Available at the engine and CLI layer.</b> Technical users can create a signed capsule from their own text, send it to an approved receiver, and ask fresh questions against committed state.</div></div>
+        <div class="readiness-row"><div class="readiness-key">One-click packaging</div><div class="readiness-value"><b>Still in progress for the 1.7 field workflow.</b> Validated installers, automatic model detection, guided pairing, and a paste-or-file transfer experience remain active work.</div></div>
+        <div class="readiness-row"><div class="readiness-key">Universal guarantee</div><div class="readiness-value"><b>No.</b> Braid can preserve and surface useful context; success still depends on the receiving model's ability to understand and apply it.</div></div>
+      </div>
+    </section>
+
+    <section id="founding" class="block">
+      <div class="section-tag">Braid Membership</div>
+      <h2 class="section-title">Join the active build - with today's capabilities stated plainly.</h2>
+      <p class="copy">Braid is moving quickly, but not every planned capability or one-click workflow exists today. Membership places you inside the working feedback loop: a practical degree of direct human support, every Braid software update released during your active membership term, and access to Braid Managed Relays once they are sufficiently hardened for member use.</p>
+      <div class="membership">
+        <div class="membership-top">
+          <div><div class="section-tag">Braid Founding Membership</div><h3>Build with us as the protocol becomes a product.</h3><p>The community is already shaping Braid through real installations, reproducible bug reports, livestreams, and cross-node tests. During active engineering cycles, fixes and features are landing on an almost daily basis. Membership supports that work and gives members a human point of contact.</p></div>
+          <div class="price">$99<span>per year</span></div>
+        </div>
+        <div class="membership-body">
+          <div class="grid4" style="margin-top:0">
+            <article class="card"><div class="n">MEMBER_01</div><h3>Human support</h3><p>Reasonable best-effort help with installation, pairing, test design, bug intake, troubleshooting, and upgrade paths during the membership term.</p></article>
+            <article class="card"><div class="n">MEMBER_02</div><h3>Every software update</h3><p>Access to all Braid software updates released during your active membership term, including validated installer builds as they become available.</p></article>
+            <article class="card"><div class="n">MEMBER_03</div><h3>Managed Relays when ready</h3><p>Access to Braid Managed Relays once they are sufficiently hardened and opened for member use, subject to compatibility, capacity, location, fair-use limits, and experimental-service constraints.</p></article>
+            <article class="card"><div class="n">MEMBER_04</div><h3>Community feedback loop</h3><p>A direct path for reproducible results and feature requests. Not every request will ship, but member experience helps determine engineering priorities.</p></article>
+          </div>
+          <div class="membership-actions">
+            <a id="founding-checkout" class="btn primary" href="https://buy.stripe.com/14A3cvb2ncYj2vyaZ88so00">Join Braid Membership - $99/year</a>
+            <a id="founding-portal" class="btn secondary" href="/" hidden>Manage billing</a>
+            <a class="btn secondary" href="#compatibility">See current readiness</a>
+          </div>
+          <div id="founding-status" class="membership-status">Membership begins immediately for support and software updates. Managed Relay access begins when a compatible service is ready and separately provisioned for the member.</div>
+          <div class="membership-note"><strong style="color:var(--text)">What membership is - and is not:</strong> Membership supports active development, software access, and member services; it is not a claim that every roadmap feature already exists and it does not include a production SLA. Core LAN software and the public research record remain accessible. A Stripe receipt is not itself a relay credential, and relay availability is not guaranteed in every region or configuration.</div>
+        </div>
+      </div>
+    </section>
+
+    <div id="downloads"></div>
+    <section id="release-16" class="download" aria-labelledby="download-16-title">
+      <div class="download-head">
+        <div>
+          <div class="section-tag">Current technical release candidate</div>
+          <h2 id="download-16-title">Braid v1.6.0rc2</h2>
+          <p>The exact Python wheel and full source candidate used for queryable committed state, strict same-space coherence verification, and the novelty-as-evidence policy exercised in the successful Kestrel run. Existing v1.5.2 native installers remain available below while native 1.6 packaging is validated.</p>
+        </div>
+        <span class="chip pending">Release candidate</span>
+      </div>
+      <p>After receiver-owned commitment, Braid stores authenticated semantic material beside the receiver-local vector and lineage. Later queries reconstruct a fresh local context from that committed bundle. The rc2 correction distinguishes coherent novel information from malformed or untrusted state without disabling receiver checks.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=14Ai1UM8KPv4sQSWLpjZ_skiQfiHzH1rL">Download Python wheel</a>
+        <a class="btn secondary" href="https://drive.google.com/uc?export=download&amp;id=1l4c6PRbdUSC_LzN_fJeO1ESyr306h_k1">Download source candidate</a>
+        <a class="btn secondary" href="https://intersignal.org/research/BRAID_V1_6_0RC2_KESTREL_PROOF.md">Kestrel proof record</a>
+        <a class="btn secondary" href="https://intersignal.org/research/BRAID_V1_6_0RC2_KESTREL_QUERY_UAT.md">Technical UAT</a>
+        <a class="btn secondary" href="https://intersignal.org/research/BRAID_V1_6_0RC2_KESTREL_NOVELTY_HOTFIX.md">Novelty correction note</a>
+        <a class="btn secondary" href="https://intersignal.org/research/Braid-1.6.0rc2-exact-space-novelty.patch">Source patch</a>
+      </div>
+      <div class="hash"><b>SHA-256 - braid_client-1.6.0rc2-py3-none-any.whl</b><br />f93473c00fd74ba8deb18402f8e27f0f03a73d4be108edfc6c359a89c993744a<br /><b>SHA-256 - intersignal-braid-light-client-v1.6.0rc2-source-candidate.tar.gz</b><br />0bf31ed3888069ff3e3f6685ad5ea794d1a16b03183c04b4c44d7892e7681645</div>
+    </section>
+
+    <section id="release" class="download" aria-labelledby="download-title">
+      <div class="download-head">
+        <div><div class="section-tag">Native macOS installer - v1.5.2</div><h2 id="download-title">Braid for Apple Silicon</h2><p>Standalone macOS app in a drag-to-Applications DMG. This native build contains the proven 1.5.2 transport and trust foundation; use the 1.6 wheel above for the new queryable-state workflow.</p></div>
+        <span class="chip live">62.6 MB - arm64</span>
+      </div>
+      <div class="actions"><a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=1Zh7wOY-r2s5Dp1_-2F48Iw8JcFri_RTp">Download Mac installer</a><a class="btn secondary" href="#install">Mac security steps</a></div>
+      <div class="hash"><b>SHA-256 - Braid-1.5.2-macOS-arm64.dmg</b><br />385d61ab993de9fa0b47548379818a5dc9e7a8f57f44b7d03ca9091392ed5397</div>
+    </section>
+
+    <section id="windows" class="download windows" aria-labelledby="windows-title">
+      <div class="download-head">
+        <div><div class="section-tag">Native Windows package - v1.5.2</div><h2 id="windows-title">Braid for Windows x64</h2><p>Download the ZIP, extract the complete folder, and run <code>Install-Braid.cmd</code>. It installs for the current user and includes its own runtime and dependencies.</p></div>
+        <span class="chip live">43.7 MB - x64</span>
+      </div>
+      <div class="actions"><a class="btn primary" href="https://drive.google.com/uc?export=download&amp;id=1YV__Hm3tOftZtp_veJnIyer91PCHab7W">Download Windows package</a></div>
+      <p><strong>Research-build note:</strong> Windows may show an unfamiliar-app warning because this release is not code-signed. Verify the SHA-256 below; do not disable Windows security globally.</p>
+      <div class="hash"><b>SHA-256 - Braid-1.5.2-Windows-x64.zip</b><br />656bc264dd821af1edac966b982acf6e96275effffc6470a049de8b9111864ff</div>
+    </section>
+
+    <section id="linux-release" class="download" aria-labelledby="linux-download-title">
+      <div class="download-head">
+        <div><div class="section-tag">Native Linux package - v1.5.2</div><h2 id="linux-download-title">Braid for Linux</h2><p>Desktop installer with Braid Client, Braid Visualizer, and Braid Trust enrollment. Physically validated on ASUS Ascent and Lenovo ThinkPad hardware.</p></div>
+        <span class="chip live">Linux - x86_64 / arm64 Python runtime</span>
+      </div>
+      <div class="actions"><a class="btn primary" href="https://intersignal.org/Braid-1.5.2-Linux.tar.gz">Download Linux release</a><a class="btn secondary" href="#trust">Braid Trust</a></div>
+      <div class="hash"><b>SHA-256 - Braid-1.5.2-Linux.tar.gz</b><br />47952e20fa78382b712caa1fbe81afb7525349099db952eae645d1ee916af853</div>
+    </section>
+
+    <section id="relay" class="download relay" aria-labelledby="relay-title">
+      <div class="download-head">
+        <div><div class="section-tag">Cross-network reach - public testing</div><h2 id="relay-title">Braid Managed Relay / Jump Kit 1.5.3rc2</h2><p>When two approved devices are on different networks, Jump Kit carries the exact signed Braid object through an authenticated TLS 1.3 relay path. The relay changes reach, not authority: the receiving Braid node still decides whether anything is accepted.</p></div>
+        <span class="chip pending">Free testing · founding tier next</span>
+      </div>
+      <p>The successful Kestrel run used this path from a Mac sender to a remote Linux receiver. Public testing remains free during the transition. Founding membership adds managed enrollment, guided onboarding, supported packaging, and updates; the relay still cannot create Braid acceptance.</p>
+      <div class="actions"><a class="btn primary" href="https://intersignal.org/download/braid_jumpkit-1.5.3rc2-py3-none-any.whl">Download Python wheel</a><a class="btn secondary" href="https://intersignal.org/download/braid_jumpkit-1.5.3rc2.tar.gz">Download source</a><a class="btn secondary" href="mailto:hello@intersignal.ai?subject=Braid%20Managed%20Relay%20testing%20access">Request relay access</a><a class="btn secondary" href="https://docs.google.com/forms/d/1IGL22mCIlwPTh82KB1Crc69fxrYh-lq1lEsL3lltrHA/" rel="noopener">Feedback form</a></div>
+      <p><strong>Requirements:</strong> Python 3.12 and an installed Braid receiver. This is experimental software, not a production SLA. Do not publish enrollment tokens, private keys, pairing codes, or sensitive <code>.brad</code> objects.</p>
+      <div class="hash"><b>SHA-256 - braid_jumpkit-1.5.3rc2-py3-none-any.whl</b><br />a1bf6a92bc1b44726e3c8720695a4b42ba53440d82871d2ce3128de83de7df24<br /><b>SHA-256 - braid_jumpkit-1.5.3rc2.tar.gz</b><br />9a2519d62c70739bb8f68af8390d9f27f9180423969aaf6502e09d27b99c37cd</div>
+    </section>
+
+    <section id="architecture" class="block">
+      <div class="section-tag">How the osmosis works</div>
+      <h2 class="section-title">Selected meaning moves. Control does not.</h2>
+      <p class="copy">Braid is not a shared chat window and it does not ask unrelated models to interpret an opaque vector as a universal language. The sender chooses what should become durable. Braid binds explicit semantic material to a compact machine representation and its provenance. The receiver verifies the object, applies local policy, and only then makes the state available to its own model.</p>
+      <div class="grid4">
+        <article class="card"><div class="n">STEP_01</div><h3>Select</h3><p>An operator or application decides which facts, constraints, observations, or relationships are worth preserving.</p></article>
+        <article class="card"><div class="n">STEP_02</div><h3>Represent and sign</h3><p>The selected meaning travels with a signed Semantic Capsule and a 384D route representation bound to the same object.</p></article>
+        <article class="card"><div class="n">STEP_03</div><h3>Transport</h3><p>The same signed object can move over LAN, optical QR, or an approved relay path without the transport layer granting acceptance.</p></article>
+        <article class="card"><div class="n">STEP_04</div><h3>Commit and query</h3><p>The receiver accepts under local policy, stores material, vector, and lineage, then reconstructs fresh inference context when queried.</p></article>
+      </div>
+      <div class="flow" aria-label="Braid state flow">
+        <div class="flow-row"><div class="flow-node">NODE A<small>Selected situational meaning + local 384D characterization + signature</small></div><div class="arrow">&rarr;</div><div class="flow-node">BRAID OBJECT<small>Bounded material, provenance, route evidence, and exact signed bytes</small></div></div>
+        <div class="flow-row"><div class="flow-node">TRANSPORT<small>LAN, optical QR, or Braid Managed Relay path</small></div><div class="arrow">&rarr;</div><div class="flow-node">NODE B<small>Verify, accept locally, persist, and reconstruct context for fresh queries</small></div></div>
+      </div>
+      <div id="trust" class="security">
+        <div class="security-top"><div class="security-icon">&#8858;</div><div><h3>Receiver sovereignty</h3><p>A signed capsule establishes provenance and integrity, not truth or command authority. Transport arrival, semantic similarity, and model output cannot create acceptance. Only the receiving Braid node's own final commit does that.</p></div></div>
+        <div class="security-note">Braid 1.6 transfers authenticated semantic material and reconstructs it as receiver-local context. It does not transfer transformer hidden activations, model weights, native internal state, or KV cache.</div>
+      </div>
+    </section>
+
+    <section id="install" class="block">
+      <div class="section-tag">Mac install - read this first</div>
+      <h2 class="section-title">macOS may block the first launch of the v1.5.2 research build.</h2>
+      <p class="copy">The current downloadable DMG is not yet distributed through Apple's Developer ID notarization pipeline. Gatekeeper can therefore show that Braid was blocked. You do not need to disable macOS security.</p>
+      <div class="security">
+        <div class="security-top"><div class="security-icon">&#8858;</div><div><h3>If you see the Apple security warning</h3><p>Use the one-app exception built into macOS. The wording may vary slightly by version.</p></div></div>
+        <div class="steps"><div class="step"><b>Install the app</b><span>Drag <strong>Braid.app</strong> into Applications, then try opening it once.</span></div><div class="step"><b>Open Privacy &amp; Security</b><span>Go to <strong>System Settings &rarr; Privacy &amp; Security</strong>.</span></div><div class="step"><b>Choose Open Anyway</b><span>Use the one-app exception next to the Braid warning.</span></div><div class="step"><b>Confirm once</b><span>Authenticate if requested, then choose <strong>Open</strong>.</span></div></div>
+        <div class="security-note">Do not disable Gatekeeper globally. If the expected one-app exception is absent, stop and contact us rather than changing system-wide security settings.</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-tag">Release facts</div>
+      <h2 class="section-title">What Braid 1.6 is - and is not</h2>
+      <p class="copy">Braid 1.6.0rc2 is experimental research software for moving authenticated situational meaning into durable, queryable receiver-owned state. Native v1.5.2 packages remain available while native 1.6 installers complete physical validation.</p>
+      <div class="facts">
+        <div class="fact"><span>Demonstrated result</span><b>Remote Node B corrected its decision after receiving committed state</b></div>
+        <div class="fact"><span>Fresh-query behavior</span><b>Context reconstructed from durable receiver state, not chat memory</b></div>
+        <div class="fact"><span>Primary object</span><b>Signed <code>.brad</code> frame with explicit Semantic Capsule</b></div>
+        <div class="fact"><span>384D role</span><b>Compact semantic characterization, route evidence, and compatible exact-space fast path</b></div>
+        <div class="fact"><span>Heterogeneous path</span><b>Receiver-local representation built from authenticated material</b></div>
+        <div class="fact"><span>Receiver flow</span><b>Quarantine &rarr; validation &rarr; local commit &rarr; durable query</b></div>
+        <div class="fact"><span>Transport choices</span><b>Direct LAN, optical QR, and authenticated relay path</b></div>
+        <div class="fact"><span>Not transferred</span><b>Weights, hidden activations, KV cache, or sender authority</b></div>
+        <div class="fact"><span>Status</span><b>Experimental developer research software</b></div>
+        <div class="fact"><span>Contact</span><b><a href="mailto:hello@intersignal.ai">hello@intersignal.ai</a></b></div>
+      </div>
+    </section>
+
+    <section id="research" class="block">
+      <div class="section-tag">Research and release record</div>
+      <h2 class="section-title">The plain-language result sits on top of an inspectable technical history.</h2>
+      <p class="copy">The homepage leads with the everyday problem Braid is designed to solve. The materials below preserve how the behavior was tested, what changed during development, and where the present claim stops. Earlier native installers remain available because they document the LAN, trust, optical, and cross-OS foundation that preceded queryable state.</p>
+      <div class="grid4">
+        <article class="card"><div class="n">RECORD_01</div><h3>Core Kestrel proof</h3><p>Before/after result, transport path, object digest, fresh-context flags, and exact claim boundary.</p><p style="margin-top:12px"><a href="https://intersignal.org/research/BRAID_V1_6_0RC2_KESTREL_PROOF.md">Read proof record</a></p></article>
+        <article class="card"><div class="n">RECORD_02</div><h3>Formal UAT</h3><p>The synthetic scenario, control condition, transfer requirements, fresh-query tests, and remaining negative closure steps.</p><p style="margin-top:12px"><a href="https://intersignal.org/research/BRAID_V1_6_0RC2_KESTREL_QUERY_UAT.md">Read UAT</a></p></article>
+        <article class="card"><div class="n">RECORD_03</div><h3>Novelty correction</h3><p>Why a valid novel state first failed the old subspace gate, and how rc2 preserved evidence without disabling coherence checks.</p><p style="margin-top:12px"><a href="https://intersignal.org/research/BRAID_V1_6_0RC2_KESTREL_NOVELTY_HOTFIX.md">Read correction note</a></p></article>
+        <article class="card"><div class="n">RECORD_04</div><h3>Source and history</h3><p>Review the exact rc2 patch and the public Braid repository alongside earlier research releases.</p><p style="margin-top:12px"><a href="https://intersignal.org/research/Braid-1.6.0rc2-exact-space-novelty.patch">View patch</a> &middot; <a href="https://github.com/dgseaman/Intersignal-braid" rel="noopener">GitHub</a></p></article>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-tag">The Intersignal thesis</div>
+      <blockquote class="quote">Useful intelligence should not die where it was created.</blockquote>
+      <p class="copy" style="margin-top:24px">Models, agents, robots, workstations, and edge systems will increasingly operate as independent nodes. They need a way to pass useful situational state without collapsing into one cloud account, one proprietary memory store, or one model-specific session.</p>
+      <p class="copy" style="margin-top:16px">Braid is an early semantic state plane for that future: explicit meaning, compact representation, visible provenance, receiver-owned acceptance, and multiple possible paths between machines. Evidence may travel. Authority remains local.</p>
+    </section>
+  </main>
+
+  <footer><div class="shell">Intersignal LLC - Fort Lauderdale - 2026<br />Experimental developer software - inspect before deployment - <a style="color:var(--muted)" href="https://x.com/intersignal_ai">@intersignal_ai</a></div></footer>
+
+  <script src="site-config.js"></script>
+  <script>
+    (function(){
+      var cfg = window.INTERSIGNAL_SITE_CONFIG || {};
+      var checkout = document.getElementById('founding-checkout');
+      var portal = document.getElementById('founding-portal');
+      var status = document.getElementById('founding-status');
+      var email = cfg.supportEmail || 'hello@intersignal.ai';
+      var checkoutUrl = String(cfg.foundingPaymentLink || '').trim();
+      var portalUrl = String(cfg.customerPortalUrl || '').trim();
+      var validCheckout = /^https:\/\/buy\.stripe\.com\//.test(checkoutUrl);
+      var validPortal = /^https:\/\/billing\.stripe\.com\//.test(portalUrl);
+
+      if (checkout && validCheckout) {
+        checkout.href = checkoutUrl;
+        checkout.textContent = 'Join Braid Membership - $99/year';
+        checkout.rel = 'noopener';
+        if (status) {
+          status.textContent = 'Membership begins immediately for support and software updates. Managed Relay access begins when a compatible service is ready and separately provisioned for the member.';
+          status.classList.add('live');
+        }
+      } else if (checkout) {
+        checkout.href = 'mailto:' + email + '?subject=' + encodeURIComponent('Braid Membership inquiry');
+      }
+
+      if (portal && validPortal) {
+        portal.href = portalUrl;
+        portal.hidden = false;
+        portal.rel = 'noopener';
+      }
+    })();
+  </script>
+</body>
+</html>
