@@ -1,0 +1,30 @@
+{
+  "version": "1.7.0a6",
+  "codename": "Archangel",
+  "edition": "Channels",
+  "status": "engineering_alpha",
+  "release_zip": {
+    "name": "Braid-Archangel-1.7.0a6-Channels.zip",
+    "bytes": 1006956,
+    "sha256": "98d2eb0c1656fcf972fa773797aba46c8f716bac9357c093141f70838dc1c3f8",
+    "url": "https://drive.google.com/file/d/1wgXwRiX0DLjep7sAUfMfr4IUt-Ft1Y7Y/view?usp=drivesdk"
+  },
+  "source_zip": {
+    "name": "Braid-Archangel-1.7.0a6-source.zip",
+    "bytes": 652133,
+    "sha256": "8f2d9ff192700ebefe8741a4b4151c6f41538b9eda14e66bd9f0b79f3fac0334",
+    "url": "https://drive.google.com/file/d/1NHX1QYkJfKtFJ3310dTNpC1XuVXDFoWm/view?usp=drivesdk"
+  },
+  "wheel": {
+    "name": "braid_client-1.7.0a6-py3-none-any.whl",
+    "sha256": "4e26a0830d61cb4781db2f40abacc182971c140fa68a5aa2c522a17aa4a389ea"
+  },
+  "mac_launcher_fix_included": true,
+  "physical_evidence": "Earlier a5 demonstration is retained separately; no physical a6 result is claimed.",
+  "prerequisites": [
+    "Standard CPython 3.10-3.13",
+    "Local Ollama",
+    "Local embedding and completion model files"
+  ],
+  "previous_demonstrated_release_url": "https://drive.google.com/file/d/1ltxcrCRCRF8IsBjxGMTIYPAio1d7-6X4/view?usp=drivesdk"
+}
