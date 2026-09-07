@@ -1,0 +1,55 @@
+{
+  "schema": "intersignal.demo.spending.v1",
+  "date": "2026-09-07",
+  "provenance": "Founder-reported physical run and supplied screenshots; not independently replayed in this build task.",
+  "release_line": "1.7.0a6",
+  "followup_exact_package": "Not visible in the answer screenshot; do not infer Composer Fix 1 installation from its timing.",
+  "sender": "Linux laptop (reported by operator)",
+  "receiver": "MacBook Air",
+  "path": "Direct LAN (reported by operator; peer photo shows Reachable LAN)",
+  "source_text": "spend no more than 500 credits on our second server today",
+  "question": "What's the max number of credits we can spend on a server today?",
+  "answer_verbatim": "Based on the provided evidence, the maximum number of credits that can be spent on a server today is 500. However, it's important to note that this value is from a single source and there might be unresolved conflicts or additional sources that could provide different values. Therefore, it's advisable to consult multiple sources or seek further information to ensure accuracy.",
+  "visible_receipt": [
+    "Received",
+    "Accepted",
+    "Indexed"
+  ],
+  "visible_field": {
+    "indexed_items": 1,
+    "indexed_objects": 1,
+    "dimensions": 384
+  },
+  "observed_numeric_answer": 500,
+  "qualifications": [
+    "The answer omitted the second-server qualifier.",
+    "Generic warnings about possible conflicts are not evidence that one was detected.",
+    "No full query JSON, model digest, raw completion or generation-source field was supplied with this screenshot.",
+    "No spending action, enforced budget or billing integration was demonstrated.",
+    "This is ordinary Shared field, not a Channel Chat/shared-notes-count test.",
+    "No physical 1.8 run, Windows, optical scan, WAN, restart or complete interoperability matrix is established."
+  ],
+  "new_release_relationship": "1.8 carries the corrected a6 composer; predecessor demo results are retained as predecessor evidence.",
+  "assets": {
+    "answer": {
+      "original_name": "Screenshot 2026-09-07 at 12.32.09 PM.png",
+      "sha256": "0bb7fabc6d9b1cf3216dbedb791cba52c96b4d9cdb6b2ddd30d6391da9de9277",
+      "bytes": 182461
+    },
+    "receiver": {
+      "original_name": "4617.jpg",
+      "sha256": "fb372c23744ea40349f198d43e0c748ee4f458e670397399a2462dd2a51afcd1",
+      "bytes": 285049
+    },
+    "sender": {
+      "original_name": "4615.jpg",
+      "sha256": "6e66e87cc4a05375b89693e3b295a683175ab627a35a1f2d3fdc88ffca8258fd",
+      "bytes": 191833
+    },
+    "connection": {
+      "original_name": "4616.jpg",
+      "sha256": "fa6e9a2edb1d2fdc73016300b7829f264629a6c75ae4bd27ea2e9332d770cce3",
+      "bytes": 323363
+    }
+  }
+}

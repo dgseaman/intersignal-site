@@ -1,0 +1,31 @@
+{
+  "version": "1.8.1",
+  "codename": "Archangel",
+  "status": "public_maintenance_release",
+  "release_zip": {
+    "name": "Braid-Archangel-1.8.1.zip",
+    "bytes": 752305,
+    "sha256": "4c303b6aea21113812466ee2323c21d8dac26cb45d7c54474d9c7b270d74111d",
+    "url": "https://drive.google.com/file/d/1OhFw6EUacatx_EI1F3YDs7MOTt-o1Aob/view?usp=sharing"
+  },
+  "source_zip": {
+    "name": "Braid-Archangel-1.8.1-source.zip",
+    "bytes": 454576,
+    "sha256": "eadd425a1cb0c04f4962ad4f7d67aeacce96e0830123140217527ee32bcd1c33",
+    "location": "source/ inside the complete release ZIP"
+  },
+  "wheel": {
+    "name": "braid_client-1.8.1-py3-none-any.whl",
+    "sha256": "4f1f1bb945707afbb4f7a154a5f1a8582e478c61e0094a0f790bcf4361303c92"
+  },
+  "integrated_composer": true,
+  "mac_runtime_discovery_included": true,
+  "requires_separate_patch": false,
+  "physical_evidence": "September 7 predecessor a6-line Linux-to-Mac accepted/indexed spending note and field answer returning 500; not a physical 1.8.1 qualification.",
+  "prerequisites": [
+    "Standard CPython 3.10-3.13",
+    "Local Ollama",
+    "Local embedding and completion models"
+  ],
+  "resilience_preview_merged": false
+}
