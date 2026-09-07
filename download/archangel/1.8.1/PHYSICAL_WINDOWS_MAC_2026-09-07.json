@@ -1,0 +1,54 @@
+{
+  "schema": "intersignal.physical-test-record.v1",
+  "recorded_date": "2026-09-07",
+  "application_version_reported": "1.8.1",
+  "direction": "Windows sender -> macOS receiver",
+  "transport": "private LAN",
+  "status": "founder_reported_physical_success_with_field_answer_screenshot",
+  "sender": "Avalon-core (Windows laptop)",
+  "receiver": "Davids-MacBook-Air",
+  "source_text": "Second Kestrel run should involve blue group only",
+  "fresh_question": "Which team or group should the second Kestrel run involve?",
+  "answer_observation": "The displayed response identifies the blue group and includes caveats; full screenshot preserved.",
+  "before": {
+    "indexed_items": 1,
+    "indexed_objects": 1
+  },
+  "after": {
+    "indexed_items": 2,
+    "indexed_objects": 2,
+    "dimensions": 384
+  },
+  "previous_failed_attempt": {
+    "accepted": false,
+    "phase_a_validated": false,
+    "phase_b_committed": false,
+    "field_indexed": false,
+    "transport_completed": true,
+    "finality": "rejected",
+    "result_summary": "REJECTED_BEFORE_PHASE_B",
+    "reason": "ERR_FUTURE_TIMESTAMP: Timestamp in future beyond clock skew: 1788822158 (Now: 1788822146)",
+    "observed_difference_seconds": 12
+  },
+  "correction_reported": "Automatic clock synchronization followed by one fresh message; timestamp gate not loosened.",
+  "successful_raw_receipt_supplied": false,
+  "expanded_query_evidence_supplied": false,
+  "exact_physical_runtime_hashes_supplied": false,
+  "screenshot": {
+    "path": "assets/archangel/physical-1.8.1-windows-mac-kestrel.png",
+    "sha256": "8acea7b1e01bc4b1dc5fe1a88ac7b9dfa926e8b74491b191fafec3886afca3e9",
+    "width": 1540,
+    "height": 1488,
+    "bytes": 330947,
+    "unaltered": true
+  },
+  "not_established": [
+    "Windows receiver direction",
+    "restart persistence for this test",
+    "Channel Chat qualification",
+    "native installer certification",
+    "WAN or Managed Relay operation",
+    "hidden-state or model-weight transfer"
+  ],
+  "public_1_8_1_release_bytes_changed": false
+}

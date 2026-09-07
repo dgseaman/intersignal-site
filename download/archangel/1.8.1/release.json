@@ -21,11 +21,12 @@
   "integrated_composer": true,
   "mac_runtime_discovery_included": true,
   "requires_separate_patch": false,
-  "physical_evidence": "September 7 predecessor a6-line Linux-to-Mac accepted/indexed spending note and field answer returning 500; not a physical 1.8.1 qualification.",
+  "physical_evidence": "September 7, 2026: founder-reported physical 1.8.1 Windows-sender to Mac-receiver LAN handoff, followed by a fresh Shared field answer returning the blue group. Original screenshot and detailed scope in PHYSICAL_WINDOWS_MAC_2026-09-07.md. Earlier a6 spending evidence remains separate.",
+  "resilience_preview_merged": false,
   "prerequisites": [
-    "Standard CPython 3.10-3.13",
+    "CPython 3.10-3.13",
     "Local Ollama",
     "Local embedding and completion models"
   ],
-  "resilience_preview_merged": false
+  "physical_test_record": "PHYSICAL_WINDOWS_MAC_2026-09-07.json"
 }
