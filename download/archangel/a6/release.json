@@ -20,11 +20,13 @@
     "sha256": "4e26a0830d61cb4781db2f40abacc182971c140fa68a5aa2c522a17aa4a389ea"
   },
   "mac_launcher_fix_included": true,
-  "physical_evidence": "Earlier a5 demonstration is retained separately; no physical a6 result is claimed.",
+  "physical_evidence": "September 7, 2026: founder-confirmed public a6 Linux-to-Mac LAN Messenger handoff. Supplied photographs show the exact note accepted and indexed on the MacBook Air. Earlier a5 handoff-and-answer evidence remains separate; the full a6 physical matrix is not complete.",
   "prerequisites": [
     "Standard CPython 3.10-3.13",
     "Local Ollama",
     "Local embedding and completion model files"
   ],
-  "previous_demonstrated_release_url": "https://drive.google.com/file/d/1ltxcrCRCRF8IsBjxGMTIYPAio1d7-6X4/view?usp=drivesdk"
+  "previous_demonstrated_release_url": "https://drive.google.com/file/d/1ltxcrCRCRF8IsBjxGMTIYPAio1d7-6X4/view?usp=drivesdk",
+  "physical_evidence_record": "download/archangel/a6/PHYSICAL_RUN_2026-09-07.md",
+  "physical_evidence_manifest": "download/archangel/a6/PHYSICAL_RUN_2026-09-07.json"
 }

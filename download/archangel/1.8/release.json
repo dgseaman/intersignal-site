@@ -1,0 +1,37 @@
+{
+  "version": "1.8.0",
+  "codename": "Archangel",
+  "edition": "Channels + integrated composer correction",
+  "status": "public_release_with_documented_validation_limits",
+  "release_zip": {
+    "name": "Braid-Archangel-1.8.0.zip",
+    "bytes": 1531807,
+    "sha256": "f3126339b55dfc90a2dd4ea8a36c83342096745295fbabbbc0976cdf4a640f11",
+    "url": "https://drive.google.com/file/d/1D02et7p27CcfVw4L7j6QTcsvnLTp-G-o/view?usp=drivesdk"
+  },
+  "source_zip": {
+    "name": "Braid-Archangel-1.8.0-source.zip",
+    "bytes": 679842,
+    "sha256": "ddf30d298bbb527735aea38ac763ca971f6a22382b339d35cef6af2e317ead23",
+    "distribution": "Included inside the complete ZIP; same Drive download"
+  },
+  "wheel": {
+    "name": "braid_client-1.8.0-py3-none-any.whl",
+    "sha256": "1adb6e3c90c9dcb50d9bf2de53c8576b07b4b8b7671b991bfe2ef363aa95a5db"
+  },
+  "composer_fix_included": true,
+  "mac_launcher_fix_included": true,
+  "a7_resilience_merged": false,
+  "physical_evidence": {
+    "record": "DEMO_SPENDING_2026-09-07.md",
+    "release_line": "1.7.0a6",
+    "claim": "Founder-reported Linux-to-Mac accepted/indexed handoff, followed by Shared field answer returning 500.",
+    "not_claimed": "No physical 1.8 run or automatic spending enforcement."
+  },
+  "previous_release_url": "https://drive.google.com/file/d/1wgXwRiX0DLjep7sAUfMfr4IUt-Ft1Y7Y/view?usp=drivesdk",
+  "prerequisites": [
+    "Standard CPython 3.10-3.13",
+    "Local Ollama",
+    "Local embedding and completion model files"
+  ]
+}

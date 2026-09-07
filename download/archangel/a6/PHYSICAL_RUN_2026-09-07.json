@@ -1,0 +1,86 @@
+{
+  "schema": "intersignal.website.physical-evidence.v1",
+  "date": "2026-09-07",
+  "edition": "Archangel",
+  "reported_application_version": "1.7.0a6",
+  "version_basis": "Operator identifies the tested build as the latest public release, a6. Screenshots do not display an exact version or binary hash.",
+  "source": "User-reported physical run and three user-provided camera photographs; not a new assistant-run test or independent certification.",
+  "direction": {
+    "sender": "Linux laptop (operator report)",
+    "receiver": "Davids-MacBook-Air (visible UI)"
+  },
+  "path": "Direct LAN (operator report and Reachable / LAN display)",
+  "workflow": "Ordinary Messenger reviewed-summary handoff, not a channel-note Chat demonstration",
+  "exact_text": "spend no more than 500 credits on our second server today",
+  "visible_observations": {
+    "lan_contact_reachable": true,
+    "matching_note_on_receiver": true,
+    "received": true,
+    "accepted": true,
+    "indexed": true,
+    "receiver_message_time": "Sep 7 at 11:36 AM",
+    "mac_menu_time": "Mon Sep 7 11:37 AM"
+  },
+  "not_established": [
+    "Exact application/wheel hash on both tested devices",
+    "New completion-model answer or 500-credit spending enforcement",
+    "Channel identity, scoped channel-chat retrieval, or Using N shared notes metric",
+    "Restart persistence or failure recovery",
+    "Windows run",
+    "Physical QR/camera transfer",
+    "WAN or Managed Relay",
+    "a7 Resilience qualification"
+  ],
+  "images": [
+    {
+      "source_filename": "4617.jpg",
+      "site_path": "assets/archangel/physical-a6-linux-mac-receipt.jpg",
+      "sha256": "fb372c23744ea40349f198d43e0c748ee4f458e670397399a2462dd2a51afcd1",
+      "bytes": 285049,
+      "dimensions": [
+        1152,
+        1536
+      ],
+      "description": "Mac receiver; exact note and Received / Accepted / Indexed receipt",
+      "transformation": "none; original JPEG bytes preserved"
+    },
+    {
+      "source_filename": "4615.jpg",
+      "site_path": "assets/archangel/physical-a6-linux-mac-compose.jpg",
+      "sha256": "6e66e87cc4a05375b89693e3b295a683175ab627a35a1f2d3fdc88ffca8258fd",
+      "bytes": 191833,
+      "dimensions": [
+        1152,
+        1536
+      ],
+      "description": "Linux sender per operator report; reviewed-summary composer before sending",
+      "transformation": "none; original JPEG bytes preserved"
+    },
+    {
+      "source_filename": "4616.jpg",
+      "site_path": "assets/archangel/physical-a6-linux-mac-peer.jpg",
+      "sha256": "fa6e9a2edb1d2fdc73016300b7829f264629a6c75ae4bd27ea2e9332d770cce3",
+      "bytes": 323363,
+      "dimensions": [
+        1152,
+        1536
+      ],
+      "description": "Linux rig list per operator report; Mac is Reachable / LAN; Channels heading visible",
+      "transformation": "none; original JPEG bytes preserved"
+    }
+  ],
+  "expected_public_download_identity": {
+    "release_zip": {
+      "name": "Braid-Archangel-1.7.0a6-Channels.zip",
+      "bytes": 1006956,
+      "sha256": "98d2eb0c1656fcf972fa773797aba46c8f716bac9357c093141f70838dc1c3f8",
+      "url": "https://drive.google.com/file/d/1wgXwRiX0DLjep7sAUfMfr4IUt-Ft1Y7Y/view?usp=drivesdk"
+    },
+    "wheel": {
+      "name": "braid_client-1.7.0a6-py3-none-any.whl",
+      "sha256": "4e26a0830d61cb4781db2f40abacc182971c140fa68a5aa2c522a17aa4a389ea"
+    }
+  },
+  "download_identity_note": "Expected public artifact identity, not a hash measurement from the test machines.",
+  "distribution_status": "The user earlier reported downloading the complete a6 bundle through a private Safari window; not retested in this website-only task."
+}
