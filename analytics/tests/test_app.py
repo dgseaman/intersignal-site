@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import sqlite3
 import sys
 import tempfile
 import time
@@ -175,6 +176,100 @@ class AnalyticsTests(unittest.TestCase):
         self.assertEqual(self.db_row("SELECT COUNT(*) FROM visits")[0], 0)
         self.assertEqual(self.db_row("SELECT COUNT(*) FROM pageviews")[0], 0)
         self.assertEqual(self.db_row("SELECT COUNT(*) FROM visitors")[0], 1)
+
+    def test_two_sites_are_recorded_and_filtered_independently(self):
+        self.create_user()
+        self.assertEqual(self.login().status_code, 200)
+        self.assertEqual(self.collect().status_code, 204)
+        self.visitor_id = str(uuid.uuid4())
+        self.visit_id = str(uuid.uuid4())
+        fulcrum = {"Origin": "https://www.fulcrumnews.com"}
+        first = self.collect(headers=fulcrum)
+        self.assertEqual(first.status_code, 204)
+        self.assertEqual(first.headers["Access-Control-Allow-Origin"], fulcrum["Origin"])
+        self.assertNotIn("Access-Control-Allow-Credentials", first.headers)
+        self.visit_id = str(uuid.uuid4())
+        self.assertEqual(self.collect(headers={"Origin": "https://fulcrumnews.com"}).status_code, 204)
+        self.assertEqual(
+            self.db_row("SELECT COUNT(*) FROM visits WHERE site='fulcrumnews'")[0], 2
+        )
+        self.assertEqual(
+            self.db_row("SELECT COUNT(*) FROM pageviews WHERE site='fulcrumnews'")[0], 2
+        )
+
+        def summary(site):
+            return self.client.get(f"/api/summary?site={site}", base_url=API).json
+
+        self.assertEqual(summary("intersignal")["metrics"]["visits"], 1)
+        self.assertEqual(summary("fulcrumnews")["metrics"]["visits"], 2)
+        self.assertEqual(summary("fulcrumnews")["metrics"]["return_visits"], 1)
+        self.assertEqual(summary("all")["metrics"]["visits"], 3)
+        self.assertEqual({row["site"] for row in summary("all")["pages"]},
+                         {"intersignal", "fulcrumnews"})
+        self.assertEqual({row["site"] for row in summary("all")["recent"]},
+                         {"intersignal", "fulcrumnews"})
+        self.assertEqual(summary("all")["sites"], [
+            {"id": "intersignal", "label": "Intersignal"},
+            {"id": "fulcrumnews", "label": "FULCRUM News"},
+        ])
+        self.assertEqual(self.client.get("/api/summary?site=other", base_url=API).status_code, 400)
+
+    def test_second_site_cannot_use_dashboard_auth_or_reuse_primary_visitor(self):
+        self.assertEqual(self.collect().status_code, 204)
+        self.visit_id = str(uuid.uuid4())
+        self.assertEqual(
+            self.collect(headers={"Origin": "https://www.fulcrumnews.com"}).status_code, 400
+        )
+        self.assertEqual(self.db_row("SELECT COUNT(*) FROM visits")[0], 1)
+        denied = self.client.options(
+            "/api/login", headers={"Origin": "https://www.fulcrumnews.com"}, base_url=API
+        )
+        self.assertEqual(denied.status_code, 403)
+        self.assertNotIn("Access-Control-Allow-Origin", denied.headers)
+        self.assertEqual(self.collect(headers={"Origin": "https://evil.example"}).status_code, 403)
+
+    def test_existing_single_site_database_migrates_without_losing_rows(self):
+        legacy_path = Path(_data_dir.name) / f"legacy-{uuid.uuid4()}.sqlite3"
+        original = analytics.DB_PATH
+        try:
+            with sqlite3.connect(legacy_path) as db:
+                db.executescript("""
+                    CREATE TABLE visitors (
+                        id TEXT PRIMARY KEY, first_seen INTEGER NOT NULL,
+                        last_seen INTEGER NOT NULL, visit_count INTEGER NOT NULL DEFAULT 0
+                    );
+                    CREATE TABLE visits (
+                        id TEXT PRIMARY KEY, visitor_id TEXT NOT NULL REFERENCES visitors(id),
+                        started_at INTEGER NOT NULL, last_seen INTEGER NOT NULL,
+                        visit_number INTEGER NOT NULL, first_path TEXT NOT NULL,
+                        last_path TEXT NOT NULL, referrer_url TEXT NOT NULL,
+                        ip_address TEXT NOT NULL, country_code TEXT NOT NULL,
+                        country_name TEXT NOT NULL, operating_system TEXT NOT NULL,
+                        browser TEXT NOT NULL, device TEXT NOT NULL,
+                        pageviews INTEGER NOT NULL DEFAULT 0
+                    );
+                    CREATE TABLE pageviews (
+                        id TEXT PRIMARY KEY, visit_id TEXT NOT NULL REFERENCES visits(id) ON DELETE CASCADE,
+                        occurred_at INTEGER NOT NULL, path TEXT NOT NULL, referrer_url TEXT NOT NULL
+                    );
+                """)
+                db.execute("INSERT INTO visitors VALUES (?,?,?,?)", (self.visitor_id, 1, 1, 1))
+                db.execute("INSERT INTO visits VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (
+                    self.visit_id, self.visitor_id, 1, 1, 1, "/", "/", "", "8.8.8.8",
+                    "US", "United States", "macOS", "Safari", "Desktop", 1,
+                ))
+                db.execute("INSERT INTO pageviews VALUES (?,?,?,?,?)", (
+                    str(uuid.uuid4()), self.visit_id, 1, "/", "",
+                ))
+            analytics.DB_PATH = legacy_path
+            analytics.init_db()
+            analytics.init_db()
+            with analytics.connect() as db:
+                for table in ("visitors", "visits", "pageviews"):
+                    self.assertEqual(db.execute(f"SELECT site FROM {table}").fetchone()[0],
+                                     "intersignal")
+        finally:
+            analytics.DB_PATH = original
 
 
 if __name__ == "__main__":

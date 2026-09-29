@@ -1,8 +1,10 @@
 # Intersignal Global
 
-This is a first-party web counter for `intersignal.org`. The site serves `global.html` as an unlisted, `noindex` sign-in page. Raw stats are returned only by the authenticated API at `https://stats.relay.intersignal.org`; `noindex` is not the access control.
+This is an owner-controlled web counter for `intersignal.org` and the legacy `fulcrumnews.com` site. Intersignal serves `global.html` as an unlisted, `noindex` sign-in page. Raw stats are returned only by the authenticated API at `https://stats.relay.intersignal.org`; `noindex` is not the access control.
 
 The tracker sends page paths, referrer URLs without query strings or fragments, a random browser ID, and a 30-minute visit ID. The collector records the visitor IP, IP-derived country, browser, and operating system. It honors browser DNT and Global Privacy Control signals and the site opt-out setting. It does not call a third-party analytics service or map tile provider.
+
+The collector derives each event's site from its browser `Origin`, then stores `intersignal` or `fulcrumnews` with visitors, visits, and pageviews. It accepts `https://intersignal.org`, `https://www.intersignal.org`, `https://fulcrumnews.com`, and `https://www.fulcrumnews.com` by default. Set `ANALYTICS_FULCRUM_ORIGINS` to a comma-separated list of exact HTTPS origins if the legacy site's canonical address changes; an empty value disables collection from it. Dashboard sign-in and sign-out accept Intersignal origins only. The authenticated `/api/summary` endpoint defaults to `site=intersignal` and also accepts `site=fulcrumnews` or `site=all`. Existing single-site database rows are automatically assigned to `intersignal` on startup.
 
 SQLite lives on the DigitalOcean relay droplet at `/var/lib/intersignal-analytics/analytics.sqlite3`, outside GitHub and Render. The dashboard requires individual username/password accounts. Session cookies are Secure, HttpOnly, SameSite Lax, and expire after seven days. Raw visit/pageview data is purged after 90 days; browser IDs and cumulative visit counts after 400 days. The daily systemd timer in `deploy/` applies retention.
 

@@ -6,6 +6,8 @@
   const number = (value) => new Intl.NumberFormat().format(Number(value) || 0);
   const svgNS = "http://www.w3.org/2000/svg";
   let selectedDays = 7;
+  let selectedSite = $("site-filter").value;
+  const siteLabels = new Map([["intersignal", "Intersignal"], ["fulcrumnews", "FULCRUM News"]]);
   let mapFeatures = null;
   let refreshTimer = null;
   let requestSerial = 0;
@@ -44,6 +46,26 @@
     loadSummary();
   }
 
+  function updateSiteLabels(sites) {
+    if (!Array.isArray(sites)) return;
+    const select = $("site-filter");
+    for (const site of sites) {
+      if (typeof site.id !== "string" || typeof site.label !== "string") continue;
+      siteLabels.set(site.id, site.label);
+      let option = [...select.options].find((candidate) => candidate.value === site.id);
+      if (!option) {
+        option = document.createElement("option");
+        option.value = site.id;
+        select.append(option);
+      }
+      option.textContent = site.label;
+    }
+  }
+
+  function siteLabel(id) {
+    return siteLabels.get(id) || id || "Intersignal";
+  }
+
   function rankList(id, rows, labelKey, valueKey, emptyMessage) {
     const list = $(id);
     list.replaceChildren();
@@ -61,8 +83,9 @@
       const value = document.createElement("span");
       const bar = document.createElement("span");
       label.className = "rank-label";
-      label.textContent = `${String(index + 1).padStart(2, "0")}  ${row[labelKey] || "Unknown"}`;
-      label.title = row[labelKey] || "Unknown";
+      const rowLabel = typeof labelKey === "function" ? labelKey(row) : row[labelKey];
+      label.textContent = `${String(index + 1).padStart(2, "0")}  ${rowLabel || "Unknown"}`;
+      label.title = rowLabel || "Unknown";
       value.className = "rank-value";
       value.textContent = number(row[valueKey]);
       bar.className = "rank-bar";
@@ -131,8 +154,9 @@
     return mapFeatures;
   }
 
-  async function renderMap(countries) {
+  async function renderMap(countries, serial) {
     const features = await loadMap();
+    if (serial !== requestSerial) return;
     const svg = $("world-map");
     svg.replaceChildren();
     const visitCounts = new Map(countries.map((row) => [row.code, Number(row.visits) || 0]));
@@ -199,7 +223,7 @@
       const row = document.createElement("tr");
       const cell = document.createElement("td");
       cell.className = "empty-table";
-      cell.colSpan = 6;
+      cell.colSpan = 7;
       cell.textContent = "No visits in this period";
       row.append(cell);
       body.append(row);
@@ -209,6 +233,7 @@
       const row = document.createElement("tr");
       const when = new Date(visit.started_at * 1000);
       appendCell(row, when.toLocaleString(), `${number(visit.pageviews)} ${visit.pageviews === 1 ? "pageview" : "pageviews"}`);
+      appendCell(row, siteLabel(visit.site));
       appendCell(row, visit.ip_address || "Unknown", visit.country_name || "Unknown", "ip");
       appendCell(row, visit.browser || "Unknown", visit.operating_system || "Unknown");
       appendCell(row, visit.first_path || "/", visit.last_path !== visit.first_path ? `Last: ${visit.last_path}` : "", "truncate");
@@ -223,20 +248,21 @@
     }
   }
 
-  function renderSummary(data) {
+  function renderSummary(data, serial) {
+    updateSiteLabels(data.sites);
     const metrics = data.metrics;
     for (const [id, key] of [["metric-active", "active_now"], ["metric-visitors", "visitors"], ["metric-visits", "visits"], ["metric-return", "return_visits"], ["metric-pages", "pageviews"]]) {
       $(id).textContent = number(metrics[key]);
     }
     rankList("countries-list", data.countries, "name", "visits", "No country data yet");
-    rankList("pages-list", data.pages, "path", "pageviews", "No pageviews yet");
+    rankList("pages-list", data.pages, (row) => selectedSite === "all" && row.site ? `${siteLabel(row.site)} · ${row.path}` : row.path, "pageviews", "No pageviews yet");
     rankList("sources-list", data.referrers, "url", "visits", "No referrers yet");
     rankList("browsers-list", data.browsers, "name", "visits", "No browser data yet");
     rankList("systems-list", data.operating_systems, "name", "visits", "No operating system data yet");
     renderTrend(data.trend, data.days);
     renderRecent(data.recent);
-    renderMap(data.countries).catch((error) => {
-      $("map-note").textContent = error.message;
+    renderMap(data.countries, serial).catch((error) => {
+      if (serial === requestSerial) $("map-note").textContent = error.message;
     });
     $("updated-at").textContent = `Updated ${new Date(data.generated_at * 1000).toLocaleTimeString()}`;
   }
@@ -244,11 +270,12 @@
   async function loadSummary() {
     const serial = ++requestSerial;
     try {
-      const data = await api(`/api/summary?days=${selectedDays}`);
+      const data = await api(`/api/summary?days=${selectedDays}&site=${encodeURIComponent(selectedSite)}`);
       if (serial !== requestSerial) return;
       $("dashboard-error").hidden = true;
-      renderSummary(data);
+      renderSummary(data, serial);
     } catch (error) {
+      if (serial !== requestSerial) return;
       if (error.status === 401) return showLogin();
       $("dashboard-error").textContent = `Could not load stats: ${error.message}`;
       $("dashboard-error").hidden = false;
@@ -291,6 +318,11 @@
       loadSummary();
     });
   }
+
+  $("site-filter").addEventListener("change", (event) => {
+    selectedSite = event.target.value;
+    loadSummary();
+  });
 
   api("/api/me").then((result) => showDashboard(result.username)).catch(showLogin);
 })();

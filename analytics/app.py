@@ -31,6 +31,18 @@ from ua_parser import parse as parse_user_agent
 HERE = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("ANALYTICS_DB_PATH", HERE / "data" / "analytics.sqlite3"))
 SITE_ORIGIN = os.environ.get("ANALYTICS_SITE_ORIGIN", "https://intersignal.org").rstrip("/")
+INTERSIGNAL_ORIGINS = {SITE_ORIGIN}
+if SITE_ORIGIN == "https://intersignal.org":
+    INTERSIGNAL_ORIGINS.add("https://www.intersignal.org")
+FULCRUM_ORIGINS = {
+    origin.strip().rstrip("/")
+    for origin in os.environ.get(
+        "ANALYTICS_FULCRUM_ORIGINS", "https://fulcrumnews.com,https://www.fulcrumnews.com"
+    ).split(",") if origin.strip()
+}
+ORIGIN_SITES = {origin: "intersignal" for origin in INTERSIGNAL_ORIGINS}
+ORIGIN_SITES.update({origin: "fulcrumnews" for origin in FULCRUM_ORIGINS})
+SITE_LABELS = (("intersignal", "Intersignal"), ("fulcrumnews", "FULCRUM News"))
 COOKIE_NAME = "intersignal_stats_session"
 SESSION_SECONDS = 7 * 24 * 3600
 RAW_RETENTION_DAYS = int(os.environ.get("ANALYTICS_RAW_RETENTION_DAYS", "90"))
@@ -67,6 +79,7 @@ def init_db() -> None:
             """
             CREATE TABLE IF NOT EXISTS visitors (
                 id TEXT PRIMARY KEY,
+                site TEXT NOT NULL DEFAULT 'intersignal',
                 first_seen INTEGER NOT NULL,
                 last_seen INTEGER NOT NULL,
                 visit_count INTEGER NOT NULL DEFAULT 0
@@ -74,6 +87,7 @@ def init_db() -> None:
             CREATE TABLE IF NOT EXISTS visits (
                 id TEXT PRIMARY KEY,
                 visitor_id TEXT NOT NULL REFERENCES visitors(id),
+                site TEXT NOT NULL DEFAULT 'intersignal',
                 started_at INTEGER NOT NULL,
                 last_seen INTEGER NOT NULL,
                 visit_number INTEGER NOT NULL,
@@ -94,6 +108,7 @@ def init_db() -> None:
             CREATE TABLE IF NOT EXISTS pageviews (
                 id TEXT PRIMARY KEY,
                 visit_id TEXT NOT NULL REFERENCES visits(id) ON DELETE CASCADE,
+                site TEXT NOT NULL DEFAULT 'intersignal',
                 occurred_at INTEGER NOT NULL,
                 path TEXT NOT NULL,
                 referrer_url TEXT NOT NULL
@@ -129,6 +144,15 @@ def init_db() -> None:
             );
             """
         )
+        # Existing relay databases predate multi-site collection. Their rows all
+        # belong to Intersignal; serialize migration across Gunicorn workers.
+        db.execute("BEGIN IMMEDIATE")
+        for table in ("visitors", "visits", "pageviews"):
+            columns = {row["name"] for row in db.execute(f"PRAGMA table_info({table})")}
+            if "site" not in columns:
+                db.execute(f"ALTER TABLE {table} ADD COLUMN site TEXT NOT NULL DEFAULT 'intersignal'")
+        db.execute("CREATE INDEX IF NOT EXISTS visits_site_started_idx ON visits(site, started_at)")
+        db.execute("CREATE INDEX IF NOT EXISTS pageviews_site_time_idx ON pageviews(site, occurred_at)")
 
 
 init_db()
@@ -237,7 +261,10 @@ def clean_referrer(value: object) -> str:
 
 
 def allowed_origin() -> bool:
-    return request.headers.get("Origin", "") == SITE_ORIGIN
+    origin = request.headers.get("Origin", "")
+    if request.path == "/collect":
+        return origin in ORIGIN_SITES
+    return origin in INTERSIGNAL_ORIGINS
 
 
 @app.after_request
@@ -248,8 +275,10 @@ def security_headers(response):
     response.headers["X-Robots-Tag"] = "noindex, nofollow"
     response.headers["Cache-Control"] = "no-store"
     if allowed_origin():
-        response.headers["Access-Control-Allow-Origin"] = SITE_ORIGIN
-        response.headers["Access-Control-Allow-Credentials"] = "true"
+        origin = request.headers["Origin"]
+        response.headers["Access-Control-Allow-Origin"] = origin
+        if origin in INTERSIGNAL_ORIGINS:
+            response.headers["Access-Control-Allow-Credentials"] = "true"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type"
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
         response.headers["Vary"] = "Origin"
@@ -267,6 +296,7 @@ def collect():
         return ("", 204) if allowed_origin() else ("", 403)
     if not allowed_origin():
         return ("", 403)
+    site = ORIGIN_SITES[request.headers["Origin"]]
     if request.headers.get("DNT") == "1" or request.headers.get("Sec-GPC") == "1":
         return "", 204
     ua = request.headers.get("User-Agent", "")
@@ -306,17 +336,20 @@ def collect():
         ).rowcount == 0:
             db.rollback()
             return "", 204
-        visit = db.execute("SELECT visitor_id FROM visits WHERE id=?", (visit_id,)).fetchone()
-        if visit and visit["visitor_id"] != visitor_id:
+        visit = db.execute("SELECT visitor_id, site FROM visits WHERE id=?", (visit_id,)).fetchone()
+        if visit and (visit["visitor_id"] != visitor_id or visit["site"] != site):
             db.rollback()
             return "", 400
         if visit is None:
-            visitor = db.execute("SELECT visit_count FROM visitors WHERE id=?", (visitor_id,)).fetchone()
+            visitor = db.execute("SELECT visit_count, site FROM visitors WHERE id=?", (visitor_id,)).fetchone()
+            if visitor is not None and visitor["site"] != site:
+                db.rollback()
+                return "", 400
             if visitor is None:
                 visit_number = 1
                 db.execute(
-                    "INSERT INTO visitors(id, first_seen, last_seen, visit_count) VALUES (?,?,?,1)",
-                    (visitor_id, now, now),
+                    "INSERT INTO visitors(id, site, first_seen, last_seen, visit_count) VALUES (?,?,?,?,1)",
+                    (visitor_id, site, now, now),
                 )
             else:
                 visit_number = visitor["visit_count"] + 1
@@ -326,11 +359,11 @@ def collect():
                 )
             db.execute(
                 """INSERT INTO visits
-                   (id, visitor_id, started_at, last_seen, visit_number, first_path,
+                   (id, visitor_id, site, started_at, last_seen, visit_number, first_path,
                     last_path, referrer_url, ip_address, country_code, country_name,
                     operating_system, browser, device, pageviews)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)""",
-                (visit_id, visitor_id, now, now, visit_number, path, path, referrer,
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)""",
+                (visit_id, visitor_id, site, now, now, visit_number, path, path, referrer,
                  ip, country_code, country_name, operating_system, browser, device),
             )
         else:
@@ -343,8 +376,8 @@ def collect():
             )
             db.execute("UPDATE visitors SET last_seen=? WHERE id=?", (now, visitor_id))
         db.execute(
-            "INSERT INTO pageviews(id, visit_id, occurred_at, path, referrer_url) VALUES (?,?,?,?,?)",
-            (event_id, visit_id, now, path, referrer),
+            "INSERT INTO pageviews(id, visit_id, site, occurred_at, path, referrer_url) VALUES (?,?,?,?,?,?)",
+            (event_id, visit_id, site, now, path, referrer),
         )
         db.execute("UPDATE visits SET pageviews=pageviews+1 WHERE id=?", (visit_id,))
         db.commit()
@@ -470,24 +503,36 @@ def summary(_username: str):
         return jsonify({"error": "Invalid range"}), 400
     if days not in (1, 7, 30, 90):
         return jsonify({"error": "Invalid range"}), 400
+    site = request.args.get("site", "intersignal")
+    if site not in ("intersignal", "fulcrumnews", "all"):
+        return jsonify({"error": "Invalid site"}), 400
+    scope = "" if site == "all" else " AND site=?"
+
+    def scoped(*values):
+        return values if site == "all" else (*values, site)
+
     now = int(time.time())
     cutoff = now - days * 86400
     db = db_for_request()
     metrics = db.execute(
-        """SELECT COUNT(*) AS visits, COUNT(DISTINCT visitor_id) AS visitors,
+        f"""SELECT COUNT(*) AS visits, COUNT(DISTINCT visitor_id) AS visitors,
            SUM(CASE WHEN visit_number > 1 THEN 1 ELSE 0 END) AS return_visits
-           FROM visits WHERE started_at>=?""", (cutoff,),
+           FROM visits WHERE started_at>=?{scope}""", scoped(cutoff),
     ).fetchone()
-    pageviews = db.execute("SELECT COUNT(*) FROM pageviews WHERE occurred_at>=?", (cutoff,)).fetchone()[0]
-    active = db.execute("SELECT COUNT(*) FROM visits WHERE last_seen>=?", (now - 300,)).fetchone()[0]
+    pageviews = db.execute(
+        f"SELECT COUNT(*) FROM pageviews WHERE occurred_at>=?{scope}", scoped(cutoff)
+    ).fetchone()[0]
+    active = db.execute(
+        f"SELECT COUNT(*) FROM visits WHERE last_seen>=?{scope}", scoped(now - 300)
+    ).fetchone()[0]
     trend = rows_to_dicts(db.execute(
-        """WITH daily_visits AS (
+        f"""WITH daily_visits AS (
                SELECT date(started_at, 'unixepoch') AS day, COUNT(*) AS visits,
                       COUNT(DISTINCT visitor_id) AS visitors
-               FROM visits WHERE started_at>=? GROUP BY day
+               FROM visits WHERE started_at>=?{scope} GROUP BY day
            ), daily_pageviews AS (
                SELECT date(occurred_at, 'unixepoch') AS day, COUNT(*) AS pageviews
-               FROM pageviews WHERE occurred_at>=? GROUP BY day
+               FROM pageviews WHERE occurred_at>=?{scope} GROUP BY day
            ), days AS (
                SELECT day FROM daily_visits UNION SELECT day FROM daily_pageviews
            )
@@ -496,41 +541,42 @@ def summary(_username: str):
                   COALESCE(p.pageviews, 0) AS pageviews
            FROM days LEFT JOIN daily_visits v USING (day)
                      LEFT JOIN daily_pageviews p USING (day)
-           ORDER BY days.day""", (cutoff, cutoff),
+           ORDER BY days.day""", (*scoped(cutoff), *scoped(cutoff)),
     ).fetchall())
     countries = rows_to_dicts(db.execute(
-        """SELECT country_code AS code, country_name AS name,
+        f"""SELECT country_code AS code, country_name AS name,
            COUNT(*) AS visits, COUNT(DISTINCT visitor_id) AS visitors
-           FROM visits WHERE started_at>=? GROUP BY country_code, country_name
-           ORDER BY visits DESC, name LIMIT 250""", (cutoff,),
+           FROM visits WHERE started_at>=?{scope} GROUP BY country_code, country_name
+           ORDER BY visits DESC, name LIMIT 250""", scoped(cutoff),
     ).fetchall())
     pages = rows_to_dicts(db.execute(
-        """SELECT path, COUNT(*) AS pageviews FROM pageviews WHERE occurred_at>=?
-           GROUP BY path ORDER BY pageviews DESC, path LIMIT 12""", (cutoff,),
+        f"""SELECT site, path, COUNT(*) AS pageviews FROM pageviews WHERE occurred_at>=?{scope}
+           GROUP BY site, path ORDER BY pageviews DESC, site, path LIMIT 12""", scoped(cutoff),
     ).fetchall())
     referrers = rows_to_dicts(db.execute(
-        """SELECT CASE WHEN referrer_url='' THEN 'Direct / unknown'
+        f"""SELECT CASE WHEN referrer_url='' THEN 'Direct / unknown'
            ELSE referrer_url END AS url, COUNT(*) AS visits
-           FROM visits WHERE started_at>=? GROUP BY url
-           ORDER BY visits DESC, url LIMIT 12""", (cutoff,),
+           FROM visits WHERE started_at>=?{scope} GROUP BY url
+           ORDER BY visits DESC, url LIMIT 12""", scoped(cutoff),
     ).fetchall())
     browsers = rows_to_dicts(db.execute(
-        """SELECT browser AS name, COUNT(*) AS visits FROM visits WHERE started_at>=?
-           GROUP BY browser ORDER BY visits DESC LIMIT 8""", (cutoff,),
+        f"""SELECT browser AS name, COUNT(*) AS visits FROM visits WHERE started_at>=?{scope}
+           GROUP BY browser ORDER BY visits DESC LIMIT 8""", scoped(cutoff),
     ).fetchall())
     operating_systems = rows_to_dicts(db.execute(
-        """SELECT operating_system AS name, COUNT(*) AS visits
-           FROM visits WHERE started_at>=? GROUP BY operating_system
-           ORDER BY visits DESC LIMIT 8""", (cutoff,),
+        f"""SELECT operating_system AS name, COUNT(*) AS visits
+           FROM visits WHERE started_at>=?{scope} GROUP BY operating_system
+           ORDER BY visits DESC LIMIT 8""", scoped(cutoff),
     ).fetchall())
     recent = rows_to_dicts(db.execute(
-        """SELECT id, visitor_id, started_at, last_seen, visit_number,
+        f"""SELECT id, visitor_id, site, started_at, last_seen, visit_number,
            first_path, last_path, referrer_url, ip_address, country_code,
            country_name, operating_system, browser, device, pageviews
-           FROM visits WHERE started_at>=? ORDER BY started_at DESC LIMIT 60""", (cutoff,),
+           FROM visits WHERE started_at>=?{scope} ORDER BY started_at DESC LIMIT 60""", scoped(cutoff),
     ).fetchall())
     return jsonify({
-        "days": days, "generated_at": now,
+        "days": days, "site": site, "generated_at": now,
+        "sites": [{"id": site_id, "label": label} for site_id, label in SITE_LABELS],
         "metrics": {
             "active_now": active, "visitors": metrics["visitors"],
             "visits": metrics["visits"], "return_visits": metrics["return_visits"] or 0,
