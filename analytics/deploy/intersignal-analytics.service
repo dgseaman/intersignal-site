@@ -1,0 +1,29 @@
+[Unit]
+Description=Intersignal private web analytics API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=intersignal-analytics
+Group=intersignal-analytics
+WorkingDirectory=/opt/intersignal-analytics
+Environment=ANALYTICS_DB_PATH=/var/lib/intersignal-analytics/analytics.sqlite3
+Environment=ANALYTICS_SITE_ORIGIN=https://intersignal.org
+Environment=ANALYTICS_RAW_RETENTION_DAYS=90
+Environment=ANALYTICS_VISITOR_RETENTION_DAYS=400
+Environment=ANALYTICS_COLLECTOR_PER_MINUTE=180
+Environment=ANALYTICS_GEO_DB=/opt/intersignal-analytics/geoip2fast-ipv6.dat.gz
+Environment=PYTHONDONTWRITEBYTECODE=1
+StateDirectory=intersignal-analytics
+ExecStart=/opt/intersignal-analytics/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8788 --timeout 30 app:app
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/intersignal-analytics
+
+[Install]
+WantedBy=multi-user.target

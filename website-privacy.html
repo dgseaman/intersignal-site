@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090e17">
+  <meta name="description" content="How Intersignal measures website visits and how to opt out.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>Website privacy · Intersignal</title>
+  <link rel="icon" href="/intersignal_favicon.ico">
+  <link rel="stylesheet" href="/global.css">
+  <script defer src="/analytics/privacy-controls.js"></script>
+</head>
+<body>
+  <header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>INTERSIGNAL</span><span class="brand-divider"></span><strong>Website privacy</strong></div><a class="text-button" href="/">Home</a></header>
+  <main class="privacy-page">
+    <span class="eyebrow">A SMALLER FOOTPRINT</span>
+    <h1>What this site counts.</h1>
+    <p class="privacy-lead">We use a first-party counter hosted on Intersignal-controlled infrastructure to understand visits to this website. The counter does not use Google Analytics, Statcounter, third-party map tiles, or advertising IDs.</p>
+    <section class="privacy-card"><h2>What we record</h2><p>For each visit, we record the page path, time, IP address, approximate country, browser, operating system, and referring URL. We remove query strings and fragments from referring URLs. A random ID stored in your browser lets us count return visits; a separate visit ID expires after 30 minutes of inactivity. These IDs do not tell us your name.</p></section>
+    <section class="privacy-card"><h2>Who can see it, and for how long</h2><p>Only authorized Intersignal team members can sign in to the statistics dashboard. Raw visit records, including IP addresses, are deleted after 90 days. Browser IDs and cumulative return-visit counts are deleted after 400 days.</p></section>
+    <section class="privacy-card"><h2>Your choice</h2><p>The counter respects Do Not Track and Global Privacy Control signals. You can also opt out on this browser. Opting out stops future counter requests and removes the counter's IDs from this browser. It does not delete records already received.</p><button id="optout-button" class="primary-button" type="button">Opt out of website counting</button><p id="optout-status" class="privacy-status" role="status"></p></section>
+    <p class="privacy-foot">This notice covers website traffic measurement. It does not describe telemetry inside Braid or other Intersignal products.</p>
+  </main>
+</body>
+</html>
