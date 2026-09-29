@@ -574,6 +574,12 @@ def purge() -> None:
         db.execute("DELETE FROM auth_sessions WHERE expires_at<?", (now,))
         db.execute("DELETE FROM login_failures WHERE occurred_at<?", (now - 900,))
         db.execute("DELETE FROM collector_rate WHERE minute<?", ((now - 86400) // 60,))
+    # secure_delete overwrites deleted rows; truncate the WAL so older copies
+    # of their raw IPs and referrers do not remain in the journal.
+    with connect() as db:
+        busy, _logged, _checkpointed = db.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone()
+        if busy:
+            raise RuntimeError("SQLite WAL checkpoint was busy; retry the retention purge")
     print("Expired analytics and sessions removed")
 
 

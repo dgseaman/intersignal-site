@@ -11,6 +11,8 @@ Environment=ANALYTICS_RAW_RETENTION_DAYS=90
 Environment=ANALYTICS_VISITOR_RETENTION_DAYS=400
 Environment=PYTHONDONTWRITEBYTECODE=1
 StateDirectory=intersignal-analytics
+StateDirectoryMode=0700
+UMask=0077
 ExecStart=/opt/intersignal-analytics/.venv/bin/python /opt/intersignal-analytics/app.py purge
 NoNewPrivileges=true
 PrivateTmp=true
