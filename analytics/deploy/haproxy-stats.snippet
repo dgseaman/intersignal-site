@@ -1,0 +1,16 @@
+# Add inside the existing :443 TCP frontend, which already waits for a full
+# TLS ClientHello. Put these before any broader SNI/default route. The first
+# route is used only by Let's Encrypt's TLS-ALPN-01 validation on port 443.
+    use_backend intersignal_analytics_acme if { req.ssl_sni -i stats.relay.intersignal.org } { req.ssl_alpn -m sub acme-tls/1 }
+    use_backend intersignal_analytics_tls if { req.ssl_sni -i stats.relay.intersignal.org }
+
+# Add as new backends. lego listens only during issuance/renewal and does not
+# understand PROXY protocol. The nginx backend does: send-proxy supplies the
+# original visitor IP to its loopback TLS listener.
+backend intersignal_analytics_acme
+    mode tcp
+    server lego 127.0.0.1:8444
+
+backend intersignal_analytics_tls
+    mode tcp
+    server analytics 127.0.0.1:8443 send-proxy check

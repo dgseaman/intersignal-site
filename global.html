@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://stats.relay.intersignal.org; base-uri 'none'; form-action 'self'">
+  <meta name="theme-color" content="#090e17">
+  <title>Global · Intersignal</title>
+  <link rel="icon" href="/intersignal_favicon.ico">
+  <link rel="stylesheet" href="/global.css">
+  <script defer src="/global.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to stats</a>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>INTERSIGNAL</span><span class="brand-divider"></span><strong>Global</strong></div>
+    <div class="top-actions"><span class="private-label">PRIVATE COUNTER</span><span id="account-name" class="account-name" hidden></span><button id="signout" class="text-button" type="button" hidden>Sign out</button></div>
+  </header>
+
+  <main id="main">
+    <section id="login-screen" class="login-screen" aria-labelledby="login-title">
+      <div class="login-card">
+        <span class="eyebrow">INTERSIGNAL / GLOBAL</span>
+        <h1 id="login-title">See the signal.</h1>
+        <p>Private traffic data for the Intersignal team.</p>
+        <form id="login-form">
+          <label for="username">Username</label>
+          <input id="username" name="username" autocomplete="username" required>
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <button class="primary-button" type="submit">Sign in</button>
+          <p id="login-error" class="form-error" role="alert" hidden></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="dashboard" class="dashboard" aria-labelledby="dashboard-title" hidden>
+      <div class="dashboard-heading">
+        <div><span class="eyebrow">INTERSIGNAL / AUDIENCE</span><h1 id="dashboard-title">The world is finding us.</h1><p class="subhead">First-party visits, measured on our own infrastructure.</p></div>
+        <div class="range-actions">
+          <div class="filter-controls">
+            <label class="site-control" for="site-filter"><span>Site</span><select id="site-filter"><option value="all">All sites</option><option value="intersignal" selected>Intersignal</option><option value="fulcrumnews">FULCRUM News</option></select></label>
+            <div class="range-control" role="group" aria-label="Time range"><button type="button" data-days="1">24h</button><button type="button" data-days="7" aria-pressed="true">7 days</button><button type="button" data-days="30">30 days</button><button type="button" data-days="90">90 days</button></div>
+          </div>
+          <span id="updated-at" class="updated-at">Waiting for data</span>
+        </div>
+      </div>
+
+      <p id="dashboard-error" class="dashboard-error" role="alert" hidden></p>
+
+      <div class="metric-grid" aria-label="Traffic summary">
+        <article class="metric-card live-card"><div class="metric-label"><span class="live-dot" aria-hidden="true"></span>Active now</div><strong id="metric-active">—</strong><span class="metric-note">Visits seen in the last 5 minutes</span></article>
+        <article class="metric-card"><div class="metric-label">Visitors</div><strong id="metric-visitors">—</strong><span class="metric-note">Distinct browser IDs</span></article>
+        <article class="metric-card"><div class="metric-label">Visits</div><strong id="metric-visits">—</strong><span class="metric-note">30-minute activity windows</span></article>
+        <article class="metric-card"><div class="metric-label">Return visits</div><strong id="metric-return">—</strong><span class="metric-note">Second visit or later</span></article>
+        <article class="metric-card"><div class="metric-label">Pageviews</div><strong id="metric-pages">—</strong><span class="metric-note">Pages opened</span></article>
+      </div>
+
+      <div class="dashboard-grid">
+        <section class="panel map-panel" aria-labelledby="map-title"><div class="panel-heading"><div><span class="section-index">01 / REACH</span><h2 id="map-title">Where visits come from</h2></div><span class="panel-detail">Country-level estimate</span></div><div class="map-frame"><svg id="world-map" viewBox="0 0 1000 500" role="img" aria-label="World map shaded by visits by country"></svg></div><p id="map-note" class="map-note">Locations are approximate IP-based country lookups. Made with Natural Earth; no third-party map tiles.</p></section>
+        <section class="panel country-panel" aria-labelledby="country-title"><div class="panel-heading"><div><span class="section-index">02 / COUNTRIES</span><h2 id="country-title">Country list</h2></div></div><ol id="countries-list" class="ranking-list"><li class="empty-list">Waiting for visits</li></ol></section>
+
+        <section class="panel trend-panel" aria-labelledby="trend-title"><div class="panel-heading"><div><span class="section-index">03 / RHYTHM</span><h2 id="trend-title">Visit trend</h2></div><span class="panel-detail">UTC days</span></div><div id="trend-chart" class="trend-chart" role="img" aria-label="Visits by day"></div><div id="trend-labels" class="trend-labels"></div></section>
+        <section class="panel pages-panel" aria-labelledby="pages-title"><div class="panel-heading"><div><span class="section-index">04 / PAGES</span><h2 id="pages-title">Most visited</h2></div></div><ol id="pages-list" class="ranking-list"><li class="empty-list">Waiting for visits</li></ol></section>
+
+        <section class="panel sources-panel" aria-labelledby="sources-title"><div class="panel-heading"><div><span class="section-index">05 / SOURCES</span><h2 id="sources-title">Referring URLs</h2></div></div><ol id="sources-list" class="ranking-list"><li class="empty-list">Waiting for visits</li></ol></section>
+        <section class="panel systems-panel" aria-labelledby="systems-title"><div class="panel-heading"><div><span class="section-index">06 / DEVICES</span><h2 id="systems-title">Browsers &amp; operating systems</h2></div></div><div class="systems-columns"><div><h3>Browsers</h3><ol id="browsers-list" class="ranking-list compact"></ol></div><div><h3>Operating systems</h3><ol id="systems-list" class="ranking-list compact"></ol></div></div></section>
+      </div>
+
+      <section class="panel recent-panel" aria-labelledby="recent-title"><div class="panel-heading"><div><span class="section-index">07 / LIVE LOG</span><h2 id="recent-title">Recent visits</h2></div><span class="panel-detail">IP addresses visible only after sign-in</span></div><div class="table-scroll"><table><thead><tr><th>When</th><th>Site</th><th>IP / Country</th><th>Browser / OS</th><th>First page</th><th>Referrer</th><th>Visit</th></tr></thead><tbody id="recent-body"><tr><td colspan="7" class="empty-table">No visits yet</td></tr></tbody></table></div></section>
+      <footer class="dashboard-footer">Intersignal Global · first-party analytics · raw visit records retained for 90 days</footer>
+    </section>
+  </main>
+</body>
+</html>

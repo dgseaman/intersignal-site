@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Intersignal analytics data retention purge
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+Unit=intersignal-analytics-purge.service
+
+[Install]
+WantedBy=timers.target

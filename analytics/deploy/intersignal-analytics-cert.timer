@@ -1,0 +1,11 @@
+[Unit]
+Description=Check the Intersignal stats TLS certificate daily
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=6h
+Persistent=true
+Unit=intersignal-analytics-cert.service
+
+[Install]
+WantedBy=timers.target

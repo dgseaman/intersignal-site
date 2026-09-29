@@ -1,0 +1,21 @@
+[Unit]
+Description=Apply Intersignal analytics retention limits
+
+[Service]
+Type=oneshot
+User=intersignal-analytics
+Group=intersignal-analytics
+WorkingDirectory=/opt/intersignal-analytics
+Environment=ANALYTICS_DB_PATH=/var/lib/intersignal-analytics/analytics.sqlite3
+Environment=ANALYTICS_RAW_RETENTION_DAYS=90
+Environment=ANALYTICS_VISITOR_RETENTION_DAYS=400
+Environment=PYTHONDONTWRITEBYTECODE=1
+StateDirectory=intersignal-analytics
+StateDirectoryMode=0700
+UMask=0077
+ExecStart=/opt/intersignal-analytics/.venv/bin/python /opt/intersignal-analytics/app.py purge
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/intersignal-analytics
