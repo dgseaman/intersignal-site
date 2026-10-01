@@ -1,0 +1,2 @@
+99cee6ee81c075a04bc1ceba186c5f123661f84c1b349f3c285f0942e6707f10  Braid-Archangel-1.9.2-macOS-arm64.zip
+e52cbd482c15ba0b159b0b1163582735d4643941854bf987a94d26da02561c70  Braid-Archangel-1.9.2-source.zip

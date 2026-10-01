@@ -1,0 +1,29 @@
+{
+  "schema": "intersignal.website.release.v1",
+  "name": "Braid",
+  "version": "1.9.2",
+  "codename": "Archangel",
+  "file": "Braid-Archangel-1.9.2-macOS-arm64.zip",
+  "bytes": 140945433,
+  "sha256": "99cee6ee81c075a04bc1ceba186c5f123661f84c1b349f3c285f0942e6707f10",
+  "download_url": "https://drive.google.com/file/d/17JeMZe86Q7qZK9NxuibQXSHAUjRyxBVo/view?usp=sharing",
+  "platform": "macOS",
+  "architecture": "arm64",
+  "folio_module_version": "0.3.0",
+  "integrated_folio": true,
+  "self_contained_runtime": true,
+  "same_client_for_free_and_members": true,
+  "requires_sidecar_patch": false,
+  "separate_folio_launch_required": false,
+  "included_source": false,
+  "source_download_url": "https://intersignal.org/download/archangel/1.9.2/Braid-Archangel-1.9.2-source.zip",
+  "prerequisites_for_chat": [
+    "Ollama",
+    "User-chosen local models"
+  ],
+  "managed_access": "early_access_operator_activation_required",
+  "release_status": "public_test_build",
+  "release_qualified": false,
+  "native_windows_linux_packages_included": false,
+  "notarized": false
+}
