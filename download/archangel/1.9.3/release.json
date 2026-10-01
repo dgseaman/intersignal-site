@@ -1,0 +1,53 @@
+{
+  "schema": "intersignal.website.release.v1",
+  "name": "Braid",
+  "version": "1.9.3",
+  "codename": "Archangel",
+  "file": "Braid-1.9.3.zip",
+  "bytes": 79952058,
+  "sha256": "c75998db99090d48d92a6993b4fb1f92d7ff69bafcb6c8769e58354e5c0e6870",
+  "download_url": "https://drive.google.com/file/d/1hV4kpn3JcNzRZVtuCJ6yevwrmCisqhAU/view?usp=sharing",
+  "platform": "macOS, Windows, Linux",
+  "architecture": "macOS arm64; Windows/Linux Python launcher",
+  "folio_module_version": "0.3.0",
+  "integrated_folio": true,
+  "self_contained_runtime": false,
+  "same_client_for_free_and_members": true,
+  "requires_sidecar_patch": false,
+  "separate_folio_launch_required": false,
+  "included_source": true,
+  "source_download_url": "https://drive.google.com/file/d/1hV4kpn3JcNzRZVtuCJ6yevwrmCisqhAU/view?usp=sharing",
+  "prerequisites_for_chat": [
+    "Ollama",
+    "User-chosen local models"
+  ],
+  "managed_access": "early_access_operator_activation_required",
+  "release_status": "public_test_build",
+  "release_qualified": false,
+  "native_windows_linux_packages_included": false,
+  "notarized": false,
+  "self_contained_runtime_platforms": [
+    "macOS arm64"
+  ],
+  "windows_linux_launchers_included": true,
+  "platform_entry_points": {
+    "macOS": {
+      "entry": "Braid.app",
+      "architecture": "arm64",
+      "python_required": false
+    },
+    "Windows": {
+      "entry": "Start Braid.cmd",
+      "python_required": "CPython 3.10\u20133.13"
+    },
+    "Linux": {
+      "entry": "Start Braid.sh",
+      "python_required": "CPython 3.10\u20133.13"
+    }
+  },
+  "source_sha256": "4237d4c24023b3af3a062f526774bf39c38de62648898b2463ba5e39054fc713",
+  "mac_shared_runtime_files": 225,
+  "folio_redaction_studio": true,
+  "local_sensitive_pattern_warnings": true,
+  "publication_state_comparison": "latest_local_immutable_export"
+}
