@@ -157,7 +157,7 @@ html:not(.js) .menu-toggle{display:none}
   "name": "Braid",
   "softwareVersion": "1.9.2",
   "applicationCategory": "ProductivityApplication",
-  "operatingSystem": "macOS (Apple silicon)",
+  "operatingSystem": "macOS (Apple silicon), Windows, Linux",
   "url": "https://intersignal.org/",
   "downloadUrl": "https://drive.google.com/file/d/17JeMZe86Q7qZK9NxuibQXSHAUjRyxBVo/view?usp=sharing",
   "description": "Running Ollama on more than one computer? Braid carries reviewed project context between your rigs, supports local chat with shared notes, and includes Folio publishing in one app.",
@@ -187,10 +187,10 @@ html:not(.js) .menu-toggle{display:none}
     <h1 id="earth-title">Ollama is running.<br><em>Now connect your work.</em></h1>
     <p class="earth-lede">Running local models on more than one computer? Install Braid to carry useful project context between them, ask with shared notes, and turn selected conversations into publications.</p>
     <div class="earth-actions">
-      <a class="button" data-download="braid-192-macos" href="https://drive.google.com/file/d/17JeMZe86Q7qZK9NxuibQXSHAUjRyxBVo/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download Braid 1.9.2</a>
+      <a class="button" data-download="braid-192-all-platforms" href="https://drive.google.com/file/d/17JeMZe86Q7qZK9NxuibQXSHAUjRyxBVo/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download Braid 1.9.2</a>
       <a class="button secondary" href="#braid">See how it works</a>
     </div>
-    <p class="release-platform">macOS · Apple silicon · Free local app · Python included</p>
+    <p class="release-platform">macOS · Windows · Linux · Folio included</p>
     <div class="one-app-strip" id="apps">
       <div><span>01</span><strong>Keep work moving.</strong><p>Share chosen notes between approved rigs.</p></div>
       <div><span>02</span><strong>Ask with context.</strong><p>Use relevant project notes in Braid’s local chat.</p></div>
@@ -264,25 +264,25 @@ html:not(.js) .menu-toggle{display:none}
 
 <section class="section" id="download" aria-labelledby="download-title">
   <div class="wrap download-layout">
-    <div class="download-intro">
+    <div class="download-intro"><span id="proof" class="anchor-alias" aria-hidden="true"></span><span id="research" class="anchor-alias" aria-hidden="true"></span><span id="wan-evidence" class="anchor-alias" aria-hidden="true"></span>
       <span class="eyebrow">One product. One install.</span>
       <h2 id="download-title">Get Braid.<br>Folio comes with it.</h2>
       <p>Your local workspace and your publishing studio, together in Archangel 1.9.2.</p>
-      <div class="requirements"><h3>For local chat</h3><p>Bring Ollama and your own models. Braid includes its Python runtime. Folio writing and publishing need no local model.</p></div>
+      <div class="requirements"><h3>For local chat</h3><p>Bring Ollama and your own models. The Mac app includes its runtime; Windows and Linux need Python 3.10–3.13. Folio needs no local model.</p></div>
     </div>
     <div class="download-box">
-      <div class="release-head"><span class="pill">ARCHANGEL 1.9.2</span><h3>Braid for macOS</h3><p>Apple silicon · 141 MB ZIP · Folio 0.3.0 included</p></div>
+      <div class="release-head"><span class="pill">ARCHANGEL 1.9.2</span><h3>One ZIP for Mac, Windows &amp; Linux</h3><p>80 MB · Folio 0.3.0 included</p></div>
       <div class="download-content">
-        <p>Copy <strong>Braid.app</strong> to Applications and open it. Choose <strong>Folio — Publish to Web</strong> in the sidebar.</p>
-        <a class="button wide" data-download="braid-192-macos" href="https://drive.google.com/file/d/17JeMZe86Q7qZK9NxuibQXSHAUjRyxBVo/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download Braid 1.9.2 for Mac</a>
-        <p class="platform-boundary"><strong>Windows &amp; Linux:</strong> developer source is available below. This download contains the macOS app; native Windows and Linux packages are not included.</p>
+        <p>Extract the ZIP. Open <strong>Braid.app</strong> on an Apple silicon Mac, <strong>Start Braid.cmd</strong> on Windows, or <strong>Start Braid.sh</strong> on Linux.</p><p>Choose <strong>Folio — Publish to Web</strong> in Braid’s sidebar.</p>
+        <a class="button wide" data-download="braid-192-all-platforms" href="https://drive.google.com/file/d/17JeMZe86Q7qZK9NxuibQXSHAUjRyxBVo/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download Braid 1.9.2</a>
+        <p class="platform-boundary"><strong>Windows &amp; Linux:</strong> updated launchers use the private-runtime approach from 1.9.1. Python 3.10–3.13 and internet access for first setup are required. <a href="download/archangel/1.9.2/PLATFORMS.md">Platform guide</a>.</p>
         <div class="release-links">
-          <a href="download/archangel/1.9.2/Braid-Archangel-1.9.2-source.zip">Complete source</a>
+          <a href="download/archangel/1.9.2/Braid-1.9.2-source.zip">Complete source</a>
           <a href="download/archangel/1.9.2/RELEASE_NOTES.md">Release notes</a>
           <a href="download/archangel/1.9.2/MIGRATION_NOTES.md">Migration</a>
           <a href="download/archangel/1.9.2/SHA256SUMS.txt">Checksums</a>
         </div>
-        <p class="release-qualification">Test build · Ad-hoc signed, not notarized. <a href="#proof">See qualification and exact results.</a></p>
+        <p class="release-qualification">Mac app: ad-hoc signed, not notarized. <a href="download/archangel/1.9.2/QA.md">Build details</a>.</p>
       </div>
     </div>
   </div>
@@ -309,19 +309,12 @@ html:not(.js) .menu-toggle{display:none}
       <details><summary>What does Folio publish?</summary><p>The exact edition you review and explicitly approve. Editing public content invalidates approval. Folio exports HTML or a site ZIP; you use your own hosting or platform account. Scheduled streams prepare review drafts, not automatic publications.</p></details>
       <details><summary>Can a reader continue with me on Braid?</summary><p>You may add an invitation to a publication. A reader requests a connection; you decide whether to accept. Rig-card exchange, fingerprint approval, and scope controls remain explicit. A public page never grants Braid authority.</p></details>
       <details id="upgrade"><summary>What happens to existing Braid and Folio work?</summary><p>Quit the old app and back up your complete private profile before upgrading. Braid retains identities, Channels, grants, and history. A standard Folio 0.3.0 profile is copied once into separate integrated storage; the original remains. Legacy drafts need a fresh review. <a href="download/archangel/1.9.2/MIGRATION_NOTES.md">Read migration notes</a>.</p></details>
-      <details id="compatibility"><summary>Which computers can use this download?</summary><p>The 1.9.2 native ZIP is for Apple silicon Macs. Linux and Windows code paths and build recipes are in the source package, but native installers and native OS qualification are not included. Local chat uses your own Ollama models; Folio itself needs no model or separate Python launch.</p></details>
+      <details id="compatibility"><summary>Which computers can use this download?</summary><p>Braid-1.9.2.zip includes the self-contained Apple silicon Mac app and updated Windows/Linux launchers, just like the launcher approach in 1.9.1. Windows/Linux need standard CPython 3.10–3.13. Their launchers install pinned dependencies into Braid’s private runtime on first setup. Local chat uses your Ollama models; Folio opens inside Braid on every platform. Physical testing on Windows/Linux is still pending.</p></details>
     </div>
   </div>
 </section>
 
-<section class="section proof" id="proof" aria-labelledby="proof-title">
-  <div class="wrap">
-    <span id="research" class="anchor-alias" aria-hidden="true"></span><span id="wan-evidence" class="anchor-alias" aria-hidden="true"></span>
-    <div class="section-top"><div><span class="eyebrow">The inspectable record / 1.9.2</span><h2 id="proof-title">Built. Tested.<br>Open to inspection.</h2></div><p>All 24 integration tests passed. The extracted Mac release passed all 16 native startup, privacy, and restart checks.</p></div>
-    <div class="proof-results"><strong>605 passed</strong><span>1 failed · 1 skipped · full collected suite</span><a href="download/archangel/1.9.2/TEST_RESULTS.md">Exact test results</a></div>
-    <details class="membership-terms"><summary>Qualification limits and earlier physical runs</summary><p>Qualification remains incomplete. The unchanged failing test needs an unavailable macOS loopback alias. Standalone Chromium tests were blocked by the build sandbox. Native Windows/Linux execution and notarization remain unverified.</p><p>Earlier physical tests retain their own release labels. The September 10 rc1 WAN record showed cross-network delivery followed by a clock rejection, not an accepted-note result. It is not relabelled as a 1.9.2 success. <a href="braid-1.9.1.html#proof">Read the preserved physical record</a>.</p></details>
-  </div>
-</section>
+
 </main><footer class="footer"><div class="wrap footer-inner"><div><a class="brand" href="index.html"><svg aria-hidden="true" viewbox="0 0 26 26"><path d="M4 4c18 0 0 18 18 18M22 4C4 4 22 22 4 22M5 4v18M21 4v18"></path></svg>INTERSIGNAL</a><p>Intersignal LLC · Fort Lauderdale · 2026<br/>Braid Archangel 1.9.2 · Folio built in<br/>Free local work + reviewed publishing</p></div><nav aria-label="More" class="footer-links"><a href="mailto:hello@intersignal.ai">Contact</a><a href="https://x.com/intersignal_ai" rel="noopener">X / Twitter</a><a href="https://github.com/dgseaman/Intersignal-braid" rel="noopener">GitHub</a><a href="legacy.html">Earlier releases &amp; research</a><a href="download/archangel/LICENSE">License</a><a href="website-privacy.html">Website privacy</a></nav></div></footer><div aria-live="polite" class="toast" hidden="" id="notice" role="status"></div><script src="site-config.js"></script><script>
 (function(){
   'use strict';
@@ -342,25 +335,26 @@ html:not(.js) .menu-toggle{display:none}
   if(checkout&&allowed(String(cfg.foundingPaymentLink||''),'buy.stripe.com'))checkout.href=cfg.foundingPaymentLink;
   if(portal&&allowed(String(cfg.customerPortalUrl||''),'billing.stripe.com')){portal.href=cfg.customerPortalUrl;portal.hidden=false;}
 })();
-</script><script id="braid-release-metadata" type="application/json">{
+</script><script id="braid-release-metadata" type="application/json">
+{
   "schema": "intersignal.website.release.v1",
   "name": "Braid",
   "version": "1.9.2",
   "codename": "Archangel",
-  "file": "Braid-Archangel-1.9.2-macOS-arm64.zip",
-  "bytes": 140945433,
-  "sha256": "99cee6ee81c075a04bc1ceba186c5f123661f84c1b349f3c285f0942e6707f10",
+  "file": "Braid-1.9.2.zip",
+  "bytes": 79879548,
+  "sha256": "1c4da95bf4d59db467708d2d59789cd5dcd200448f9d74086a04d1cbf08c2aec",
   "download_url": "https://drive.google.com/file/d/17JeMZe86Q7qZK9NxuibQXSHAUjRyxBVo/view?usp=sharing",
-  "platform": "macOS",
-  "architecture": "arm64",
+  "platform": "macOS, Windows, Linux",
+  "architecture": "macOS arm64; Windows/Linux Python launcher",
   "folio_module_version": "0.3.0",
   "integrated_folio": true,
-  "self_contained_runtime": true,
+  "self_contained_runtime": false,
   "same_client_for_free_and_members": true,
   "requires_sidecar_patch": false,
   "separate_folio_launch_required": false,
-  "included_source": false,
-  "source_download_url": "https://intersignal.org/download/archangel/1.9.2/Braid-Archangel-1.9.2-source.zip",
+  "included_source": true,
+  "source_download_url": "https://intersignal.org/download/archangel/1.9.2/Braid-1.9.2-source.zip",
   "prerequisites_for_chat": [
     "Ollama",
     "User-chosen local models"
@@ -369,8 +363,30 @@ html:not(.js) .menu-toggle{display:none}
   "release_status": "public_test_build",
   "release_qualified": false,
   "native_windows_linux_packages_included": false,
-  "notarized": false
-}</script><script id="folio-release-metadata" type="application/json">{
+  "notarized": false,
+  "self_contained_runtime_platforms": [
+    "macOS arm64"
+  ],
+  "windows_linux_launchers_included": true,
+  "platform_entry_points": {
+    "macOS": {
+      "entry": "Braid.app",
+      "architecture": "arm64",
+      "python_required": false
+    },
+    "Windows": {
+      "entry": "Start Braid.cmd",
+      "python_required": "CPython 3.10\u20133.13"
+    },
+    "Linux": {
+      "entry": "Start Braid.sh",
+      "python_required": "CPython 3.10\u20133.13"
+    }
+  },
+  "source_sha256": "5aa9582a50d69a0e55c8b1c00982fb4af4a430d47f4a6f68cc22af30c726a797",
+  "mac_shared_runtime_files": 126
+}
+</script><script id="folio-release-metadata" type="application/json">{
   "schema": "intersignal.website.module.v1",
   "name": "Folio",
   "version": "0.3.0",

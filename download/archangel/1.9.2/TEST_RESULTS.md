@@ -1,3 +1,50 @@
+# Final combined-package verification
+
+Braid 1.9.2 combined package — final packaging verification
+ZIP: Braid-1.9.2.zip (79879548 bytes)
+SHA256: 1c4da95bf4d59db467708d2d59789cd5dcd200448f9d74086a04d1cbf08c2aec
+Source SHA256: 5aa9582a50d69a0e55c8b1c00982fb4af4a430d47f4a6f68cc22af30c726a797
+
+The roughly 1 MB 1.9.1 package was a Python launcher/wheel bundle and installed
+dependencies at setup. The first 1.9.2 native Mac build bundled Python and
+libraries twice, once for the GUI and once for the CLI. Sharing 126 byte-identical
+immutable files inside the .app reduces the combined ZIP from 141.5 MB to 79.9 MB.
+No runtime, module or feature was removed. The app was re-signed ad-hoc and its
+signature and relative links verified after extraction.
+
+Full collected suite: 612 passed, 1 failed, 1 skipped, 3 warnings,
+48 subtests passed in 193.95 seconds. The one failure is unchanged from baseline:
+test_address_change_keeps_identity_route_and_history needs an unassigned 127.0.0.2
+loopback alias. No existing test assertions were weakened. Seven new packaging
+tests passed. Release qualification remains incomplete.
+
+Extracted compact Mac app: 16 checks passed, including /folio,
+review/approval, privacy sentinel exclusion, handoff, persistence and restart.
+Frozen CLI: 6 checks passed, including synthetic sign/receive,
+OpenCV PNG decoding through the shared libraries, and clean shutdown. No camera
+or Bluetooth hardware was accessed. No external Python discovery path was used.
+
+Default isolated POSIX launcher: 15 checks passed on the Mac host,
+with pinned dependencies actually installed into a fresh private runtime.
+Windows x64 and Linux x86_64 CPython 3.12: all 10 pinned dependency wheels
+successfully downloaded for each target. This verifies availability, not execution.
+Native Windows/Linux execution remains pending on those hosts.
+
+Archive integrity: 1133 file checksums passed; all 126 shared payload hashes
+and relative contained links passed. Mac discovery: 16 passed using a physical
+/private/tmp fixture. An earlier /var alias fixture caused one cwd string mismatch;
+no assertions were changed to resolve it.
+
+The ZIP contains Braid.app for macOS arm64, Start Braid.cmd for Windows and
+Start Braid.sh for Linux. Windows/Linux use the 1.9.1-style private-runtime
+launchers and require CPython 3.10–3.13. Folio is integrated in every entry point.
+Old native/source artifacts were retained. The homepage no longer shows test counts.
+
+
+---
+
+# Earlier native-build evidence (preserved)
+
 # Braid Archangel 1.9.2 — exact executed results
 
 Prepared 2026-10-01. Runs span 2026-09-30 and 2026-10-01 on macOS 15.5 arm64,

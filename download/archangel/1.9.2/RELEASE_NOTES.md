@@ -14,6 +14,13 @@ release/migration notes, raw test logs, machine-readable test reports, and
 browser proof. Native Linux and Windows build recipes are included in source;
 actual Linux/Windows native binaries and native OS runs require those hosts.
 
+The updated **Braid-1.9.2.zip** brings the Mac app and the Windows/Linux launchers
+together in one download. **Start Braid.cmd** and **Start Braid.sh** use the same
+private-runtime, wheel-based approach as 1.9.1, with the integrated 1.9.2 wheel.
+Standard CPython 3.10–3.13 is required on Windows/Linux; pinned dependencies are
+installed on first launch. These are usable launcher distributions, not just
+native build recipes. See **PLATFORMS.md** for prerequisites and exact limits.
+
 ## Approval and privacy
 
 Folio retains its own storage, private originals, review/approval, immutable
