@@ -70,5 +70,14 @@
     "accepted",
     "available_to_chat"
   ],
-  "included_source_file": "source/Braid-Archangel-1.9.4-source.zip"
+  "included_source_file": "source/Braid-Archangel-1.9.4-source.zip",
+  "physical_test_report": {
+    "source": "user_report",
+    "recorded_date": "2026-10-18",
+    "version_tested": "1.9.4",
+    "record": "PHYSICAL_WINDOWS_LINUX.md",
+    "windows": "Orpheus: Nemotron Bolt in-chat inference, peer connectivity and messaging",
+    "linux": "Cross-platform message receipt, completed transport, receiver response, handoff acceptance and Channel indexing",
+    "scope": "Tested systems and workflows only; not every configuration or a later release"
+  }
 }
