@@ -39,13 +39,25 @@ Synthetic UI receipts are clearly labeled; they do not claim real network sends.
 Actual signed mutual-TLS loopback handoffs use local embedding test fixtures and
 verify receiver/publisher permissions. They are not real-model/physical-rig tests.
 
-Limitations for your testing:
+Subsequent physical-test report (recorded October 18, 2026):
+The user reports Braid 1.9.4 operational on Orpheus (Windows), with successful
+Nemotron Bolt in-chat inference, peer connectivity, and messaging. Linux testing
+confirmed cross-platform message receipt, completed transport, a receiver
+response, handoff acceptance, and an indexed message available within the
+Channel. This is user-reported evidence supplied after the build-host checks
+above. See PHYSICAL_WINDOWS_LINUX.md for its exact scope and remaining cases.
+It is not a new physical test performed by the build agent, a report of every
+configuration, or physical qualification of 1.9.5.
+
+Remaining limitations and unrecorded cases:
 - Mac is Apple silicon macOS 13+, self-contained and windowed. It is ad-hoc
   signed, not notarized; no Developer ID signing identity exists on this host.
 - Windows/Linux require standard CPython 3.10–3.13 with pip/venv. Their first
   isolated setup needs internet or a prepared offline dependency pack. Native
   Windows/Linux execution remains untested on this Mac build host.
-- Test a real two-computer handoff and installed Ollama models on your rigs.
+- Recheck additional rigs, OS versions, network directions, and installed models
+  beyond the reported Windows/Linux 1.9.4 workflows. Record receiver acceptance
+  and indexing separately from any generated answer that uses a shared note.
 - Classic uses a conservative pre-2010 feature vocabulary; historical browsers
   and formal HTML4 DTD conformance are not certified by this build.
 - Browser automation blocks file: URLs. The extracted publication pages passed
