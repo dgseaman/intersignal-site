@@ -74,6 +74,12 @@ Apple silicon macOS 13+: self-contained windowed app; no Terminal for ordinary
 launch. Ad-hoc signed. No Developer ID identity was available on this build host,
 so notarization remains unavailable. Windows and Linux packages retain the private
 Python launcher setup and require standard CPython 3.10–3.13. First setup downloads
-pinned dependencies unless an offline pack has been prepared. Native Windows/Linux
-execution and physical two-computer testing remain for your machines. No public
-site, production profile, paid account, or relay service was updated by this build.
+pinned dependencies unless an offline pack has been prepared. Subsequent
+user-reported physical Braid 1.9.4 testing confirmed Windows Nemotron Bolt
+in-chat inference, peer connectivity, and messaging on Orpheus. Linux testing
+confirmed cross-platform message receipt, completed transport, a receiver
+response, handoff acceptance, and an indexed message available within the
+Channel. See `PHYSICAL_WINDOWS_LINUX.md` for the report and remaining checks.
+These results cover the tested systems and workflows, not every configuration
+or a later release. No production profile, paid account, or relay service was
+updated by this build. The compatibility website update is prepared separately.
