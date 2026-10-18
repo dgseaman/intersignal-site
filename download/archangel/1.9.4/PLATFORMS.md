@@ -27,5 +27,11 @@ for the retained Braid identities and separate Folio storage/migration rules.
 
 The Mac app is ad-hoc signed, not Developer ID notarized. Windows/Linux native
 binaries are not included. The shared application and platform code paths were
-tested on the recorded Mac host; physical Windows/Linux execution still needs
-verification on those systems. Exact evidence stays in `TEST_RESULTS.md`.
+tested on the recorded Mac build host. Subsequent user-reported physical Braid
+1.9.4 testing confirmed Nemotron Bolt in-chat inference, peer connectivity, and
+messaging on Orpheus (Windows). Linux testing confirmed cross-platform message
+receipt, completed transport, a receiver response, handoff acceptance, and an
+indexed message available within the Channel. These results apply to the tested
+systems and workflows, not every configuration or a later release. See
+`PHYSICAL_WINDOWS_LINUX.md` for the report and remaining checks; the original
+build-host evidence stays in `TEST_RESULTS.md`.
