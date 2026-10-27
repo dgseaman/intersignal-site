@@ -210,7 +210,7 @@ html:not(.js) .menu-toggle{display:none}
       <article class="feature"><span class="number">APPROVAL INBOX</span><h3>Work arrives as a proposal.</h3><p>Inspect its source and exact text. Edit an approved note locally, or stage a handoff. Sending is a separate human action.</p></article>
       <article class="feature"><span class="number">CONNECTIONS</span><h3>See what connects.</h3><p>Start with a clear List view. Open Network View to inspect rigs, models, MCP clients, Channels, and Folio outputs, using saved permissions and observed status.</p></article>
     </div>
-    <p class="demo-caption">One rig is enough. Local chat, readable streaming and code, Channels, approved rig sharing, and reviewed Folio publishing remain at the center. MCP client compatibility is still being qualified in this preview.</p>
+    <p class="demo-caption">One rig is enough. Local chat, readable streaming and code, Channels, approved rig sharing, and reviewed Folio publishing remain at the center. Hands-on checks now cover Codex MCP proposals, approved Mac-to-Windows delivery, and reviewed Folio exports.</p>
   </div>
 </section>
 
@@ -245,7 +245,7 @@ html:not(.js) .menu-toggle{display:none}
         <li><b>02</b><span><strong>Shape and review.</strong> Choose passages, edit public excerpts, and add a byline, images, or related editions. Check the phone and print previews.</span></li>
         <li><b>03</b><span><strong>Approve and export.</strong> Review local advisory highlights and approve the exact edition. Export HTML or a site ZIP; optional Classic HTML offers a simpler export using older web features.</span></li>
       </ol>
-      <p class="folio-fine">Local advisory warnings highlight obvious file paths, private IPs, key-like strings, and machine hostnames for your review. Clear approval and published-state indicators show whether your draft matches the latest exported bundle or needs re-approval and re-export. Separately hosted pages are not checked. Nothing publishes without your explicit approval.</p>
+      <p class="folio-fine">Local advisory warnings highlight obvious file paths, private IPs, key-like strings, and machine hostnames for your review. Clear approval and published-state indicators show whether your draft matches the latest exported bundle or needs re-approval and re-export. Separately hosted pages are not checked. Nothing publishes without your explicit approval. In a hands-on check, a public edit invalidated approval. After renewed human review, the five-file local export excluded both synthetic private markers and passed its checksum checks.</p>
     </div>
     <div class="folio-illustration">
       <div class="folio-paper">
@@ -291,7 +291,7 @@ html:not(.js) .menu-toggle{display:none}
         <p>Extract the ZIP. On an Apple silicon Mac, copy <strong>Braid 2.0 Preview.app</strong> to Applications and open it. On Windows, use <strong>Start Braid.cmd</strong>; on Linux, use <strong>sh &quot;Start Braid.sh&quot;</strong> with supported Python installed.</p>
         <p>The preview opens a separate profile and can sit alongside 1.9.5. Choose <strong>Chat with Local AI</strong> for your model, or <strong>Connections</strong> to authorize an MCP client.</p>
         <a class="button wide" data-download="braid-20-preview" href="https://drive.google.com/file/d/1WXJg1aMl2QxxWbKAkFjUjFVfkkVwh4jc/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">Download Braid 2.0 preview</a>
-        <p class="platform-boundary"><strong>Preview qualification:</strong> the bundled Mac app is tested on macOS 15.5, Apple silicon. Windows/Linux launchers are included for target-host testing; native Windows/Linux runtimes are not included. <a href="#compatibility">Platform details</a>.</p>
+        <p class="platform-boundary"><strong>Preview qualification (October 26–27, 2026):</strong> the bundled Mac app is tested on macOS 15.5, Apple silicon. Windows launcher startup and one approved Mac-to-Windows handoff have been checked. Linux execution remains unqualified; native Windows/Linux runtimes are not included. <a href="#compatibility">Platform details</a>.</p>
         <div class="release-links"><a href="https://drive.google.com/file/d/1WXJg1aMl2QxxWbKAkFjUjFVfkkVwh4jc/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">Source included in ZIP</a><a href="#whats-new">What’s new</a><a href="#upgrade">Using the preview</a><a href="#release-integrity">Checksum</a></div>
         <p class="release-qualification">Mac app: ad-hoc signed, not notarized. Model servers and model weights are configured separately. <a href="https://drive.google.com/file/d/16ShB8KLgb5eH_y-C4UGiDvEHuATnFeNi/view?usp=sharing" target="_blank" rel="noopener noreferrer">Prefer the existing 1.9.5 package?</a></p>
       </div>
@@ -320,10 +320,10 @@ html:not(.js) .menu-toggle{display:none}
       <details><summary>What does Folio publish?</summary><p>The exact edition you review and explicitly approve. The split-view studio lets you include or exclude source blocks and redact public excerpts beside the article preview. Sensitive-detail warnings run locally and remain advisory. Editing public content invalidates approval. The state banner distinguishes local changes, an approved draft awaiting export, and content matching the latest immutable export; it does not verify your hosted website. Folio exports HTML or a site ZIP for your own hosting. Scheduled streams prepare review drafts. Choose Editorial or Retro layouts, add local images and related editions, and check phone or print previews. Classic HTML is a separate compatibility choice; live Braid connection invitations require Modern HTML.</p></details>
       <details><summary>Can a reader continue with me on Braid?</summary><p>You may add an invitation to a publication. A reader requests a connection; you decide whether to accept. Rig-card exchange, fingerprint approval, and scope controls remain explicit. A public page never grants Braid authority.</p></details>
       <details><summary>Which model servers can I use?</summary><p>Ollama models are discovered automatically. For vLLM, LM Studio, or another OpenAI-compatible local or LAN server, open Server settings, enter its address and port, and choose a model. No API key is needed unless that server requires one. Your existing inference server can keep running alongside its independent interface.</p></details>
-      <details id="agents"><summary>What can connected AI clients do?</summary><p>With an explicit MCP grant, a client can discover its authorized rigs and Channels, read specifically selected context, propose a note or handoff, and inspect its own requests. Proposals wait for human review. Approval creates a local note draft or stages a handoff; sending remains a separate human decision. The MCP connection grants no remote execution or Folio publishing authority.</p><p>You can cancel an approved unsent handoff, revoke a client, or acknowledge an uncertain result without changing its delivery evidence. Completed work remains in Review history. The preview implements a tested MCP tools subset; named client products are not yet listed as verified integrations.</p></details>
+      <details id="agents"><summary>What can connected AI clients do?</summary><p>With an explicit MCP grant, a client can discover its authorized rigs and Channels, read specifically selected context, propose a note or handoff, and inspect its own requests. Proposals wait for human review. Approval creates a local note draft or stages a handoff; sending remains a separate human decision. The MCP connection grants no remote execution or Folio publishing authority.</p><p>You can cancel an approved unsent handoff, revoke a client, or acknowledge an uncertain result without changing its delivery evidence. Completed work remains in Review history. The scoped MCP tools were tested with Codex CLI 0.164.0-alpha.11.1 on Mac: authorized discovery, selected context, note and handoff proposals, and own-request status. Checks covered human draft edits, rejection without delivery, and refusal of a fresh connection using revoked credentials. These results apply to that client version and those workflows. Claude Code, Cursor and OpenClaw remain unqualified.</p></details>
       <details id="upgrade"><summary>What happens to my existing Braid and Folio work?</summary><p>Braid 2.0 Preview uses a separate profile and app identity. Keep 1.9.5 and its complete private profile as your working fallback. Existing identities, Channels, grants, and history are not automatically migrated into this preview. The ZIP includes setup, qualification, and profile guidance.</p></details>
       <details id="release-integrity"><summary>Verify the 2.0 preview download</summary><p>Braid-2.0-Preview-2.0.0a2.zip · 95,641,886 bytes. SHA-256:</p><pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code>c90a1c36144f552a60db7df5d4757836aba20fde34b1ef30e75651d069f12530</code></pre><p>The ZIP contains the Apple silicon app and its runtime, companion CLI, public source, launchers, licenses, and qualification notes.</p></details>
-      <details id="compatibility"><summary>Which computers can use this preview?</summary><p>The bundled native app is for Apple silicon Macs and has been exercised on macOS 15.5. Its configured minimum is macOS 13; other macOS versions and Intel Macs have not been qualified for this build. The app is ad-hoc signed, not notarized.</p><p>Windows and Linux use the included Python launchers, requiring CPython 3.10–3.13 with pip and venv. First setup needs internet or a prepared offline dependency pack. These are not bundled native Windows/Linux apps. The revised package still needs target-host and physical multi-rig/model qualification.</p><p>For the prior package, <a href="https://drive.google.com/file/d/16ShB8KLgb5eH_y-C4UGiDvEHuATnFeNi/view?usp=sharing" target="_blank" rel="noopener noreferrer">download Braid 1.9.5</a>. Your local model server and model weights are separate from both packages.</p></details>
+      <details id="compatibility"><summary>Which computers can use this preview?</summary><p>The bundled native app is for Apple silicon Macs and has been exercised on macOS 15.5. Its configured minimum is macOS 13; other macOS versions and Intel Macs have not been qualified for this build. The app is ad-hoc signed, not notarized.</p><p>Windows and Linux use the included Python launchers, requiring CPython 3.10–3.13 with pip and venv. First setup needs internet or a prepared offline dependency pack. These are not bundled native Windows/Linux apps. Windows launcher startup and route preparation were confirmed by a human operator. One approved Mac-to-Windows handoff returned an accepted/indexed receipt, and its exact text was confirmed in the Windows Inbox. This is limited Windows coverage. Linux execution and broader platform/model qualification remain pending.</p><p>For the prior package, <a href="https://drive.google.com/file/d/16ShB8KLgb5eH_y-C4UGiDvEHuATnFeNi/view?usp=sharing" target="_blank" rel="noopener noreferrer">download Braid 1.9.5</a>. Your local model server and model weights are separate from both packages.</p></details>
     </div>
   </div>
 </section>
@@ -430,7 +430,49 @@ html:not(.js) .menu-toggle{display:none}
   "reduced_motion": true,
   "markdown_code_rendering": true,
   "mcp_server_preview": true,
-  "mcp_verified_vendor_clients": [],
+  "mcp_verified_vendor_clients": ["Codex CLI 0.164.0-alpha.11.1 (macOS scoped MCP workflows)"],
+  "preview_qualification": {
+    "checked_dates": [
+      "2026-10-26",
+      "2026-10-27"
+    ],
+    "codex_cli": {
+      "version": "0.164.0-alpha.11.1",
+      "platform": "macOS 15.5 Apple silicon",
+      "tested_tools": [
+        "discover_authorized",
+        "read_permitted_context",
+        "propose_note",
+        "propose_handoff",
+        "request_status"
+      ],
+      "fresh_connection_revocation_denial": true,
+      "existing_session_revocation_tested": false
+    },
+    "physical_mac_to_windows": {
+      "approved_handoff": true,
+      "windows_launcher_startup": "human-confirmed",
+      "route_preparation": "human-confirmed",
+      "exact_inbox_text": "human-confirmed",
+      "receipt": [
+        "received",
+        "accepted",
+        "indexed"
+      ],
+      "receiver_model_use_verified": false
+    },
+    "folio": {
+      "human_approval": true,
+      "public_edit_invalidates_approval": true,
+      "renewed_approval": true,
+      "local_export_files_checked": 5,
+      "checks_passed": 13,
+      "synthetic_private_markers_absent": true,
+      "public_hosting": false
+    },
+    "windows_full_regression_verified": false,
+    "linux_execution_verified": false
+  },
   "agent_proposals_require_review": true,
   "separate_human_handoff_send": true,
   "approval_history": true,
